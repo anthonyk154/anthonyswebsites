@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AnthonysWebsites — Custom Sites by Anthony Kremyanskiy</title>
   <meta name="description" content="I build modern, fast, mobile-friendly websites for small businesses and creators. Message me to start your site today." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='80'>💻</text></svg>">
+  <link rel="icon" type="image/png" href="computer.png">
 
   <style>
     :root{
@@ -84,7 +84,6 @@
     
     .shots{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:8px}
     .shot{aspect-ratio:16/10; border-radius:14px; overflow:hidden; position:relative; border:1px solid rgba(148,163,184,.12); background:linear-gradient(135deg, rgba(79,70,229,.14), rgba(34,211,238,.12))}
-    .shot::after{content:"Preview"; position:absolute; bottom:8px; right:10px; font-size:12px; color:#e5e7eb88}
     
     .shot .gridlines{position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size:28px 28px}
 
@@ -143,37 +142,37 @@
     }
   </style>
 </head>
-<body>
+<body id="top">
 
  
-  <header>
-    <nav class="nav">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">⚡</div>
-        <div>
-          <div class="name">Anthony's Website's</div>
-          <div class="badge">by Anthony Kremyanskiy</div>
-        </div>
+<header>
+  <nav class="nav">
+    <a href="#top" class="brand">
+      <div class="logo" aria-hidden="true">⚡</div>
+      <div>
+        <div class="name">Anthony's Website's</div>
+        <div class="badge">by Anthony Kremyanskiy</div>
       </div>
+    </a>
 
-      <div class="links">
-        <a href="#work">Work</a>
-        <a href="#services">Services</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#contact" class="cta">Contact Me</a>
-      </div>
-
-      <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span></button>
-    </nav>
-    <div class="drawer" id="drawer">
-      <div class="links">
-        <a href="#work">Work</a>
-        <a href="#services">Services</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#contact" class="cta">Contact Me</a>
-      </div>
+    <div class="links">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact" class="cta">Contact Me</a>
     </div>
-  </header>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span></button>
+  </nav>
+  <div class="drawer" id="drawer">
+    <div class="links">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact" class="cta">Contact Me</a>
+    </div>
+  </div>
+</header>
 
   
   <section class="section hero">
@@ -206,9 +205,9 @@
         <li>Launch support + edit guide</li>
       </ul>
       <div class="shots">
-        <div class="shot"><div class="gridlines"></div></div>
-        <div class="shot"><div class="gridlines"></div></div>
-        <div class="shot"><div class="gridlines"></div></div>
+        <div class="shot"><div class="gridlines"><img src="fortuneflowers-site.png" height="100%" alt=""></div></div>
+        <div class="shot"><div class="gridlines"><img src="yuriskattesite.png" height="100%" alt=""></div></div>
+        <div class="shot"><div class="gridlines"><img src="packsmartsite.png" height="100%" alt=""></div></div>
       </div>
     </div>
   </section>
@@ -244,9 +243,9 @@
     <h2 class="reveal">Selected Work</h2>
     <p class="lead reveal">A few recent styles and components.</p>
     <div class="shots">
-      <div class="shot reveal"><div class="gridlines"><img src="#" alt=""></div></div>
-      <div class="shot reveal"><div class="gridlines"><img src="#" alt=""></div></div>
-      <div class="shot reveal"><div class="gridlines"><img src="#" alt=""></div></div>
+      <div class="shot reveal"><div class="gridlines"><img src="fortuneflowers-site.png" height="100%" alt=""></div></div>
+      <div class="shot reveal"><div class="gridlines"><img src="yuriskattesite.png" height="100%" alt=""></div></div>
+      <div class="shot reveal"><div class="gridlines"><img src="packsmartsite.png" height="100%" alt=""></div></div>
     </div>
   </section>
 
@@ -290,7 +289,7 @@
           <a class="btn" href="https://wa.me/19176856830?text=Hi%20Anthony%2C%20I%20want%20a%20website." target="_blank" rel="noreferrer">🟢 WhatsApp</a>
           <a class="btn" href="mailto:anthonykrempr@gmail.com?subject=New%20website%20project&body=Hi%20Anthony%2C%0A%0AHere%27s%20what%20I%20need%3A%0A-%20Business%20name%3A%20%0A-%20Pages%20I%20want%3A%20%0A-%20Deadline%3A%20%0A-%20Budget%3A%20%0A%0AThanks!">✉️ Email</a>
         </div>
-        <p style="margin-top:14px; color:#cbd5e1">Phone: <b>(917) 685-6830</b><br>Email: <b>anthonykrempr@gmail.com</b></p>
+        <p style="margin-top:14px; color:#cbd5e1">Phone: <b>(917) 685-6830</b><br>Email: <b>anthonykrempr@gmail.com</b><br><b>PLEASE CALL ME ITS BETTER THAN EMAIL: THANK YOU</b></p>
       </div>
 
       <div class="card reveal">
@@ -313,7 +312,7 @@
   
   <footer>
     <div class="foot">
-      <small>© <span id="year"></span> AnthonysWebsites — Owner: <b>Anthony Kremyanskiy: Best Coder:)</b><b></b></small>
+      <small>© 2024 AnthonysWebsites — Owner: <b>Anthony Kremyanskiy: Best Coder:)</b><b></b></small>
       <small>Built with love and clean code 💙💙💙💻</small>
     </div>
   </footer>
