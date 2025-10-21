@@ -606,7 +606,48 @@ function closePopup() {
 
 setTimeout(showPopup, 3000);
 </script>
+</script>
 
+<style>
+#adminUnlockMsg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #22d3ee;
+  color: #fff;
+  padding: 20px 40px;
+  border-radius: 40px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 2000;
+  pointer-events: none;
+}
+</style>
+
+<div id="adminUnlockMsg">💙Welcome, Anthony💙</div>
+
+<script>
+(function () {
+  var seq = "";
+  var code = "anthony11235";
+  var msg = document.getElementById("adminUnlockMsg");
+  window.addEventListener("keydown", function (e) {
+    var tag = document.activeElement && document.activeElement.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA" || document.activeElement.isContentEditable) return;
+    seq = (seq + e.key).slice(-code.length);
+    if (seq === code) {
+      msg.style.opacity = "1";
+      setTimeout(function () {
+        msg.style.opacity = "0";
+        window.location.href = "admin.html";
+      }, 2000);
+    }
+  });
+})();
+</script>
 </body>
 </html>
 
