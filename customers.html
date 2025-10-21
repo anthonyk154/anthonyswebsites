@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anthony's Web Clients — Dashboard</title>
+  <link rel="icon" type="image/png" href="computer.png">
+  <style>
+    :root {
+      --bg:#0b1220;
+      --card:#111827;
+      --accent:#4f46e5;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --danger:#ef4444;
+      --radius:14px;
+      --shadow:0 10px 25px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+    body {
+      margin:0;
+      padding:0;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    header {
+      background:linear-gradient(135deg,var(--accent),#22d3ee);
+      padding:20px;
+      text-align:center;
+      color:white;
+      font-weight:800;
+      font-size:24px;
+      box-shadow:var(--shadow);
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+    main {
+      max-width:900px;
+      margin:30px auto;
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+    h2 {
+      margin-top:0;
+      text-align:center;
+    }
+    form {
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr auto;
+      gap:10px;
+      margin-bottom:25px;
+    }
+    input {
+      padding:10px;
+      border-radius:8px;
+      border:none;
+      outline:none;
+      background:#1f2937;
+      color:var(--text);
+    }
+    button {
+      padding:10px 16px;
+      border:none;
+      border-radius:8px;
+      background:var(--accent);
+      color:white;
+      font-weight:700;
+      cursor:pointer;
+      transition:.25s;
+    }
+    button:hover{transform:scale(1.05);}
+    table {
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+    }
+    th, td {
+      padding:12px;
+      text-align:left;
+    }
+    th {
+      background:#1e293b;
+      color:#a5b4fc;
+    }
+    tr:nth-child(even){
+      background:#1a2233;
+    }
+    .delete-btn {
+      background:var(--danger);
+      border:none;
+      color:white;
+      border-radius:8px;
+      padding:6px 10px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .delete-btn:hover{opacity:.8;}
+    .summary {
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      background:#1f2937;
+      border-radius:var(--radius);
+      padding:14px;
+      margin-bottom:20px;
+    }
+    .summary div {
+      font-weight:600;
+      font-size:16px;
+    }
+    @media(max-width:720px){
+      form{grid-template-columns:1fr;gap:8px;}
+      .summary{flex-direction:column;gap:10px;}
+    }
+  </style>
+</head>
+<body>
+
+<header>⚡ Anthony's Admin Dashboard</header>
+
+<main>
+  <h2>💼 Customer List</h2>
+
+  <div class="summary">
+    <div>Total Clients: <span id="totalClients">0</span></div>
+    <div>Total Revenue: <span id="totalRevenue">$0</span></div>
+  </div>
+
+  <form id="clientForm">
+    <input type="text" id="clientName" placeholder="Client Name" required>
+    <input type="url" id="clientSite" placeholder="Website URL (https://...)" required>
+    <input type="number" id="clientAmount" placeholder="Amount ($)" value="20" min="0" required>
+    <button type="submit">Add Client</button>
+  </form>
+
+  <table id="clientTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Website</th>
+        <th>Amount</th>
+        <th>Date Added</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</main>
+
+<script>
+  const form = document.getElementById("clientForm");
+  const tableBody = document.querySelector("#clientTable tbody");
+  const totalClients = document.getElementById("totalClients");
+  const totalRevenue = document.getElementById("totalRevenue");
+
+  let clients = JSON.parse(localStorage.getItem("clients")) || [];
+
+  function updateTable() {
+    tableBody.innerHTML = "";
+    clients.forEach((c, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${i+1}</td>
+        <td>${c.name}</td>
+        <td><a href="${c.site}" target="_blank" style="color:#60a5fa;">${c.site}</a></td>
+        <td>$${c.amount}</td>
+        <td>${c.date}</td>
+        <td><button class="delete-btn" onclick="deleteClient(${i})">Delete</button></td>
+      `;
+      tableBody.appendChild(tr);
+    });
+
+    totalClients.textContent = clients.length;
+    const total = clients.reduce((sum,c)=>sum+Number(c.amount),0);
+    totalRevenue.textContent = "$" + total;
+    localStorage.setItem("clients", JSON.stringify(clients));
+  }
+
+  function deleteClient(index){
+    if(confirm("Remove this client?")){
+      clients.splice(index,1);
+      updateTable();
+    }
+  }
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const name = document.getElementById("clientName").value.trim();
+    const site = document.getElementById("clientSite").value.trim();
+    const amount = Number(document.getElementById("clientAmount").value);
+    const date = new Date().toLocaleDateString();
+
+    if(!name || !site) return;
+
+    clients.push({ name, site, amount, date });
+    updateTable();
+    form.reset();
+  });
+
+  updateTable();
+</script>
+</body>
+</html>
