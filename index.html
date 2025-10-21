@@ -490,6 +490,123 @@ ${message}
       success.style.display = 'block';
     });
   </script>
+
+<a href="https://wa.me/19176856830?text=Hi%20Anthony%2C%20I%27m%20interested%20in%20a%20website!"
+   target="_blank" rel="noopener noreferrer" class="chat-bubble" title="Chat with Anthony 💬">
+  💬 Chat with Anthony
+</a>
+
+<style>
+.chat-bubble {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: linear-gradient(135deg, #4f46e5, #22d3ee);
+  color: white;
+  font-weight: 700;
+  border-radius: 50px;
+  padding: 14px 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+.chat-bubble:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(79,70,229,0.4);
+}
+@media (max-width:600px){
+  .chat-bubble{
+    padding:12px 16px;
+    font-size:14px;
+    bottom:16px;
+    right:16px;
+  }
+}
+
+</style>
+
+<div id="promoPopup" class="promo-popup">
+  <div class="promo-content">
+    <span class="close-btn" onclick="closePopup()">✖</span>
+    <h3>🎉 Special Offer!</h3>
+    <p>The <b>first person</b> to order a website gets it <b>100% FREE!</b> 😍</p>
+    <a href="#contact" class="btn" style="margin-top:10px;">Claim It Now</a>
+  </div>
+</div>
+
+<style>
+
+.promo-popup {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  background: linear-gradient(135deg, #4f46e5, #22d3ee);
+  color: white;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+  z-index: 2000;
+  padding: 18px 22px;
+  display: none;
+  animation: slideUp 0.7s ease forwards;
+  width: 290px;
+  max-width: 85vw;
+}
+.promo-popup h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+.promo-popup p {
+  margin: 0;
+  font-size: 15px;
+}
+.promo-popup .btn {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: white;
+  color: #111827;
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 6px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+  transition: transform 0.2s;
+}
+.promo-popup .btn:hover {
+  transform: scale(1.05);
+}
+.close-btn {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  opacity: 0.8;
+}
+.close-btn:hover { opacity: 1; }
+@keyframes slideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@media(max-width:600px){
+  .promo-popup{bottom:15px; right:15px; padding:16px;}
+}
+</style>
+
+<script>
+function showPopup() {
+  const popup = document.getElementById("promoPopup");
+  popup.style.display = "block";
+}
+function closePopup() {
+  document.getElementById("promoPopup").style.display = "none";
+}
+
+setTimeout(showPopup, 3000);
+</script>
+
 </body>
 </html>
 
