@@ -123,7 +123,7 @@
 
     
     .reveal{opacity:0; transform:translateY(18px); transition:all .6s cubic-bezier(.2,.65,.2,1)}
-    .reveal.show{opacity:1; transform:none}
+    .reveal.show{opacity:1; transform:none} 
     .pop{animation:pop .6s ease .1s both}
     @keyframes pop{from{transform:scale(.98); opacity:0} to{transform:scale(1); opacity:1}}
 
@@ -180,6 +180,17 @@
   font-weight: 600;
   margin-top: 4px;
 }
+.links a:hover{
+  color: #200bdd;
+  transition: color 0.3s ease;
+}
+.gradient-text {
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  background-clip: text;
+  -webkit-background-clip: text;     
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
 
   </style>
 </head>
@@ -196,7 +207,7 @@
       </div>
     </a>
 
-    <div class="links">
+    <div class="links" style="transition: color 0.3s ease;">
       <a href="#work">Work</a>
       <a href="#services">Services</a>
       <a href="#skillsmenu">Skills</a>
@@ -220,11 +231,15 @@
   
   <section class="section hero">
     <div>
-      <h1 class="reveal">Modern, fast, <span style="background:linear-gradient(90deg,var(--brand),var(--brand-2)); -webkit-background-clip:text; color:transparent">mobile-friendly</span> websites.</h1>
-      <p class="lead reveal" style="margin-bottom:18px">
-        I'm <b>Anthony Kremyanskiy</b>. I design and build polished websites for small businesses and creators — complete with
-        clean code, SEO, and smooth animations.
-      </p>
+  <h1 class="reveal">
+    Modern, fast,
+    <span class="gradient-text">mobile-friendly</span>
+    websites.
+  </h1>
+  <p class="lead reveal" style="margin-bottom:18px">
+    I'm <b>Anthony Kremyanskiy</b>. I design and build polished websites for small businesses and creators — complete with
+    clean code, SEO, and smooth animations.
+  </p>
       <div class="reveal" style="display:flex; gap:10px; flex-wrap:wrap">
         <a href="#contact" class="btn">Start your project</a>
         <a href="tel:+19176856830" class="btn alt" title="Call me">📞 Call: (917) 685-6830</a>
