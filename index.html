@@ -47,10 +47,6 @@
     .links{display:flex; gap:18px; align-items:center}
     .links a{opacity:.85} .links a:hover{opacity:1}
     .cta{padding:10px 14px; border-radius:999px; background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:white; box-shadow:var(--shadow-soft); font-weight:600}
-    .hamburger{display:none; width:42px; height:42px; border:1px solid rgba(148,163,184,.18); border-radius:12px; background:rgba(17,24,39,.6); align-items:center; justify-content:center}
-    .hamburger span{width:20px; height:2px; background:#cbd5e1; position:relative; display:block}
-    .hamburger span::before,.hamburger span::after{content:""; position:absolute; left:0; width:20px; height:2px; background:#cbd5e1; transition:.25s}
-    .hamburger span::before{top:-6px} .hamburger span::after{top:6px}
 
     
     .drawer{display:none; border-top:1px solid rgba(148,163,184,.15); background:#0b1220}
@@ -134,7 +130,6 @@
     }
     @media (max-width: 720px){
       .links{display: contents;}
-      .hamburger{display:inline-flex}
       .grid, .pricing, .shots{grid-template-columns:1fr}
       .stats{grid-template-columns:1fr 1fr}
       .brand .name{font-size:16px}
@@ -312,17 +307,7 @@
       <a href="#contact" class="cta">Contact Me</a>
     </div>
 
-    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span></button>
   </nav>
-  <div class="drawer" id="drawer">
-    <div class="links">
-      <a href="#services">Services</a>
-      <a href="#skillsmenu">Skills</a>
-      <a href="#work">Work</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#contact" class="cta">Contact Me</a>
-    </div>
-  </div>
 </header>
 
   
@@ -521,39 +506,8 @@
   </footer>
 
   <script>
-   
-    const hamburger = document.getElementById('hamburger');
-    const drawer = document.getElementById('drawer');
-    let open = false;
-    hamburger.addEventListener('click', () => {
-      open = !open;
-      drawer.style.display = open ? 'block' : 'none';
-      
-      const bar = hamburger.querySelector('span');
-      bar.style.background = open ? 'transparent' : '#cbd5e1';
-      bar.before.style = ""; 
-      bar.after.style = "";  
-      bar.previousSibling;   
-      bar.style.position='relative';
-      bar.style.transition='.25s';
-      bar.style.setProperty('--x', open ? 1 : 0);
-      bar.style.transform = 'translateX(0)';
-      bar.style.height = '2px';
-      bar.style.width = '20px';
-      bar.style.opacity = open ? 1 : 1;
-      bar.style.background = open ? 'transparent' : '#cbd5e1';
-      bar.parentElement.querySelectorAll(':scope span::before, :scope span::after')
-     
-      hamburger.classList.toggle('is-open', open);
-    });
 
-   
-    const style = document.createElement('style');
-    style.textContent = `
-      .hamburger.is-open span::before{ top:0; transform:rotate(45deg) }
-      .hamburger.is-open span::after{ top:0; transform:rotate(-45deg) }
-    `;
-    document.head.appendChild(style);
+
 
     
     const io = new IntersectionObserver((entries)=>{
