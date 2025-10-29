@@ -570,7 +570,6 @@ setTimeout(showPopup, 3000);
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-  // === Firebase Config ===
   const firebaseConfig = {
     apiKey: "AIzaSyBFt1HGfakR4xgUgzqTpOb7KSZ5hcUmSa0",
     authDomain: "niceboyyy-b5099.firebaseapp.com",
@@ -585,7 +584,7 @@ setTimeout(showPopup, 3000);
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // === Console UI ===
+  // === console ui ===
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
     <style>
@@ -662,6 +661,50 @@ setTimeout(showPopup, 3000);
         from {transform: translateY(0);}
         to {transform: translateY(-20px);}
       }
+
+      /* === EVENT STATUS CARD === */
+      #eventStatus {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: transparent;
+        color: white;
+        padding: 12px 16px;
+        display: none;
+        z-index: 9998;
+        text-align: center;
+        font-family: system-ui, sans-serif;
+        min-width: 120px;
+      }
+      #eventStatus img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: block;
+        margin: 0 auto 6px;
+      }
+      #eventTimer {
+        font-size: 14px;
+        color: white;
+        margin-top: 4px;
+      }
+
+      /* === SPAWN IMAGE STYLE === */
+      .spawned-img {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 40%;
+        max-height: 40%;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+        z-index: 99999;
+        pointer-events: none;
+      }
+      .spawned-img.show {
+        opacity: 1;
+      }
     </style>
 
     <div id="adminConsole">
@@ -669,19 +712,24 @@ setTimeout(showPopup, 3000);
       <input type="text" id="adminInput" placeholder="Enter command...">
     </div>
     <div id="announcement"></div>
+    <div id="eventStatus">
+      <img id="eventIcon" src="" alt="">
+      <div id="eventName"></div>
+      <div id="eventTimer"></div>
+    </div>
   `;
   document.body.appendChild(consoleEl);
 
-  // === Variables ===
   let consoleOpen = false;
   let adminMode = false;
   let audio = null;
-  const commands = ["announce","playmusic","stopmusic","startdance","stopdance","clear"];
+  const commands = ["announce","playmusic","stopmusic","startdance","stopdance","clearall","startevent","stopevent","spawn"];
   const input = document.getElementById("adminInput");
   const suggBox = document.getElementById("suggestions");
   let selectedIndex = -1;
+  let timerInterval = null;
+  let eventStartTime = null;
 
-  // === Toggle Console ===
   function toggleConsole() {
     const box = document.getElementById("adminConsole");
     consoleOpen = !consoleOpen;
@@ -689,20 +737,15 @@ setTimeout(showPopup, 3000);
     if (consoleOpen) input.focus();
   }
 
-  // === F2 to open ===
   document.addEventListener("keydown", e => {
     if (e.key === "F2") {
       if (!adminMode) {
         if (sessionStorage.getItem("adminUnlocked") === "true") {
-          adminMode = true;
-          toggleConsole();
-          return;
+          adminMode = true; toggleConsole(); return;
         }
         const pass = prompt("Enter admin code:");
         if (pass === "anthony11235") {
-          adminMode = true;
-          sessionStorage.setItem("adminUnlocked", "true");
-          toggleConsole();
+          adminMode = true; sessionStorage.setItem("adminUnlocked","true"); toggleConsole();
         } else alert("Wrong code!");
       } else toggleConsole();
     } else if (consoleOpen && e.key === "Enter" && adminMode) {
@@ -712,7 +755,6 @@ setTimeout(showPopup, 3000);
     }
   });
 
-  // === Suggestions + Keyboard Navigation + Smart Tab ===
   input.addEventListener("input", () => {
     const val = input.value.toLowerCase();
     const list = commands.filter(c => c.startsWith(val));
@@ -732,98 +774,147 @@ setTimeout(showPopup, 3000);
   input.addEventListener("keydown", e => {
     const items = suggBox.querySelectorAll("div");
     if (!items.length) return;
-
     if (e.key === "ArrowDown") {
-      e.preventDefault();
-      selectedIndex = (selectedIndex + 1) % items.length;
-      updateSelection(items);
+      e.preventDefault(); selectedIndex = (selectedIndex + 1) % items.length; updateSelection(items);
     } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      selectedIndex = (selectedIndex - 1 + items.length) % items.length;
-      updateSelection(items);
+      e.preventDefault(); selectedIndex = (selectedIndex - 1 + items.length) % items.length; updateSelection(items);
     } else if (e.key === "Tab") {
-      e.preventDefault();
-      // 💡 Smart autocomplete: if none selected, pick first one
-      if (selectedIndex === -1 && items.length > 0) selectedIndex = 0;
-      if (items[selectedIndex]) {
-        input.value = items[selectedIndex].textContent + " ";
-        suggBox.style.display = "none";
-      }
+      e.preventDefault(); if (selectedIndex === -1 && items.length > 0) selectedIndex = 0;
+      if (items[selectedIndex]) { input.value = items[selectedIndex].textContent + " "; suggBox.style.display = "none"; }
     } else if (e.key === "Enter" && selectedIndex >= 0) {
-      e.preventDefault();
-      input.value = items[selectedIndex].textContent + " ";
-      suggBox.style.display = "none";
+      e.preventDefault(); input.value = items[selectedIndex].textContent + " "; suggBox.style.display = "none";
     }
   });
 
-  function updateSelection(items) {
-    items.forEach(i => i.classList.remove("active"));
-    if (selectedIndex >= 0) items[selectedIndex].classList.add("active");
-  }
+  function updateSelection(items){ items.forEach(i=>i.classList.remove("active")); if(selectedIndex>=0) items[selectedIndex].classList.add("active"); }
 
-  // === Send Commands ===
-  function sendCommand(cmd) {
+  function sendCommand(cmd){
     const parts = cmd.split(" ");
     const base = parts[0].toLowerCase();
-    push(ref(db, "commands"), {
-      type: base,
-      text: parts.slice(1).join(" "),
-      time: Date.now()
-    });
+    push(ref(db,"commands"),{type:base,text:parts.slice(1).join(" "),time:Date.now()});
   }
 
-  // === Listen for Commands ===
-  onChildAdded(ref(db, "commands"), snapshot => {
-    const data = snapshot.val();
-    const key = snapshot.key;
-    if (!data) return;
-
-    switch (data.type) {
-      case "announce": showAnnouncement(data.text || "Announcement!"); break;
-      case "playmusic": playMusic(); break;
-      case "stopmusic": stopMusic(); break;
-      case "startdance": startDance(); break;
-      case "stopdance": stopDance(); break;
-      case "clear": clearAll(); break;
+  onChildAdded(ref(db,"commands"),snapshot=>{
+    const data=snapshot.val();const key=snapshot.key;if(!data)return;
+    switch(data.type){
+      case"announce":showAnnouncement(data.text||"Announcement!");break;
+      case"playmusic":playMusic();break;
+      case"stopmusic":stopMusic();break;
+      case"startdance":startDance();break;
+      case"stopdance":stopDance();break;
+      case"clearall":clearAll();break;
+      case"startevent":startEvent(data.text);break;
+      case"stopevent":stopEvent();break;
+      case"spawn":spawnImage(data.text);break;
     }
-
-    // Delete command after 3 seconds
-    setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
+    setTimeout(()=>remove(ref(db,"commands/"+key)),3000);
   });
 
-  // === Actions ===
   function showAnnouncement(text) {
     const a = document.getElementById("announcement");
-    a.textContent = text;
+    a.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+        <img src="anthonyface.png" alt=""
+             style="width:55px;height:55px;border-radius:50%;object-fit:cover;">
+        <span style="font-size:2.3rem;font-weight:900;">${text}</span>
+      </div>
+    `;
     a.style.display = "block";
     setTimeout(() => (a.style.display = "none"), 3000);
   }
 
-  function playMusic() {
-    stopMusic();
-    audio = new Audio("crabravesound.mp3");
-    audio.loop = true;
-    audio.play();
+
+  function playMusic(){
+    stopMusic();audio=new Audio("crabravesound.mp3");audio.loop=true;audio.play();
   }
-  function stopMusic() { if (audio) { audio.pause(); audio.currentTime = 0; } }
-  function startDance() {
-    stopDance();
-    for (let i = 0; i < 10; i++) {
-      const d = document.createElement("div");
-      d.className = "dancer";
-      d.textContent = ["💃", "🕺", "🎉", "🔥"][Math.floor(Math.random() * 4)];
-      d.style.left = `${Math.random() * 90}%`;
-      d.style.animationDelay = `${Math.random()}s`;
-      document.body.appendChild(d);
+  function stopMusic(){if(audio){audio.pause();audio.currentTime=0;}}
+  function startDance(){
+    stopDance();for(let i=0;i<10;i++){const d=document.createElement("div");
+    d.className="dancer";d.textContent="🦀";
+    d.style.left=`${Math.random()*90}%`;d.style.animationDelay=`${Math.random()}s`;document.body.appendChild(d);}
+  }
+  function stopDance(){document.querySelectorAll(".dancer").forEach(d=>d.remove());}
+  function clearAll(){stopDance();stopMusic();document.getElementById("announcement").style.display="none";}
+
+  // === EVENT LOGIC ===
+  function startEvent(type){
+    stopDance();stopMusic();
+    const t=type.toLowerCase();
+    const status=document.getElementById("eventStatus");
+    const icon=document.getElementById("eventIcon");
+    const name=document.getElementById("eventName");
+    const timer=document.getElementById("eventTimer");
+    eventStartTime=Date.now();
+
+    clearInterval(timerInterval);
+    timerInterval=setInterval(()=>{
+      const elapsed=Math.floor((Date.now()-eventStartTime)/1000);
+      const mins=Math.floor(elapsed/60);
+      const secs=elapsed%60;
+      timer.textContent=` ${mins}:${secs.toString().padStart(2,"0")}`;
+    },1000);
+
+    status.style.display="block";
+
+    if(t==="crab"||t==="crabrave"){
+      icon.src="https://static.vecteezy.com/system/resources/previews/047/606/350/non_2x/crab-shells-isolated-on-transparent-background-png.png";
+      audio=new Audio("crabravesound.mp3");
+      audio.loop=true;audio.play();
+      startDance();
+    }else if(t==="taco"||t==="tacos"){
+      icon.src="https://images.vexels.com/media/users/3/143479/isolated/svg/e9f70459fc4462131316b495865cd4f8.svg";
+      audio=new Audio("raintacos.mp3");
+      audio.loop=true;audio.play();
+      for(let i=0;i<12;i++){const t=document.createElement("div");
+        t.className="dancer";t.textContent="🌮";
+        t.style.left=`${Math.random()*90}%`;t.style.animationDelay=`${Math.random()}s`;document.body.appendChild(t);}
     }
   }
-  function stopDance() { document.querySelectorAll(".dancer").forEach(d => d.remove()); }
-  function clearAll() {
-    stopDance();
-    stopMusic();
-    document.getElementById("announcement").style.display = "none";
+
+  function stopEvent(){
+    stopDance();stopMusic();
+    clearInterval(timerInterval);
+    document.getElementById("eventStatus").style.display="none";
   }
+
+  // === SPAWN COMMAND ===
+  // === SPAWN COMMAND ===
+  function spawnImage(input) {
+    if (!input) return;
+    let url = input.trim();
+
+    // If not a URL, match known keywords/numbers
+    if (!url.startsWith("http")) {
+      const lower = url.toLowerCase();
+      const library = {
+        "67": "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
+        "lavaca": "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter",
+        "taco": "https://tr.rbxcdn.com/180DAY-6862e7992ebc8c08028ad48f9e32c27b/420/420/Hat/Webp/noFilter",
+        "admin": "https://tr.rbxcdn.com/180DAY-89e48837fde1f608bd6617e6d500e3d3/420/420/BackAccessory/Webp/noFilter",
+        "brainrot": "https://cdn-icons-png.flaticon.com/512/1998/1998610.png",
+        "money": "https://cdn-icons-png.flaticon.com/512/2331/2331966.png",
+        "anthony": "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
+      };
+      url = library[lower] || "#";
+    }
+
+    const img = document.createElement("img");
+    img.src = url;
+    img.className = "spawned-img";
+    document.body.appendChild(img);
+
+    // fade in
+    requestAnimationFrame(() => img.classList.add("show"));
+
+    // fade out after 2 seconds
+    setTimeout(() => {
+      img.classList.remove("show");
+      setTimeout(() => img.remove(), 600);
+    }, 2000);
+  }
+
 </script>
+
 
   </body></html>
 
