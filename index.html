@@ -584,7 +584,7 @@ setTimeout(showPopup, 3000);
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // === console ui ===
+ 
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
     <style>
@@ -662,7 +662,6 @@ setTimeout(showPopup, 3000);
         to {transform: translateY(-20px);}
       }
 
-      /* === EVENT STATUS CARD === */
       #eventStatus {
         position: fixed;
         bottom: 20px;
@@ -689,7 +688,6 @@ setTimeout(showPopup, 3000);
         margin-top: 4px;
       }
 
-      /* === SPAWN IMAGE STYLE === */
       .spawned-img {
         position: fixed;
         top: 50%;
@@ -723,12 +721,16 @@ setTimeout(showPopup, 3000);
   let consoleOpen = false;
   let adminMode = false;
   let audio = null;
-  const commands = ["announce","playmusic","stopmusic","startdance","stopdance","clearall","startevent","stopevent","spawn"];
+  const commands = [
+    "announce","playmusic","stopmusic","startdance","stopdance",
+    "clearall","startevent","stopevent","spawn","colorbackstart","colorbackstop"
+  ];
   const input = document.getElementById("adminInput");
   const suggBox = document.getElementById("suggestions");
   let selectedIndex = -1;
   let timerInterval = null;
   let eventStartTime = null;
+  let colorInterval = null;
 
   function toggleConsole() {
     const box = document.getElementById("adminConsole");
@@ -806,6 +808,8 @@ setTimeout(showPopup, 3000);
       case"startevent":startEvent(data.text);break;
       case"stopevent":stopEvent();break;
       case"spawn":spawnImage(data.text);break;
+      case"colorbackstart":startColorBackground();break;
+      case"colorbackstop":stopColorBackground();break;
     }
     setTimeout(()=>remove(ref(db,"commands/"+key)),3000);
   });
@@ -823,7 +827,6 @@ setTimeout(showPopup, 3000);
     setTimeout(() => (a.style.display = "none"), 3000);
   }
 
-
   function playMusic(){
     stopMusic();audio=new Audio("crabravesound.mp3");audio.loop=true;audio.play();
   }
@@ -836,16 +839,13 @@ setTimeout(showPopup, 3000);
   function stopDance(){document.querySelectorAll(".dancer").forEach(d=>d.remove());}
   function clearAll(){stopDance();stopMusic();document.getElementById("announcement").style.display="none";}
 
-  // === EVENT LOGIC ===
   function startEvent(type){
     stopDance();stopMusic();
     const t=type.toLowerCase();
     const status=document.getElementById("eventStatus");
     const icon=document.getElementById("eventIcon");
-    const name=document.getElementById("eventName");
     const timer=document.getElementById("eventTimer");
     eventStartTime=Date.now();
-
     clearInterval(timerInterval);
     timerInterval=setInterval(()=>{
       const elapsed=Math.floor((Date.now()-eventStartTime)/1000);
@@ -853,16 +853,14 @@ setTimeout(showPopup, 3000);
       const secs=elapsed%60;
       timer.textContent=` ${mins}:${secs.toString().padStart(2,"0")}`;
     },1000);
-
     status.style.display="block";
-
     if(t==="crab"||t==="crabrave"){
       icon.src="https://static.vecteezy.com/system/resources/previews/047/606/350/non_2x/crab-shells-isolated-on-transparent-background-png.png";
       audio=new Audio("crabravesound.mp3");
       audio.loop=true;audio.play();
       startDance();
     }else if(t==="taco"||t==="tacos"){
-      icon.src="raintacos.mp3";
+      icon.src="https://images.vexels.com/media/users/3/143479/isolated/svg/e9f70459fc4462131316b495865cd4f8.svg";
       audio=new Audio("raintacos.mp3");
       audio.loop=true;audio.play();
       for(let i=0;i<12;i++){const t=document.createElement("div");
@@ -877,13 +875,9 @@ setTimeout(showPopup, 3000);
     document.getElementById("eventStatus").style.display="none";
   }
 
-  // === SPAWN COMMAND ===
-  // === SPAWN COMMAND ===
   function spawnImage(input) {
     if (!input) return;
     let url = input.trim();
-
-    // If not a URL, match known keywords/numbers
     if (!url.startsWith("http")) {
       const lower = url.toLowerCase();
       const library = {
@@ -897,24 +891,34 @@ setTimeout(showPopup, 3000);
       };
       url = library[lower] || "#";
     }
-
     const img = document.createElement("img");
     img.src = url;
     img.className = "spawned-img";
     document.body.appendChild(img);
-
-    // fade in
     requestAnimationFrame(() => img.classList.add("show"));
-
-    // fade out after 2 seconds
     setTimeout(() => {
       img.classList.remove("show");
       setTimeout(() => img.remove(), 600);
     }, 2000);
   }
 
-</script>
+ 
+  const colors = ["#ff0000","#ff7f00","#ffff00","#00ff00","#0000ff","#8b00ff","#ff1493"];
+  function startColorBackground(){
+    stopColorBackground();
+    let i=0;
+    colorInterval=setInterval(()=>{
+      document.body.style.background=colors[i%colors.length];
+      i++;
+    },500);
+  }
+  function stopColorBackground(){
+    clearInterval(colorInterval);
+    colorInterval=null;
+    document.body.style.background="";
+  }
 
+</script>
 
   </body></html>
 
