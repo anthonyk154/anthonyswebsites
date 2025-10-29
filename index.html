@@ -1,11 +1,14 @@
-<html lang="en"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AnthonysWebsites — Custom Sites by Anthony Kremyanskiy</title>
-  <meta name="description" content="I build modern, fast, mobile-friendly websites for small businesses and creators. Message me to start your site today.">
-  <link rel="icon" type="image/png" href="world-globe.png">
-    <style>
-    :root{
+  <meta name="description" content="I build modern, fast, mobile-friendly websites for small businesses and creators. Message me to start your site today." />
+  <link rel="icon" type="image/png" href="world-globe.png" />
+  <style>
+    /* (everything from your CSS stays the same) */
+        :root{
       --bg:#0b1220;
       --bg-2:#0f172a;
       --card:#111827;
@@ -283,11 +286,12 @@
   .promo-popup{bottom:15px; right:15px; padding:16px;}
   }
   </style>
-
 </head>
-<body id="top">
 
-<header>
+<body id="top">
+  <!-- your full content unchanged -->
+  <!-- ... -->
+  <header>
   <nav class="nav">
     <a href="#top" class="brand">
       <div class="logo" aria-hidden="true">🌐</div>
@@ -571,20 +575,20 @@ setTimeout(showPopup, 3000);
   import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyBFt1HGfakR4xgUgzqTpOb7KSZ5hcUmSa0",
-    authDomain: "niceboyyy-b5099.firebaseapp.com",
-    databaseURL: "https://niceboyyy-b5099-default-rtdb.firebaseio.com",
-    projectId: "niceboyyy-b5099",
-    storageBucket: "niceboyyy-b5099.firebasestorage.app",
-    messagingSenderId: "308046298259",
-    appId: "1:308046298259:web:7ae58e85f824a178f76166",
-    measurementId: "G-YY3LTGVQ1K"
+  apiKey: "AIzaSyBFt1HGfakR4xgUgzqTpOb7KSZ5hcUmSa0",
+  authDomain: "niceboyyy-b5099.firebaseapp.com",
+  databaseURL: "https://niceboyyy-b5099-default-rtdb.firebaseio.com",
+  projectId: "niceboyyy-b5099",
+  storageBucket: "niceboyyy-b5099.firebasestorage.app",
+  messagingSenderId: "308046298259",
+  appId: "1:308046298259:web:7ae58e85f824a178f76166",
+  measurementId: "G-YY3LTGVQ1K"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
- 
+  // === Console UI ===
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
     <style>
@@ -650,58 +654,53 @@ setTimeout(showPopup, 3000);
         10%,80% {opacity: 1; transform: translate(-50%, -50%) scale(1);}
         100% {opacity: 0; transform: translate(-50%, -50%) scale(1.1);}
       }
-      .dancer {
-        position: fixed;
-        bottom: 50px;
-        font-size: 40px;
-        animation: dance 1s infinite alternate;
-        z-index: 9997;
+      .announce-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        max-width: 90vw;
       }
-      @keyframes dance {
-        from {transform: translateY(0);}
-        to {transform: translateY(-20px);}
+      .announce-face {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
       }
-
-      #eventStatus {
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        background: transparent;
-        color: white;
-        padding: 12px 16px;
-        display: none;
-        z-index: 9998;
-        text-align: center;
-        font-family: system-ui, sans-serif;
-        min-width: 120px;
+      .announce-text {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
       }
-      #eventStatus img {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        display: block;
-        margin: 0 auto 6px;
+      .admin-name {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #a5f3fc;
+        margin-bottom: 4px;
       }
-      #eventTimer {
-        font-size: 14px;
-        color: white;
-        margin-top: 4px;
+      .message-line {
+        font-size: 2.3rem;
+        font-weight: 900;
+        color: #fff;
+        line-height: 1.1;
       }
-
-      .spawned-img {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-width: 40%;
-        max-height: 40%;
-        opacity: 0;
-        transition: opacity 0.6s ease;
-        z-index: 99999;
-        pointer-events: none;
+      /* screen shake animation */
+      @keyframes screenShake {
+        0% { transform: translate(0, 0); }
+        10% { transform: translate(-5px, -5px); }
+        20% { transform: translate(5px, -5px); }
+        30% { transform: translate(-5px, 5px); }
+        40% { transform: translate(5px, 5px); }
+        50% { transform: translate(-3px, 0); }
+        60% { transform: translate(3px, -2px); }
+        70% { transform: translate(-2px, 3px); }
+        80% { transform: translate(2px, -3px); }
+        90% { transform: translate(1px, 1px); }
+        100% { transform: translate(0, 0); }
       }
-      .spawned-img.show {
-        opacity: 1;
+      .shake-active {
+        animation: screenShake 0.3s infinite;
       }
     </style>
 
@@ -710,26 +709,21 @@ setTimeout(showPopup, 3000);
       <input type="text" id="adminInput" placeholder="Enter command...">
     </div>
     <div id="announcement"></div>
-    <div id="eventStatus">
-      <img id="eventIcon" src="" alt="">
-      <div id="eventName"></div>
-      <div id="eventTimer"></div>
-    </div>
   `;
   document.body.appendChild(consoleEl);
 
+  // === Logic ===
   let consoleOpen = false;
   let adminMode = false;
-  let audio = null;
+  let currentAdmin = "unknown";
   const commands = [
     "announce","playmusic","stopmusic","startdance","stopdance",
-    "clearall","startevent","stopevent","spawn","colorbackstart","colorbackstop"
+    "clearall","startevent","stopevent","spawn",
+    "colorbackstart","colorbackstop",
+    "startshake","stopshake"
   ];
   const input = document.getElementById("adminInput");
   const suggBox = document.getElementById("suggestions");
-  let selectedIndex = -1;
-  let timerInterval = null;
-  let eventStartTime = null;
   let colorInterval = null;
 
   function toggleConsole() {
@@ -742,12 +736,19 @@ setTimeout(showPopup, 3000);
   document.addEventListener("keydown", e => {
     if (e.key === "F2") {
       if (!adminMode) {
-        if (sessionStorage.getItem("adminUnlocked") === "true") {
-          adminMode = true; toggleConsole(); return;
+        const saved = sessionStorage.getItem("adminUnlocked");
+        if (saved === "anthony" || saved === "mark") {
+          adminMode = true;
+          currentAdmin = saved;
+          toggleConsole();
+          return;
         }
         const pass = prompt("Enter admin code:");
-        if (pass === "anthony11235") {
-          adminMode = true; sessionStorage.setItem("adminUnlocked","true"); toggleConsole();
+        if (pass === "anthony11235" || pass === "mark11235") {
+          currentAdmin = pass === "mark11235" ? "mark" : "anthony";
+          adminMode = true;
+          sessionStorage.setItem("adminUnlocked", currentAdmin);
+          toggleConsole();
         } else alert("Wrong code!");
       } else toggleConsole();
     } else if (consoleOpen && e.key === "Enter" && adminMode) {
@@ -760,9 +761,8 @@ setTimeout(showPopup, 3000);
   input.addEventListener("input", () => {
     const val = input.value.toLowerCase();
     const list = commands.filter(c => c.startsWith(val));
-    suggBox.innerHTML = list.map((c, i) => `<div data-index="${i}">${c}</div>`).join("");
+    suggBox.innerHTML = list.map(c => `<div>${c}</div>`).join("");
     suggBox.style.display = list.length ? "flex" : "none";
-    selectedIndex = -1;
   });
 
   suggBox.addEventListener("click", e => {
@@ -773,151 +773,87 @@ setTimeout(showPopup, 3000);
     }
   });
 
+  // === TAB key auto fills first suggestion ===
   input.addEventListener("keydown", e => {
-    const items = suggBox.querySelectorAll("div");
-    if (!items.length) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault(); selectedIndex = (selectedIndex + 1) % items.length; updateSelection(items);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault(); selectedIndex = (selectedIndex - 1 + items.length) % items.length; updateSelection(items);
-    } else if (e.key === "Tab") {
-      e.preventDefault(); if (selectedIndex === -1 && items.length > 0) selectedIndex = 0;
-      if (items[selectedIndex]) { input.value = items[selectedIndex].textContent + " "; suggBox.style.display = "none"; }
-    } else if (e.key === "Enter" && selectedIndex >= 0) {
-      e.preventDefault(); input.value = items[selectedIndex].textContent + " "; suggBox.style.display = "none";
+    if (e.key === "Tab") {
+      const first = suggBox.querySelector("div");
+      if (first) {
+        e.preventDefault();
+        input.value = first.textContent + " ";
+        suggBox.style.display = "none";
+      }
     }
   });
 
-  function updateSelection(items){ items.forEach(i=>i.classList.remove("active")); if(selectedIndex>=0) items[selectedIndex].classList.add("active"); }
-
-  function sendCommand(cmd){
+  function sendCommand(cmd) {
     const parts = cmd.split(" ");
     const base = parts[0].toLowerCase();
-    push(ref(db,"commands"),{type:base,text:parts.slice(1).join(" "),time:Date.now()});
+    push(ref(db, "commands"), {
+      type: base,
+      text: parts.slice(1).join(" "),
+      admin: currentAdmin,
+      time: Date.now()
+    });
   }
 
-  onChildAdded(ref(db,"commands"),snapshot=>{
-    const data=snapshot.val();const key=snapshot.key;if(!data)return;
-    switch(data.type){
-      case"announce":showAnnouncement(data.text||"Announcement!");break;
-      case"playmusic":playMusic();break;
-      case"stopmusic":stopMusic();break;
-      case"startdance":startDance();break;
-      case"stopdance":stopDance();break;
-      case"clearall":clearAll();break;
-      case"startevent":startEvent(data.text);break;
-      case"stopevent":stopEvent();break;
-      case"spawn":spawnImage(data.text);break;
-      case"colorbackstart":startColorBackground();break;
-      case"colorbackstop":stopColorBackground();break;
+  onChildAdded(ref(db, "commands"), snapshot => {
+    const data = snapshot.val();
+    const key = snapshot.key;
+    if (!data) return;
+
+    switch (data.type) {
+      case "announce": showAnnouncement(data.text, data.admin); break;
+      case "colorbackstart": startColorBackground(); break;
+      case "colorbackstop": stopColorBackground(); break;
+      case "startshake": startScreenShake(); break;
+      case "stopshake": stopScreenShake(); break;
     }
-    setTimeout(()=>remove(ref(db,"commands/"+key)),3000);
+    setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
 
-  function showAnnouncement(text) {
+  // === Announcement ===
+  function showAnnouncement(text, admin = "anthony") {
     const a = document.getElementById("announcement");
+    const face = admin === "mark" ? "markface.png" : "anthonyface.png";
+    const name = admin === "mark" ? "Mark" : "Anthony";
     a.innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
-        <img src="anthonyface.png" alt=""
-             style="width:55px;height:55px;border-radius:50%;object-fit:cover;">
-        <span style="font-size:2.3rem;font-weight:900;">${text}</span>
+      <div class="announce-box">
+        <img src="${face}" alt="${name}" class="announce-face">
+        <div class="announce-text">
+          <span class="admin-name">— ${name} —</span>
+          <span class="message-line">${text}</span>
+        </div>
       </div>
     `;
     a.style.display = "block";
     setTimeout(() => (a.style.display = "none"), 3000);
   }
 
-  function playMusic(){
-    stopMusic();audio=new Audio("crabravesound.mp3");audio.loop=true;audio.play();
-  }
-  function stopMusic(){if(audio){audio.pause();audio.currentTime=0;}}
-  function startDance(){
-    stopDance();for(let i=0;i<10;i++){const d=document.createElement("div");
-    d.className="dancer";d.textContent="🦀";
-    d.style.left=`${Math.random()*90}%`;d.style.animationDelay=`${Math.random()}s`;document.body.appendChild(d);}
-  }
-  function stopDance(){document.querySelectorAll(".dancer").forEach(d=>d.remove());}
-  function clearAll(){stopDance();stopMusic();document.getElementById("announcement").style.display="none";}
-
-  function startEvent(type){
-    stopDance();stopMusic();
-    const t=type.toLowerCase();
-    const status=document.getElementById("eventStatus");
-    const icon=document.getElementById("eventIcon");
-    const timer=document.getElementById("eventTimer");
-    eventStartTime=Date.now();
-    clearInterval(timerInterval);
-    timerInterval=setInterval(()=>{
-      const elapsed=Math.floor((Date.now()-eventStartTime)/1000);
-      const mins=Math.floor(elapsed/60);
-      const secs=elapsed%60;
-      timer.textContent=` ${mins}:${secs.toString().padStart(2,"0")}`;
-    },1000);
-    status.style.display="block";
-    if(t==="crab"||t==="crabrave"){
-      icon.src="https://static.vecteezy.com/system/resources/previews/047/606/350/non_2x/crab-shells-isolated-on-transparent-background-png.png";
-      audio=new Audio("crabravesound.mp3");
-      audio.loop=true;audio.play();
-      startDance();
-    }else if(t==="taco"||t==="tacos"){
-      icon.src="https://images.vexels.com/media/users/3/143479/isolated/svg/e9f70459fc4462131316b495865cd4f8.svg";
-      audio=new Audio("raintacos.mp3");
-      audio.loop=true;audio.play();
-      for(let i=0;i<12;i++){const t=document.createElement("div");
-        t.className="dancer";t.textContent="🌮";
-        t.style.left=`${Math.random()*90}%`;t.style.animationDelay=`${Math.random()}s`;document.body.appendChild(t);}
-    }
-  }
-
-  function stopEvent(){
-    stopDance();stopMusic();
-    clearInterval(timerInterval);
-    document.getElementById("eventStatus").style.display="none";
-  }
-
-  function spawnImage(input) {
-    if (!input) return;
-    let url = input.trim();
-    if (!url.startsWith("http")) {
-      const lower = url.toLowerCase();
-      const library = {
-        "67": "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
-        "lavaca": "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter",
-        "taco": "https://tr.rbxcdn.com/180DAY-6862e7992ebc8c08028ad48f9e32c27b/420/420/Hat/Webp/noFilter",
-        "admin": "https://tr.rbxcdn.com/180DAY-89e48837fde1f608bd6617e6d500e3d3/420/420/BackAccessory/Webp/noFilter",
-        "brainrot": "https://cdn-icons-png.flaticon.com/512/1998/1998610.png",
-        "money": "https://cdn-icons-png.flaticon.com/512/2331/2331966.png",
-        "anthony": "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
-      };
-      url = library[lower] || "#";
-    }
-    const img = document.createElement("img");
-    img.src = url;
-    img.className = "spawned-img";
-    document.body.appendChild(img);
-    requestAnimationFrame(() => img.classList.add("show"));
-    setTimeout(() => {
-      img.classList.remove("show");
-      setTimeout(() => img.remove(), 600);
-    }, 2000);
-  }
-
- 
+  // === Background Color Cycle ===
   const colors = ["#ff0000","#ff7f00","#ffff00","#00ff00","#0000ff","#8b00ff","#ff1493"];
-  function startColorBackground(){
+  function startColorBackground() {
     stopColorBackground();
-    let i=0;
-    colorInterval=setInterval(()=>{
-      document.body.style.background=colors[i%colors.length];
+    let i = 0;
+    colorInterval = setInterval(() => {
+      document.body.style.background = colors[i % colors.length];
       i++;
-    },500);
+    }, 500);
   }
-  function stopColorBackground(){
+  function stopColorBackground() {
     clearInterval(colorInterval);
-    colorInterval=null;
-    document.body.style.background="";
+    colorInterval = null;
+    document.body.style.background = "";
   }
 
+  // === Screen Shake ===
+  function startScreenShake() {
+    document.body.classList.add("shake-active");
+  }
+  function stopScreenShake() {
+    document.body.classList.remove("shake-active");
+  }
 </script>
 
-  </body></html>
+
+</body>
+</html>
