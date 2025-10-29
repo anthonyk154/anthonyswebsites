@@ -814,13 +814,18 @@ setTimeout(showPopup, 3000);
     setTimeout(()=>remove(ref(db,"commands/"+key)),3000);
   });
 
-  function showAnnouncement(text) {
+  // === Announcement ===
+  function showAnnouncement(text, admin = "anthony") {
     const a = document.getElementById("announcement");
+    const face = admin === "mark" ? "markface.png" : "anthonyface.png";
+    const name = admin === "mark" ? "Mark" : "Anthony";
     a.innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
-        <img src="anthonyface.png" alt=""
-             style="width:55px;height:55px;border-radius:50%;object-fit:cover;">
-        <span style="font-size:2.3rem;font-weight:900;">${text}</span>
+      <div class="announce-box">
+        <img src="${face}" alt="${name}" class="announce-face">
+        <div class="announce-text">
+          <span class="admin-name">— ${name} —</span>
+          <span class="message-line">${text}</span>
+        </div>
       </div>
     `;
     a.style.display = "block";
@@ -921,4 +926,5 @@ setTimeout(showPopup, 3000);
 </script>
 
   </body></html>
+
 
