@@ -586,4 +586,265 @@ setTimeout(showPopup, 3000);
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3270506687391065"
      crossorigin="anonymous"></script>
+<!-- 🔥 Firebase Admin Console -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+  // === Firebase config ===
+  const firebaseConfig = {
+    apiKey: "AIzaSyBFt1HGfakR4xgUgzqTpOb7KSZ5hcUmSa0",
+    authDomain: "niceboyyy-b5099.firebaseapp.com",
+    databaseURL: "https://niceboyyy-b5099-default-rtdb.firebaseio.com",
+    projectId: "niceboyyy-b5099",
+    storageBucket: "niceboyyy-b5099.firebasestorage.app",
+    messagingSenderId: "308046298259",
+    appId: "1:308046298259:web:7ae58e85f824a178f76166",
+    measurementId: "G-YY3LTGVQ1K"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // === UI Setup ===
+  const consoleEl = document.createElement("div");
+  consoleEl.innerHTML = `
+    <style>
+      #adminConsole {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 500px;
+        max-width: 90%;
+        background: rgba(17,24,39,0.95);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 10px;
+        box-shadow: 0 6px 25px rgba(0,0,0,0.5);
+        color: #00eaff;
+        font-family: monospace;
+        padding: 12px;
+        display: none;
+        z-index: 9999;
+      }
+      #adminConsole input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #00eaff;
+        font-size: 15px;
+      }
+      #suggestions {
+        position: absolute;
+        bottom: 42px;
+        left: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.85);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 8px 8px 0 0;
+        display: none;
+        flex-direction: column;
+      }
+      #suggestions div {
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+      #suggestions div:hover,
+      #suggestions .active {
+        background: rgba(34,211,238,0.25);
+        outline: 1px solid #22d3ee;
+      }
+      #announcement {
+        position: fixed;
+        top: 10%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 900;
+        display: none;
+        z-index: 9998;
+        animation: fadeInOut 3s ease;
+      }
+      @keyframes fadeInOut {
+        0% {opacity: 0; transform: translate(-50%, -50%) scale(0.9);}
+        10%,80% {opacity: 1; transform: translate(-50%, -50%) scale(1);}
+        100% {opacity: 0; transform: translate(-50%, -50%) scale(1.1);}
+      }
+      .dancer {
+        position: fixed;
+        bottom: 50px;
+        font-size: 40px;
+        animation: dance 1s infinite alternate;
+        z-index: 9997;
+      }
+      @keyframes dance {
+        from {transform: translateY(0);}
+        to {transform: translateY(-20px);}
+      }
+    </style>
+
+    <div id="adminConsole">
+      <div id="suggestions"></div>
+      <input type="text" id="adminInput" placeholder="Enter command...">
+    </div>
+    <div id="announcement"></div>
+  `;
+  document.body.appendChild(consoleEl);
+
+  // === Variables ===
+  let consoleOpen = false;
+  let adminMode = false;
+  let audio = null;
+  const commands = ["announce","playmusic","stopmusic","startdance","stopdance","clear"];
+  const input = document.getElementById("adminInput");
+  const suggBox = document.getElementById("suggestions");
+  let selectedIndex = -1;
+
+  // === Toggle Console ===
+  function toggleConsole() {
+    const box = document.getElementById("adminConsole");
+    consoleOpen = !consoleOpen;
+    box.style.display = consoleOpen ? "block" : "none";
+    if (consoleOpen) input.focus();
+  }
+
+  // === Keyboard trigger (F2) ===
+  document.addEventListener("keydown", e => {
+    if (e.key === "F2") {
+      if (!adminMode) {
+        // Check if already unlocked in this session
+        if (sessionStorage.getItem("adminUnlocked") === "true") {
+          adminMode = true;
+          toggleConsole();
+          return;
+        }
+        // Prompt for code only once per refresh
+        const pass = prompt("Enter admin code:");
+        if (pass === "anthony11235") {
+          adminMode = true;
+          sessionStorage.setItem("adminUnlocked", "true");
+          toggleConsole();
+        } else {
+          alert("Wrong code!");
+        }
+      } else {
+        toggleConsole();
+      }
+    } else if (consoleOpen && e.key === "Enter" && adminMode) {
+      sendCommand(input.value.trim());
+      input.value = "";
+      suggBox.style.display = "none";
+    }
+  });
+
+  // === Suggestions + Keyboard navigation ===
+  input.addEventListener("input", () => {
+    const val = input.value.toLowerCase();
+    const list = commands.filter(c => c.startsWith(val));
+    suggBox.innerHTML = list.map((c, i) => `<div data-index="${i}">${c}</div>`).join("");
+    suggBox.style.display = list.length ? "flex" : "none";
+    selectedIndex = -1;
+  });
+
+  suggBox.addEventListener("click", e => {
+    if (e.target.tagName === "DIV") {
+      input.value = e.target.textContent + " ";
+      suggBox.style.display = "none";
+      input.focus();
+    }
+  });
+
+  input.addEventListener("keydown", e => {
+    const items = suggBox.querySelectorAll("div");
+    if (!items.length) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      selectedIndex = (selectedIndex + 1) % items.length;
+      updateSelection(items);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+      updateSelection(items);
+    } else if (e.key === "Tab" || e.key === "Enter") {
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        e.preventDefault();
+        input.value = items[selectedIndex].textContent + " ";
+        suggBox.style.display = "none";
+      }
+    }
+  });
+
+  function updateSelection(items) {
+    items.forEach(i => i.classList.remove("active"));
+    if (selectedIndex >= 0) items[selectedIndex].classList.add("active");
+  }
+
+  // === Send Commands ===
+  function sendCommand(cmd) {
+    const parts = cmd.split(" ");
+    const base = parts[0].toLowerCase();
+    push(ref(db, "commands"), {
+      type: base,
+      text: parts.slice(1).join(" "),
+      time: Date.now()
+    });
+  }
+
+  // === Listen for Commands ===
+  onChildAdded(ref(db, "commands"), snapshot => {
+    const data = snapshot.val();
+    const key = snapshot.key;
+    if (!data) return;
+
+    switch (data.type) {
+      case "announce": showAnnouncement(data.text || "Announcement!"); break;
+      case "playmusic": playMusic(); break;
+      case "stopmusic": stopMusic(); break;
+      case "startdance": startDance(); break;
+      case "stopdance": stopDance(); break;
+      case "clear": clearAll(); break;
+    }
+
+    // 💥 Auto-delete command after 3s so it won't repeat on refresh
+    setTimeout(() => {
+      remove(ref(db, "commands/" + key));
+    }, 3000);
+  });
+
+  // === Command Handlers ===
+  function showAnnouncement(text) {
+    const a = document.getElementById("announcement");
+    a.textContent = text;
+    a.style.display = "block";
+    setTimeout(() => { a.style.display = "none"; }, 3000);
+  }
+  function playMusic() {
+    stopMusic();
+    audio = new Audio("crabravesound.mp3");
+    audio.loop = true;
+    audio.play();
+  }
+  function stopMusic() { if (audio) { audio.pause(); audio.currentTime = 0; } }
+  function startDance() {
+    stopDance();
+    for (let i = 0; i < 10; i++) {
+      const d = document.createElement("div");
+      d.className = "dancer";
+      d.textContent = ["💃","🕺","🎉","🔥"][Math.floor(Math.random() * 4)];
+      d.style.left = `${Math.random() * 90}%`;
+      d.style.animationDelay = `${Math.random()}s`;
+      document.body.appendChild(d);
+    }
+  }
+  function stopDance() { document.querySelectorAll(".dancer").forEach(d => d.remove()); }
+  function clearAll() {
+    stopDance();
+    stopMusic();
+    document.getElementById("announcement").style.display = "none";
+  }
+</script>
+
   </body></html>
