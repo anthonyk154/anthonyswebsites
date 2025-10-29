@@ -586,12 +586,11 @@ setTimeout(showPopup, 3000);
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3270506687391065"
      crossorigin="anonymous"></script>
-<!-- 🔥 Firebase Admin Console -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-  // === Firebase config ===
+  // === Firebase Config ===
   const firebaseConfig = {
     apiKey: "AIzaSyBFt1HGfakR4xgUgzqTpOb7KSZ5hcUmSa0",
     authDomain: "niceboyyy-b5099.firebaseapp.com",
@@ -606,7 +605,7 @@ setTimeout(showPopup, 3000);
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // === UI Setup ===
+  // === Console UI ===
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
     <style>
@@ -710,28 +709,22 @@ setTimeout(showPopup, 3000);
     if (consoleOpen) input.focus();
   }
 
-  // === Keyboard trigger (F2) ===
+  // === F2 to open ===
   document.addEventListener("keydown", e => {
     if (e.key === "F2") {
       if (!adminMode) {
-        // Check if already unlocked in this session
         if (sessionStorage.getItem("adminUnlocked") === "true") {
           adminMode = true;
           toggleConsole();
           return;
         }
-        // Prompt for code only once per refresh
         const pass = prompt("Enter admin code:");
         if (pass === "anthony11235") {
           adminMode = true;
           sessionStorage.setItem("adminUnlocked", "true");
           toggleConsole();
-        } else {
-          alert("Wrong code!");
-        }
-      } else {
-        toggleConsole();
-      }
+        } else alert("Wrong code!");
+      } else toggleConsole();
     } else if (consoleOpen && e.key === "Enter" && adminMode) {
       sendCommand(input.value.trim());
       input.value = "";
@@ -739,7 +732,7 @@ setTimeout(showPopup, 3000);
     }
   });
 
-  // === Suggestions + Keyboard navigation ===
+  // === Suggestions + Keyboard Navigation + Smart Tab ===
   input.addEventListener("input", () => {
     const val = input.value.toLowerCase();
     const list = commands.filter(c => c.startsWith(val));
@@ -768,12 +761,18 @@ setTimeout(showPopup, 3000);
       e.preventDefault();
       selectedIndex = (selectedIndex - 1 + items.length) % items.length;
       updateSelection(items);
-    } else if (e.key === "Tab" || e.key === "Enter") {
-      if (selectedIndex >= 0 && items[selectedIndex]) {
-        e.preventDefault();
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      // 💡 Smart autocomplete: if none selected, pick first one
+      if (selectedIndex === -1 && items.length > 0) selectedIndex = 0;
+      if (items[selectedIndex]) {
         input.value = items[selectedIndex].textContent + " ";
         suggBox.style.display = "none";
       }
+    } else if (e.key === "Enter" && selectedIndex >= 0) {
+      e.preventDefault();
+      input.value = items[selectedIndex].textContent + " ";
+      suggBox.style.display = "none";
     }
   });
 
@@ -808,19 +807,18 @@ setTimeout(showPopup, 3000);
       case "clear": clearAll(); break;
     }
 
-    // 💥 Auto-delete command after 3s so it won't repeat on refresh
-    setTimeout(() => {
-      remove(ref(db, "commands/" + key));
-    }, 3000);
+    // Delete command after 3 seconds
+    setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
 
-  // === Command Handlers ===
+  // === Actions ===
   function showAnnouncement(text) {
     const a = document.getElementById("announcement");
     a.textContent = text;
     a.style.display = "block";
-    setTimeout(() => { a.style.display = "none"; }, 3000);
+    setTimeout(() => (a.style.display = "none"), 3000);
   }
+
   function playMusic() {
     stopMusic();
     audio = new Audio("crabravesound.mp3");
@@ -833,7 +831,7 @@ setTimeout(showPopup, 3000);
     for (let i = 0; i < 10; i++) {
       const d = document.createElement("div");
       d.className = "dancer";
-      d.textContent = ["💃","🕺","🎉","🔥"][Math.floor(Math.random() * 4)];
+      d.textContent = ["💃", "🕺", "🎉", "🔥"][Math.floor(Math.random() * 4)];
       d.style.left = `${Math.random() * 90}%`;
       d.style.animationDelay = `${Math.random()}s`;
       document.body.appendChild(d);
