@@ -731,6 +731,36 @@ setTimeout(showPopup, 3000);
         0% { transform: translateY(-10vh); opacity: 1; }
         100% { transform: translateY(110vh); opacity: 0; }
       }
+/* === PARTY LASER BEAMS === */
+.laser {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: 10px;
+  height: 120vh;
+  background: linear-gradient(180deg,
+    hsl(var(--hue), 100%, 30%),
+    rgba(255,255,255,0.1)
+  );
+  transform-origin: top center;
+  opacity: 0.9;
+  filter: blur(1px);
+  pointer-events: none;
+  animation: spinLaser 2.5s linear infinite;
+  mix-blend-mode: screen;
+  z-index: 99999;
+  box-shadow:
+    0 0 30px rgba(255,255,255,0.4),
+    0 0 60px hsla(var(--hue),100%,60%,0.5),
+    0 0 120px hsla(var(--hue),100%,60%,0.4);
+}
+
+@keyframes spinLaser {
+  0% { transform: rotate(0deg) scaleY(1.2); }
+  100% { transform: rotate(360deg) scaleY(1.2); }
+}
+
+
     </style>
 
     <div id="adminConsole">
@@ -744,10 +774,12 @@ setTimeout(showPopup, 3000);
   let consoleOpen = false;
   let adminMode = false;
   let currentAdmin = "unknown";
-  const commands = [
-    "announce","playmusic","stopmusic","startevent","stopevent",
-    "colorbackstart","colorbackstop","spawn","clearchat"
-  ];
+const commands = [
+  "announce","playmusic","stopmusic","startevent","stopevent",
+  "colorbackstart","colorbackstop","spawn","clearchat",
+  "startrainbow","stoprainbow"
+];
+
   const input = document.getElementById("adminInput");
   const suggBox = document.getElementById("suggestions");
   let colorInterval = null;
@@ -834,6 +866,9 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
       case "spawn": spawnImage(data.text); break;
       case "clearchat":
       case "clearcheat": clearChat(); break;
+      case "startrainbow": startRainbow(); break;
+      case "stoprainbow": stopRainbow(); break;
+
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
@@ -1055,6 +1090,31 @@ function startEvent(type) {
     stopMusic();
     document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm").forEach(e => e.remove());
   }
+  // === RAINBOW LASER COMMAND ===
+// === PARTY LASER MODE ===
+let laserInterval = null;
+
+function startRainbow() {
+  stopRainbow();
+  laserInterval = setInterval(() => {
+    const beam = document.createElement("div");
+    beam.className = "laser";
+    const hue = Math.floor(Math.random() * 360);
+    beam.style.setProperty("--hue", hue);
+    beam.style.left = Math.random() * 100 + "vw";
+    beam.style.transform = `rotate(${Math.random() * 360}deg) scaleY(${1 + Math.random()})`;
+    beam.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+    document.body.appendChild(beam);
+    setTimeout(() => beam.remove(), 2500);
+  }, 100);
+}
+
+function stopRainbow() {
+  clearInterval(laserInterval);
+  laserInterval = null;
+  document.querySelectorAll(".laser").forEach(el => el.remove());
+}
+
 
   function spawnImage(input) {
     if (!input) return;
@@ -1213,7 +1273,7 @@ menu.innerHTML = `
 document.body.appendChild(menu);
 
 // Fill out lists
-const adminCmds = ["announce","playmusic","stopmusic","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent"];
+const adminCmds = ["announce","playmusic","stopmusic","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "startrainbow", "stoprainbow"];
 const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark"];
 
