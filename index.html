@@ -706,11 +706,11 @@ setTimeout(showPopup, 3000);
         animation: fall 3s linear infinite;
         z-index: 9998;
       }
-      .drill, .dstop{
+      .drill, .dstop, .crab, .taco {
          position: fixed;
         font-size: 2.5rem;
         animation: reverse 3s linear infinite;
-        z-index: 9998;
+        z-index: 5000;
        max-width: 100%;
       }
       .spawned-img {
@@ -747,7 +747,7 @@ setTimeout(showPopup, 3000);
   let currentAdmin = "unknown";
   const commands = [
     "announce","playmusic","stopmusic","startevent","stopevent",
-    "colorbackstart","colorbackstop","startshake","stopshake","spawn"
+    "colorbackstart","colorbackstop","spawn","clearchat","clearcheat"
   ];
   const input = document.getElementById("adminInput");
   const suggBox = document.getElementById("suggestions");
@@ -826,32 +826,67 @@ setTimeout(showPopup, 3000);
       case "announce": showAnnouncement(data.text, data.admin); break;
       case "colorbackstart": startColorBackground(); break;
       case "colorbackstop": stopColorBackground(); break;
-      case "startshake": startScreenShake(); break;
-      case "stopshake": stopScreenShake(); break;
       case "startevent": startEvent(data.text); break;
       case "stopevent": stopEvent(); break;
       case "playmusic": playMusic(data.text); break;
       case "stopmusic": stopMusic(); break;
       case "spawn": spawnImage(data.text); break;
+      case "clearchat":
+      case "clearcheat": clearChat(); break;
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
 
   function showAnnouncement(text, admin = "anthony") {
-    const a = document.getElementById("announcement");
+    const containerId = "announcementContainer";
+    let container = document.getElementById(containerId);
+    if (!container) {
+      container = document.createElement("div");
+      container.id = containerId;
+      container.style.position = "fixed";
+      container.style.top = "10%";
+      container.style.left = "50%";
+      container.style.transform = "translateX(-50%)";
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.alignItems = "center";
+      container.style.gap = "12px";
+      container.style.zIndex = "9998";
+      document.body.appendChild(container);
+    }
+
     const face = admin === "mark" ? "markface.png" : "anthonyface.png";
-    const name = admin === "mark" ? "Mark" : "Anthony";
-    a.innerHTML = `
-      <div class="announce-box">
-        <img src="${face}" alt="${name}" class="announce-face">
-        <div class="announce-text">
-          <span class="admin-name">— ${name} —</span>
-          <span class="message-line">${text}</span>
-        </div>
+    const name = admin === "mark" ? "MarkTheDev" : "AnthonyOwner";
+
+    const msg = document.createElement("div");
+    msg.className = "announce-box";
+    msg.style.display = "flex";
+    msg.style.alignItems = "center";
+    msg.style.justifyContent = "center";
+    msg.style.gap = "14px";
+    msg.style.padding = "12px 18px";
+    msg.style.animation = "fadeInOut 3s ease";
+    msg.style.opacity = "0";
+    msg.style.transition = "opacity 0.4s ease";
+    msg.style.color = "white";
+    msg.style.maxWidth = "90vw";
+    msg.style.fontFamily = "monospace";
+
+    msg.innerHTML = `
+      <img src="${face}" alt="${name}" class="announce-face" 
+        style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
+      <div class="announce-text">
+        <span class="admin-name" style="font-size:1rem;color:#a5f3fc;">— ${name} —</span>
+        <span class="message-line" style="font-size:2.1rem;font-weight:900;color:#fff;line-height:1.1;">${text}</span>
       </div>
     `;
-    a.style.display = "block";
-    setTimeout(() => (a.style.display = "none"), 3000);
+
+    container.appendChild(msg);
+    requestAnimationFrame(() => (msg.style.opacity = "1"));
+    setTimeout(() => {
+      msg.style.opacity = "0";
+      setTimeout(() => msg.remove(), 600);
+    }, 3000);
   }
 
   const colors = ["#ff0000","#ff7f00","#ffff00","#00ff00","#0000ff","#8b00ff","#ff1493"];
@@ -869,13 +904,6 @@ setTimeout(showPopup, 3000);
     document.body.style.background = "";
   }
 
-  function startScreenShake() {
-    document.body.classList.add("shake-active");
-  }
-  function stopScreenShake() {
-    document.body.classList.remove("shake-active");
-  }
-
   function playMusic(type = "") {
     stopMusic();
     const t = type.toLowerCase();
@@ -885,7 +913,7 @@ setTimeout(showPopup, 3000);
     else if (t.includes("drill")) src = "drill.mp3";
     else if (t.includes("crab")) src = "crabravesound.mp3";
     else if (t.includes("dstop")) src = "dstop.mp3";
-
+    else if (t.includes("russain")) src = "russain.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -898,80 +926,96 @@ setTimeout(showPopup, 3000);
       audio.currentTime = 0;
     }
   }
+function startEvent(type) {
+  stopEvent();
+  const t = (type || "").toLowerCase();
 
-  function startEvent(type) {
-    stopEvent();
-    const t = (type || "").toLowerCase();
-
-    if (t.includes("taco")) {
-      playMusic("taco");
-      eventInterval = setInterval(() => {
-        const taco = document.createElement("div");
-        taco.textContent = "🌮";
-        taco.className = "taco";
-        taco.style.left = Math.random() * 100 + "vw";
-        taco.style.bottom = Math.random() * 50 + "vh";
-        document.body.appendChild(taco);
-        setTimeout(() => taco.remove(), 3000);
-      }, 150);
-    }
-
-    if (t.includes("crab")) {
-      playMusic("crab");
-      eventInterval = setInterval(() => {
-        const crab = document.createElement("div");
-        crab.textContent = "🦀";
-        crab.className = "crab";
-        crab.style.left = Math.random() * 100 + "vw";
-        crab.style.bottom = Math.random() * 50 + "vh";
-        document.body.appendChild(crab);
-        setTimeout(() => crab.remove(), 4000);
-      }, 200);
-    }
-
-    if (t.includes("brazil")) {
-      playMusic("brazil");
-      eventInterval = setInterval(() => {
-        const brazil = document.createElement("img");
-        brazil.src = "https://upload.wikimedia.org/wikipedia/en/0/05/Flag_of_Brazil.svg";
-        brazil.className = "brazil";
-        brazil.style.position = "fixed";
-        brazil.style.width = (40 + Math.random() * 40) + "px";
-        brazil.style.left = Math.random() * 100 + "vw";
-        brazil.style.bottom = Math.random() * 50 + "vh";
-        document.body.appendChild(brazil);
-        setTimeout(() => brazil.remove(), 4000);
-      }, 200);
-    }
-        if (t.includes("drill")) {
-      playMusic("drill");
-      eventInterval = setInterval(() => {
-        const drill = document.createElement("img");
-        drill.src = "https://www.pngmart.com/files/24/Brr-Brr-Patapim-PNG-Image.png";
-        drill.className = "drill";
-        drill.style.position = "fixed";
-        drill.style.width = (100 + Math.random() * 40) + "px";
-        drill.style.left = Math.random() * 100 + "vw";
-        drill.style.bottom = Math.random() * 50 + "vh";
-        document.body.appendChild(drill);
-        setTimeout(() => drill.remove(), 4000);
-      }, 200);
-    }
-            if (t.includes("dstop")) {
-      playMusic("dstop");
-      eventInterval = setInterval(() => {
-        const dstop = document.createElement("img");
-        dstop.src = "dstopface.png";
-        dstop.className = "dstop";
-        dstop.style.position = "fixed";
-        dstop.style.width = (100 + Math.random() * 40) + "px";
-        dstop.style.left = Math.random() * 100 + "vw";
-        dstop.style.bottom = Math.random() * 50 + "vh";
-        document.body.appendChild(dstop);
-        setTimeout(() => dstop.remove(), 4000);
-      }, 200);
-    }
+  if (t.includes("taco")) {
+    playMusic("taco");
+    eventInterval = setInterval(() => {
+      const taco = document.createElement("div");
+      taco.textContent = "🌮";
+      taco.className = "taco";
+      taco.style.left = Math.random() * 100 + "vw";
+      taco.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(taco);
+      setTimeout(() => taco.remove(), 3000);
+    }, 150);
   }
+
+  if (t.includes("crab")) {
+    playMusic("crab");
+    eventInterval = setInterval(() => {
+      const crab = document.createElement("div");
+      crab.textContent = "🦀";
+      crab.className = "crab";
+      crab.style.left = Math.random() * 100 + "vw";
+      crab.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(crab);
+      setTimeout(() => crab.remove(), 4000);
+    }, 200);
+  }
+
+  if (t.includes("brazil")) {
+    playMusic("brazil");
+    eventInterval = setInterval(() => {
+      const brazil = document.createElement("img");
+      brazil.src = "https://upload.wikimedia.org/wikipedia/en/0/05/Flag_of_Brazil.svg";
+      brazil.className = "brazil";
+      brazil.style.position = "fixed";
+      brazil.style.width = (40 + Math.random() * 40) + "px";
+      brazil.style.left = Math.random() * 100 + "vw";
+      brazil.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(brazil);
+      setTimeout(() => brazil.remove(), 4000);
+    }, 200);
+  }
+
+  if (t.includes("drill")) {
+    playMusic("drill");
+    eventInterval = setInterval(() => {
+      const drill = document.createElement("img");
+      drill.src = "https://www.pngmart.com/files/24/Brr-Brr-Patapim-PNG-Image.png";
+      drill.className = "drill";
+      drill.style.position = "fixed";
+      drill.style.width = (100 + Math.random() * 40) + "px";
+      drill.style.left = Math.random() * 100 + "vw";
+      drill.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(drill);
+      setTimeout(() => drill.remove(), 4000);
+    }, 200);
+  }
+
+  if (t.includes("dstop")) {
+    playMusic("dstop");
+    eventInterval = setInterval(() => {
+      const dstop = document.createElement("img");
+      dstop.src = "dstopface.png";
+      dstop.className = "dstop";
+      dstop.style.position = "fixed";
+      dstop.style.width = (100 + Math.random() * 40) + "px";
+      dstop.style.left = Math.random() * 100 + "vw";
+      dstop.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(dstop);
+      setTimeout(() => dstop.remove(), 4000);
+    }, 200);
+  }
+    if (t.includes("russain")) {
+    playMusic("russain");
+    eventInterval = setInterval(() => {
+      const russain = document.createElement("img");
+      russain.src = "https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg";
+      russain.className = "russain";
+      russain.style.position = "fixed";
+      russain.style.width = (100 + Math.random() * 40) + "px";
+      russain.style.left = Math.random() * 100 + "vw";
+      russain.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(russain);
+      setTimeout(() => russain.remove(), 4000);
+    }, 200);
+  }
+}
+
 
   function stopEvent() {
     clearInterval(eventInterval);
@@ -979,7 +1023,6 @@ setTimeout(showPopup, 3000);
     document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop").forEach(e => e.remove());
   }
 
-  // === SPAWN COMMAND ===
   function spawnImage(input) {
     if (!input) return;
     let url = input.trim();
@@ -988,19 +1031,87 @@ setTimeout(showPopup, 3000);
       "lavaca": "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter"
     };
     url = library[url.toLowerCase()] || url;
-
     const img = document.createElement("img");
     img.src = url;
     img.className = "spawned-img";
     document.body.appendChild(img);
-
     requestAnimationFrame(() => img.classList.add("show"));
     setTimeout(() => {
       img.classList.remove("show");
       setTimeout(() => img.remove(), 600);
     }, 4000);
   }
+
+  // === LIVE CHAT WIDGET ===
+  const chatDiv = document.createElement("div");
+  chatDiv.id = "liveChat";
+  chatDiv.innerHTML = `
+    <style>
+      #liveChat {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        background: rgba(0,0,0,0.85);
+        color: white;
+        border-radius: 10px;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+        z-index: 99999;
+      }
+      #chatMessages {
+        max-height: 260px;
+        overflow-y: auto;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .msg {background: rgba(255,255,255,0.1); padding:6px 8px; border-radius:8px;}
+      .msg .who {font-weight:bold; color:#22d3ee;}
+      #chatInputBar {display:flex; border-top:1px solid rgba(255,255,255,0.2);}
+      #chatInputBar input {flex:1; padding:6px; border:none; background:transparent; color:white;}
+      #chatInputBar button {background:#22d3ee; border:none; color:#000; padding:6px 10px; cursor:pointer;}
+    </style>
+    <div id="chatMessages"></div>
+    <div id="chatInputBar"><input id="chatInput" placeholder="Type..." /><button id="chatSend">Send</button></div>
+  `;
+  document.body.appendChild(chatDiv);
+
+  const chatRef = ref(db, "chat");
+  const chatMessages = document.getElementById("chatMessages");
+  const chatInput = document.getElementById("chatInput");
+  const chatSend = document.getElementById("chatSend");
+
+  onChildAdded(chatRef, (snap) => {
+    const val = snap.val();
+    if (!val) return;
+    const el = document.createElement("div");
+    el.className = "msg";
+    el.innerHTML = `<div class="who">${val.name}</div><div>${val.text}</div>`;
+    chatMessages.appendChild(el);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+
+  function sendChat() {
+    const txt = chatInput.value.trim();
+    if (!txt) return;
+    const name = sessionStorage.getItem("chatName") || prompt("Enter your name:") || "Guest";
+    sessionStorage.setItem("chatName", name);
+    push(chatRef, { name, text: txt, time: Date.now() });
+    chatInput.value = "";
+  }
+  chatSend.onclick = sendChat;
+  chatInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") sendChat();
+  });
+
+  function clearChat() {
+    remove(chatRef);
+    chatMessages.innerHTML = "";
+  }
 </script>
+
 
 
 </body>
