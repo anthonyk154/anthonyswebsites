@@ -1044,7 +1044,8 @@ function startEvent(type) {
     const library = {
       "67": "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
       "lavaca": "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter",
-      "mark": "markface.png"
+      "mark": "markface.png",
+      "anthony": "anthonyface.png"
     };
     url = library[url.toLowerCase()] || url;
     const img = document.createElement("img");
@@ -1193,7 +1194,7 @@ document.body.appendChild(menu);
 // Fill out lists
 const adminCmds = ["announce","playmusic","stopmusic","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent"];
 const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la"];
-const spawnCmds = ["67","lavaca", "mark"];
+const spawnCmds = ["67","lavaca", "mark", "anthony"];
 
 function fillList(listId, arr, prefix="") {
   const ul = document.getElementById(listId);
