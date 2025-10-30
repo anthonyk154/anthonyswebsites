@@ -773,8 +773,10 @@ setTimeout(showPopup, 3000);
           return;
         }
         const pass = prompt("Enter admin code:");
-        if (pass === "anthony11235" || pass === "mark11235") {
-          currentAdmin = pass === "mark11235" ? "mark" : "anthony";
+if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
+  if (pass === "mark11235") currentAdmin = "mark";
+  else if (pass === "alicekrem") currentAdmin = "alice";
+  else currentAdmin = "anthony";
           adminMode = true;
           sessionStorage.setItem("adminUnlocked", currentAdmin);
           toggleConsole();
@@ -853,8 +855,11 @@ setTimeout(showPopup, 3000);
       document.body.appendChild(container);
     }
 
-    const face = admin === "mark" ? "markface.png" : "anthonyface.png";
-    const name = admin === "mark" ? "MarkTheDev" : "AnthonyOwner";
+let face = "anthonyface.png";
+let name = "AnthonyOwner";
+if (admin === "mark") { face = "markface.png"; name = "MarkTheDev"; }
+if (admin === "alice") { face = "aliceface.png"; name = "Alice"; }
+
 
     const msg = document.createElement("div");
     msg.className = "announce-box";
