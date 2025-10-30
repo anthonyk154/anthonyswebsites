@@ -575,20 +575,19 @@ setTimeout(showPopup, 3000);
   import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
   const firebaseConfig = {
-  apiKey: "AIzaSyBFt1HGfakR4xgUgzqTpOb7KSZ5hcUmSa0",
-  authDomain: "niceboyyy-b5099.firebaseapp.com",
-  databaseURL: "https://niceboyyy-b5099-default-rtdb.firebaseio.com",
-  projectId: "niceboyyy-b5099",
-  storageBucket: "niceboyyy-b5099.firebasestorage.app",
-  messagingSenderId: "308046298259",
-  appId: "1:308046298259:web:7ae58e85f824a178f76166",
-  measurementId: "G-YY3LTGVQ1K"
+    apiKey: "AIzaSyBFt1HGfakR4xgUgzqTpOb7KSZ5hcUmSa0",
+    authDomain: "niceboyyy-b5099.firebaseapp.com",
+    databaseURL: "https://niceboyyy-b5099-default-rtdb.firebaseio.com",
+    projectId: "niceboyyy-b5099",
+    storageBucket: "niceboyyy-b5099.firebasestorage.app",
+    messagingSenderId: "308046298259",
+    appId: "1:308046298259:web:7ae58e85f824a178f76166",
+    measurementId: "G-YY3LTGVQ1K"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // === Console UI ===
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
     <style>
@@ -685,7 +684,6 @@ setTimeout(showPopup, 3000);
         color: #fff;
         line-height: 1.1;
       }
-      /* screen shake animation */
       @keyframes screenShake {
         0% { transform: translate(0, 0); }
         10% { transform: translate(-5px, -5px); }
@@ -702,6 +700,16 @@ setTimeout(showPopup, 3000);
       .shake-active {
         animation: screenShake 0.3s infinite;
       }
+      .taco, .crab, .brazil{
+        position: fixed;
+        font-size: 2.5rem;
+        animation: fall 3s linear infinite;
+        z-index: 9998;
+      }
+      @keyframes fall {
+        0% { transform: translateY(-10vh); opacity: 1; }
+        100% { transform: translateY(110vh); opacity: 0; }
+      }
     </style>
 
     <div id="adminConsole">
@@ -712,19 +720,18 @@ setTimeout(showPopup, 3000);
   `;
   document.body.appendChild(consoleEl);
 
-  // === Logic ===
   let consoleOpen = false;
   let adminMode = false;
   let currentAdmin = "unknown";
   const commands = [
-    "announce","playmusic","stopmusic","startdance","stopdance",
-    "clearall","startevent","stopevent","spawn",
-    "colorbackstart","colorbackstop",
-    "startshake","stopshake"
+    "announce","playmusic","stopmusic","startevent","stopevent",
+    "colorbackstart","colorbackstop","startshake","stopshake"
   ];
   const input = document.getElementById("adminInput");
   const suggBox = document.getElementById("suggestions");
   let colorInterval = null;
+  let eventInterval = null;
+  let audio = null;
 
   function toggleConsole() {
     const box = document.getElementById("adminConsole");
@@ -735,6 +742,7 @@ setTimeout(showPopup, 3000);
 
   document.addEventListener("keydown", e => {
     if (e.key === "F2") {
+      e.preventDefault();
       if (!adminMode) {
         const saved = sessionStorage.getItem("adminUnlocked");
         if (saved === "anthony" || saved === "mark") {
@@ -765,15 +773,6 @@ setTimeout(showPopup, 3000);
     suggBox.style.display = list.length ? "flex" : "none";
   });
 
-  suggBox.addEventListener("click", e => {
-    if (e.target.tagName === "DIV") {
-      input.value = e.target.textContent + " ";
-      suggBox.style.display = "none";
-      input.focus();
-    }
-  });
-
-  // === TAB key auto fills first suggestion ===
   input.addEventListener("keydown", e => {
     if (e.key === "Tab") {
       const first = suggBox.querySelector("div");
@@ -807,11 +806,14 @@ setTimeout(showPopup, 3000);
       case "colorbackstop": stopColorBackground(); break;
       case "startshake": startScreenShake(); break;
       case "stopshake": stopScreenShake(); break;
+      case "startevent": startEvent(data.text); break;
+      case "stopevent": stopEvent(); break;
+      case "playmusic": playMusic(data.text); break;
+      case "stopmusic": stopMusic(); break;
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
 
-  // === Announcement ===
   function showAnnouncement(text, admin = "anthony") {
     const a = document.getElementById("announcement");
     const face = admin === "mark" ? "markface.png" : "anthonyface.png";
@@ -829,7 +831,6 @@ setTimeout(showPopup, 3000);
     setTimeout(() => (a.style.display = "none"), 3000);
   }
 
-  // === Background Color Cycle ===
   const colors = ["#ff0000","#ff7f00","#ffff00","#00ff00","#0000ff","#8b00ff","#ff1493"];
   function startColorBackground() {
     stopColorBackground();
@@ -837,7 +838,7 @@ setTimeout(showPopup, 3000);
     colorInterval = setInterval(() => {
       document.body.style.background = colors[i % colors.length];
       i++;
-    }, 500);
+    }, 490);
   }
   function stopColorBackground() {
     clearInterval(colorInterval);
@@ -845,12 +846,86 @@ setTimeout(showPopup, 3000);
     document.body.style.background = "";
   }
 
-  // === Screen Shake ===
   function startScreenShake() {
     document.body.classList.add("shake-active");
   }
   function stopScreenShake() {
     document.body.classList.remove("shake-active");
+  }
+
+  // === MUSIC SYSTEM ===
+  function playMusic(type = "") {
+    stopMusic();
+    const t = type.toLowerCase();
+
+    let src = "crabravesound.mp3"; // default
+    if (t.includes("taco")) src = "raintacos.mp3";
+    else if (t.includes("brazil")) src = "brazil.mp3";
+    else if (t.includes("drill")) src = "drill.mp3";
+    else if (t.includes("crab")) src = "crabravesound.mp3";
+
+    audio = new Audio(src);
+    audio.loop = true;
+    audio.volume = 0.8;
+    audio.play();
+  }
+
+  function stopMusic() {
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }
+
+  // === EVENTS ===
+  function startEvent(type) {
+    stopEvent();
+    const t = (type || "").toLowerCase();
+
+    if (t.includes("taco")) {
+      playMusic("taco");
+      eventInterval = setInterval(() => {
+        const taco = document.createElement("div");
+        taco.textContent = "🌮";
+        taco.className = "taco";
+        taco.style.left = Math.random() * 100 + "vw";
+        taco.style.bottom = Math.random() * 50 + "vh";
+        document.body.appendChild(taco);
+        setTimeout(() => taco.remove(), 3000);
+      }, 150);
+    }
+
+    if (t.includes("crab")) {
+      playMusic("crab");
+      eventInterval = setInterval(() => {
+        const crab = document.createElement("div");
+        crab.textContent = "🦀";
+        crab.className = "crab";
+        crab.style.left = Math.random() * 100 + "vw";
+        crab.style.bottom = Math.random() * 50 + "vh";
+        document.body.appendChild(crab);
+        setTimeout(() => crab.remove(), 4000);
+      }, 200);
+    }
+if (t.includes("brazil")) {
+  playMusic("brazil");
+  eventInterval = setInterval(() => {
+        const brazil = document.createElement("div");
+        brazil.textContent = "";
+        brazil.className = "brazil";
+        brazil.style.left = Math.random() * 100 + "vw";
+        brazil.style.bottom = Math.random() * 50 + "vh";
+        document.body.appendChild(brazil);
+    setTimeout(() => brazil.remove(), 4000);
+  }, 200);
+}
+
+  }
+
+  function stopEvent() {
+    clearInterval(eventInterval);
+    stopMusic();
+    document.querySelectorAll(".taco, .crab, .brazil").forEach(e => e.remove());
   }
 </script>
 
