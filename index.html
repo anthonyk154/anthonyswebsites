@@ -706,7 +706,7 @@ setTimeout(showPopup, 3000);
         animation: fall 3s linear infinite;
         z-index: 9998;
       }
-      .drill{
+      .drill, .dstop{
          position: fixed;
         font-size: 2.5rem;
         animation: reverse 3s linear infinite;
@@ -884,6 +884,7 @@ setTimeout(showPopup, 3000);
     else if (t.includes("brazil")) src = "brazil.mp3";
     else if (t.includes("drill")) src = "drill.mp3";
     else if (t.includes("crab")) src = "crabravesound.mp3";
+    else if (t.includes("dstop")) src = "dstop.mp3";
 
     audio = new Audio(src);
     audio.loop = true;
@@ -956,12 +957,26 @@ setTimeout(showPopup, 3000);
         setTimeout(() => drill.remove(), 4000);
       }, 200);
     }
+            if (t.includes("dstop")) {
+      playMusic("dstop");
+      eventInterval = setInterval(() => {
+        const dstop = document.createElement("img");
+        dstop.src = "dstopface.png";
+        dstop.className = "dstop";
+        dstop.style.position = "fixed";
+        dstop.style.width = (100 + Math.random() * 40) + "px";
+        dstop.style.left = Math.random() * 100 + "vw";
+        dstop.style.bottom = Math.random() * 50 + "vh";
+        document.body.appendChild(dstop);
+        setTimeout(() => dstop.remove(), 4000);
+      }, 200);
+    }
   }
 
   function stopEvent() {
     clearInterval(eventInterval);
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop").forEach(e => e.remove());
   }
 
   // === SPAWN COMMAND ===
