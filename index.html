@@ -918,6 +918,7 @@ if (admin === "alice") { face = "aliceface.png"; name = "Alice"; }
     else if (t.includes("dstop")) src = "dstop.mp3";
     else if (t.includes("russain")) src = "russain.mp3";
     else if (t.includes("la")) src = "la.mp3";
+    else if (t.includes("aurafarm")) src = "aurafarm.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -1032,13 +1033,27 @@ function startEvent(type) {
       setTimeout(() => la.remove(), 4000);
     }, 200);
   }
+        if (t.includes("aurafarm")) {
+    playMusic("aurafarm");
+    eventInterval = setInterval(() => {
+      const aurafarm = document.createElement("img");
+      aurafarm.src = "aurafarmpic.png";
+      aurafarm.className = "aurafarm";
+      aurafarm.style.position = "fixed";
+      aurafarm.style.width = (100 + Math.random() * 40) + "px";
+      aurafarm.style.left = Math.random() * 100 + "vw";
+      aurafarm.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(aurafarm);
+      setTimeout(() => aurafarm.remove(), 4000);
+    }, 200);
+  }
 }
 
 
   function stopEvent() {
     clearInterval(eventInterval);
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm").forEach(e => e.remove());
   }
 
   function spawnImage(input) {
@@ -1199,7 +1214,7 @@ document.body.appendChild(menu);
 
 // Fill out lists
 const adminCmds = ["announce","playmusic","stopmusic","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent"];
-const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la"];
+const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark"];
 
 function fillList(listId, arr, prefix="") {
