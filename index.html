@@ -587,6 +587,7 @@ setTimeout(showPopup, 3000);
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
+  
 
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
@@ -745,7 +746,7 @@ setTimeout(showPopup, 3000);
   let currentAdmin = "unknown";
   const commands = [
     "announce","playmusic","stopmusic","startevent","stopevent",
-    "colorbackstart","colorbackstop","spawn","clearchat","clearcheat"
+    "colorbackstart","colorbackstop","spawn","clearchat"
   ];
   const input = document.getElementById("adminInput");
   const suggBox = document.getElementById("suggestions");
