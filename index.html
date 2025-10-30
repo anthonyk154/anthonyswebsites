@@ -914,6 +914,7 @@ setTimeout(showPopup, 3000);
     else if (t.includes("crab")) src = "crabravesound.mp3";
     else if (t.includes("dstop")) src = "dstop.mp3";
     else if (t.includes("russain")) src = "russain.mp3";
+    else if (t.includes("la")) src = "la.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -1014,13 +1015,27 @@ function startEvent(type) {
       setTimeout(() => russain.remove(), 4000);
     }, 200);
   }
+      if (t.includes("la")) {
+    playMusic("la");
+    eventInterval = setInterval(() => {
+      const la = document.createElement("img");
+      la.src = "lacockroach.png";
+      la.className = "la";
+      la.style.position = "fixed";
+      la.style.width = (100 + Math.random() * 40) + "px";
+      la.style.left = Math.random() * 100 + "vw";
+      la.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(la);
+      setTimeout(() => la.remove(), 4000);
+    }, 200);
+  }
 }
 
 
   function stopEvent() {
     clearInterval(eventInterval);
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la").forEach(e => e.remove());
   }
 
   function spawnImage(input) {
@@ -1110,9 +1125,121 @@ function startEvent(type) {
     remove(chatRef);
     chatMessages.innerHTML = "";
   }
+// === DRAGGABLE COMMAND MENU (ENHANCED) ===
+const menu = document.createElement("div");
+menu.id = "commandMenu";
+menu.innerHTML = `
+  <style>
+    #commandMenu {
+      position: fixed;
+      top: 80px;
+      left: 80px;
+      width: 280px;
+      background: rgba(15,23,42,0.95);
+      color: #fff;
+      font-family: monospace;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      padding: 10px;
+      z-index: 10000;
+      cursor: move;
+      display: none;
+      user-select: none;
+    }
+    #commandMenu h3 {
+      font-size: 16px;
+      margin: 6px 0;
+      text-align: center;
+      color: #22d3ee;
+    }
+    #commandMenu h4 {
+      font-size: 14px;
+      margin: 8px 0 4px;
+      color: #38bdf8;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding-bottom: 2px;
+    }
+    #commandMenu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+    #commandMenu li {
+      padding: 5px 6px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      margin-bottom: 5px;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    #commandMenu li:hover {
+      background: rgba(34,211,238,0.2);
+    }
+  </style>
+  <h3>Admin Command Menu</h3>
+  <h4>⭐ Admin Commands</h4>
+  <ul id="adminCmds"></ul>
+  <h4>🎉 Event Options (startevent)</h4>
+  <ul id="eventCmds"></ul>
+  <h4>🖼️ Spawn Options (spawn)</h4>
+  <ul id="spawnCmds"></ul>
+`;
+document.body.appendChild(menu);
+
+// Fill out lists
+const adminCmds = ["announce","playmusic","stopmusic","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent"];
+const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la"];
+const spawnCmds = ["67","lavaca"];
+
+function fillList(listId, arr, prefix="") {
+  const ul = document.getElementById(listId);
+  arr.forEach(cmd => {
+    const li = document.createElement("li");
+    li.textContent = cmd;
+    li.onclick = () => {
+      // auto-fill into admin input if console open
+      const input = document.getElementById("adminInput");
+      if (input) {
+        input.value = prefix + cmd;
+        input.focus();
+      }
+    };
+    ul.appendChild(li);
+  });
+}
+
+fillList("adminCmds", adminCmds);
+fillList("eventCmds", eventCmds, "startevent ");
+fillList("spawnCmds", spawnCmds, "spawn ");
+
+// Toggle menu with F3
+let menuVisible = false;
+document.addEventListener("keydown", e => {
+  if (e.key === "F2") {
+    e.preventDefault();
+    menuVisible = !menuVisible;
+    menu.style.display = menuVisible ? "block" : "none";
+  }
+});
+
+// Drag functionality
+let offsetX, offsetY, isDragging = false;
+menu.addEventListener("mousedown", e => {
+  isDragging = true;
+  offsetX = e.clientX - menu.offsetLeft;
+  offsetY = e.clientY - menu.offsetTop;
+});
+document.addEventListener("mouseup", () => (isDragging = false));
+document.addEventListener("mousemove", e => {
+  if (!isDragging) return;
+  menu.style.left = e.clientX - offsetX + "px";
+  menu.style.top = e.clientY - offsetY + "px";
+});
+
 </script>
-
-
 
 </body>
 </html>
