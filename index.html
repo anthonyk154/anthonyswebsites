@@ -700,11 +700,26 @@ setTimeout(showPopup, 3000);
       .shake-active {
         animation: screenShake 0.3s infinite;
       }
-      .taco, .crab, .brazil{
+      .taco, .crab, .brazil {
         position: fixed;
         font-size: 2.5rem;
         animation: fall 3s linear infinite;
         z-index: 9998;
+      }
+      .spawned-img {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 40%;
+        max-height: 40%;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+        z-index: 99999;
+        pointer-events: none;
+      }
+      .spawned-img.show {
+        opacity: 1;
       }
       @keyframes fall {
         0% { transform: translateY(-10vh); opacity: 1; }
@@ -725,7 +740,7 @@ setTimeout(showPopup, 3000);
   let currentAdmin = "unknown";
   const commands = [
     "announce","playmusic","stopmusic","startevent","stopevent",
-    "colorbackstart","colorbackstop","startshake","stopshake"
+    "colorbackstart","colorbackstop","startshake","stopshake","spawn"
   ];
   const input = document.getElementById("adminInput");
   const suggBox = document.getElementById("suggestions");
@@ -810,6 +825,7 @@ setTimeout(showPopup, 3000);
       case "stopevent": stopEvent(); break;
       case "playmusic": playMusic(data.text); break;
       case "stopmusic": stopMusic(); break;
+      case "spawn": spawnImage(data.text); break;
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
@@ -853,12 +869,10 @@ setTimeout(showPopup, 3000);
     document.body.classList.remove("shake-active");
   }
 
-  // === MUSIC SYSTEM ===
   function playMusic(type = "") {
     stopMusic();
     const t = type.toLowerCase();
-
-    let src = "crabravesound.mp3"; // default
+    let src = "crabravesound.mp3";
     if (t.includes("taco")) src = "raintacos.mp3";
     else if (t.includes("brazil")) src = "brazil.mp3";
     else if (t.includes("drill")) src = "drill.mp3";
@@ -877,7 +891,6 @@ setTimeout(showPopup, 3000);
     }
   }
 
-  // === EVENTS ===
   function startEvent(type) {
     stopEvent();
     const t = (type || "").toLowerCase();
@@ -907,25 +920,49 @@ setTimeout(showPopup, 3000);
         setTimeout(() => crab.remove(), 4000);
       }, 200);
     }
-if (t.includes("brazil")) {
-  playMusic("brazil");
-  eventInterval = setInterval(() => {
-        const brazil = document.createElement("div");
-        brazil.textContent = "";
+
+    if (t.includes("brazil")) {
+      playMusic("brazil");
+      eventInterval = setInterval(() => {
+        const brazil = document.createElement("img");
+        brazil.src = "https://upload.wikimedia.org/wikipedia/en/0/05/Flag_of_Brazil.svg";
         brazil.className = "brazil";
+        brazil.style.position = "fixed";
+        brazil.style.width = (40 + Math.random() * 40) + "px";
         brazil.style.left = Math.random() * 100 + "vw";
         brazil.style.bottom = Math.random() * 50 + "vh";
         document.body.appendChild(brazil);
-    setTimeout(() => brazil.remove(), 4000);
-  }, 200);
-}
-
+        setTimeout(() => brazil.remove(), 4000);
+      }, 200);
+    }
   }
 
   function stopEvent() {
     clearInterval(eventInterval);
     stopMusic();
     document.querySelectorAll(".taco, .crab, .brazil").forEach(e => e.remove());
+  }
+
+  // === SPAWN COMMAND ===
+  function spawnImage(input) {
+    if (!input) return;
+    let url = input.trim();
+    const library = {
+      "67": "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
+      "lavaca": "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter"
+    };
+    url = library[url.toLowerCase()] || url;
+
+    const img = document.createElement("img");
+    img.src = url;
+    img.className = "spawned-img";
+    document.body.appendChild(img);
+
+    requestAnimationFrame(() => img.classList.add("show"));
+    setTimeout(() => {
+      img.classList.remove("show");
+      setTimeout(() => img.remove(), 600);
+    }, 4000);
   }
 </script>
 
