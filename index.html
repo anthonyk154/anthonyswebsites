@@ -700,11 +700,18 @@ setTimeout(showPopup, 3000);
       .shake-active {
         animation: screenShake 0.3s infinite;
       }
-      .taco, .crab, .brazil {
+      .taco, .crab, .brazil,{
         position: fixed;
         font-size: 2.5rem;
         animation: fall 3s linear infinite;
         z-index: 9998;
+      }
+      .drill{
+         position: fixed;
+        font-size: 2.5rem;
+        animation: reverse 3s linear infinite;
+        z-index: 9998;
+       max-width: 100%;
       }
       .spawned-img {
         position: fixed;
@@ -935,12 +942,26 @@ setTimeout(showPopup, 3000);
         setTimeout(() => brazil.remove(), 4000);
       }, 200);
     }
+        if (t.includes("drill")) {
+      playMusic("drill");
+      eventInterval = setInterval(() => {
+        const drill = document.createElement("img");
+        drill.src = "https://www.pngmart.com/files/24/Brr-Brr-Patapim-PNG-Image.png";
+        drill.className = "drill";
+        drill.style.position = "fixed";
+        drill.style.width = (40 + Math.random() * 40) + "px";
+        drill.style.left = Math.random() * 100 + "vw";
+        drill.style.bottom = Math.random() * 50 + "vh";
+        document.body.appendChild(drill);
+        setTimeout(() => drill.remove(), 4000);
+      }, 200);
+    }
   }
 
   function stopEvent() {
     clearInterval(eventInterval);
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill").forEach(e => e.remove());
   }
 
   // === SPAWN COMMAND ===
