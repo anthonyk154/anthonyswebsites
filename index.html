@@ -739,12 +739,12 @@ setTimeout(showPopup, 3000);
   width: 10px;
   height: 120vh;
   background: linear-gradient(180deg,
-    hsl(var(--hue), 100%, 30%),
+    hsl(var(--hue), 100%, 20%),
     rgba(255,255,255,0.1)
   );
   transform-origin: top center;
-  opacity: 0.9;
-  filter: blur(1px);
+  opacity: 1;
+  filter: blur(.8px);
   pointer-events: none;
   animation: spinLaser 2.5s linear infinite;
   mix-blend-mode: screen;
@@ -954,6 +954,7 @@ if (admin === "alice") { face = "aliceface.png"; name = "AliceAdmin"; }
     else if (t.includes("russain")) src = "russain.mp3";
     else if (t.includes("la")) src = "la.mp3";
     else if (t.includes("aurafarm")) src = "aurafarm.mp3";
+    else if (t.includes("tung")) src = "tung.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -1082,13 +1083,27 @@ function startEvent(type) {
       setTimeout(() => aurafarm.remove(), 4000);
     }, 200);
   }
+          if (t.includes("tung")) {
+    playMusic("tung");
+    eventInterval = setInterval(() => {
+      const tung = document.createElement("img");
+      tung.src = "https://www.imagenspng.com.br/wp-content/uploads/2025/05/Tung-Tung-Tung-Sahur-Brainrot-PNG-01.png";
+      tung.className = "tung";
+      tung.style.position = "fixed";
+      tung.style.width = (100 + Math.random() * 40) + "px";
+      tung.style.left = Math.random() * 100 + "vw";
+      tung.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(tung);
+      setTimeout(() => tung.remove(), 4000);
+    }, 200);
+  }
 }
 
 
   function stopEvent() {
     clearInterval(eventInterval);
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung").forEach(e => e.remove());
   }
   // === RAINBOW LASER COMMAND ===
 // === PARTY LASER MODE ===
@@ -1274,7 +1289,7 @@ document.body.appendChild(menu);
 
 // Fill out lists
 const adminCmds = ["announce","playmusic","stopmusic","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "startrainbow", "stoprainbow"];
-const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm"];
+const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark"];
 
 function fillList(listId, arr, prefix="") {
