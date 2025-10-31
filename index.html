@@ -1134,6 +1134,11 @@ function stopRainbow() {
   function spawnImage(input) {
     if (!input) return;
     let url = input.trim();
+      // === Restrict "anthony" spawn to Anthony only ===
+  if (url.toLowerCase() === "anthony" && currentAdmin !== "anthony") {
+    alert("❌ Only Anthony can spawn Anthony.");
+    return;
+  }
     const library = {
       "67": "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
       "lavaca": "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter",
