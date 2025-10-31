@@ -1134,19 +1134,28 @@ function stopRainbow() {
   function spawnImage(input) {
     if (!input) return;
     let url = input.trim();
-      // === Restrict "anthony" spawn to Anthony only ===
   if (url.toLowerCase() === "anthony" && currentAdmin !== "anthony") {
-    alert("❌ Only Anthony can spawn Anthony.");
     return;
   }
     const library = {
       "67": "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
       "lavaca": "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter",
       "mark": "markface.png",
-      "anthony": "anthonyface.png",
+      "anthony" : "anthonyface.png",
       "dragon": "https://tr.rbxcdn.com/180DAY-aba6114123ad4c0fd4f23f6811e0c0e5/420/420/BackAccessory/Webp/noFilter",
       "elephant": "https://tr.rbxcdn.com/180DAY-5b7131b16d244c6f91d5987ad436bef7/420/420/WaistAccessory/Webp/noFilter",
-      "kark" : "https://tr.rbxcdn.com/180DAY-01d2210153ecf3da74e0542af2ff2c56/420/420/WaistAccessory/Webp/noFilter"
+      "kark" : "https://tr.rbxcdn.com/180DAY-01d2210153ecf3da74e0542af2ff2c56/420/420/WaistAccessory/Webp/noFilter",
+      "garama" : "https://tr.rbxcdn.com/180DAY-f8d6b7a9caa978bf4fb72a9b10a24be8/420/420/BackAccessory/Webp/noFilter",
+      "lasupreme" : "https://static.wikia.nocookie.net/stealabr/images/c/c8/La_Supreme_Combinasion.png",
+      "lagrande" : "https://tr.rbxcdn.com/30DAY-Avatar-3B8944059B8281E82ECB506F7065EB30-Png/420/420/Avatar/Png/noFilter",
+      "spaghetti" : "https://tr.rbxcdn.com/180DAY-b1e41d2e574dfbb3a7c0d0269695c762/420/420/BackAccessory/Webp/noFilter",
+      "meowl" : "https://tr.rbxcdn.com/180DAY-c9cc32c79c1fd6403fa368cd109c138b/420/420/BackAccessory/Webp/noFilter",
+      "matteo" : "https://tr.rbxcdn.com/180DAY-15538f086fe4a4076044edb934db0352/420/420/JacketAccessory/Webp/noFilter",
+      "jandel" : "https://steal-a-brainrot.wiki/wp-content/uploads/2025/07/Racooni-Jandelini.png",
+      "jobjob" : "https://tr.rbxcdn.com/180DAY-0e1869f8333d3d4ea2693f280ee93c18/420/420/Hat/Webp/noFilter",
+      "graipuss" : "https://tr.rbxcdn.com/180DAY-f7752d0653669a798baf116974851206/420/420/BackAccessory/Webp/noFilter",
+      "chiclitera" : "https://tr.rbxcdn.com/180DAY-d0387f7a0327ff9d7424d8f54ca45009/420/420/JacketAccessory/Webp/noFilter",
+      "burguro" : "https://tr.rbxcdn.com/180DAY-410143d5ee5883a41613650d7a7b7bcf/420/420/BackAccessory/Webp/noFilter"
     };
     url = library[url.toLowerCase()] || url;
     const img = document.createElement("img");
@@ -1295,7 +1304,7 @@ document.body.appendChild(menu);
 // Fill out lists
 const adminCmds = ["announce","playmusic","stopmusic","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "startrainbow", "stoprainbow"];
 const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung"];
-const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark"];
+const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
 function fillList(listId, arr, prefix="") {
   const ul = document.getElementById(listId);
