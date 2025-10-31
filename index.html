@@ -473,7 +473,6 @@
       </div>
     </div>
   </section>
-
   
   <footer>
     <div class="foot">
@@ -1244,9 +1243,10 @@ menu.innerHTML = `
   <style>
     #commandMenu {
       position: fixed;
-      top: 80px;
-      left: 80px;
-      width: 280px;
+      top: 10px;
+      left: 0px;
+      width: 300px;
+      height: 800px;
       background: rgba(15,23,42,0.95);
       color: #fff;
       font-family: monospace;
@@ -1258,6 +1258,10 @@ menu.innerHTML = `
       cursor: move;
       display: none;
       user-select: none;
+      overflow: auto;
+      min-width: 200px;
+      min-height: 150px;
+
     }
     #commandMenu h3 {
       font-size: 16px;
@@ -1337,19 +1341,6 @@ document.addEventListener("keydown", e => {
   }
 });
 
-// Drag functionality
-let offsetX, offsetY, isDragging = false;
-menu.addEventListener("mousedown", e => {
-  isDragging = true;
-  offsetX = e.clientX - menu.offsetLeft;
-  offsetY = e.clientY - menu.offsetTop;
-});
-document.addEventListener("mouseup", () => (isDragging = false));
-document.addEventListener("mousemove", e => {
-  if (!isDragging) return;
-  menu.style.left = e.clientX - offsetX + "px";
-  menu.style.top = e.clientY - offsetY + "px";
-});
 
 </script>
 
