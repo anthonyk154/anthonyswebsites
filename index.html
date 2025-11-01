@@ -947,7 +947,7 @@ if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "A
   function playMusic(type = "") {
     stopMusic();
     const t = type.toLowerCase();
-    let src = "crabravesound.mp3";
+    let src = "brazil.mp3";
     if (t.includes("taco")) src = "raintacos.mp3";
     else if (t.includes("brazil")) src = "brazil.mp3";
     else if (t.includes("drill")) src = "drill.mp3";
@@ -1132,6 +1132,114 @@ function startEvent(type) {
     }, 200);
     
 }
+// === SNAP EVENT (Animated) ===
+if (t.includes("snap")) {
+  playMusic("snap");
+
+  // Create snapper
+  const snapper = document.createElement("img");
+  snapper.src = "https://files.catbox.moe/49vmfx.png"; // standing pose
+  snapper.style.position = "fixed";
+  snapper.style.bottom = "0";
+  snapper.style.left = "-300px";
+  snapper.style.width = "220px";
+  snapper.style.transition = "left 2s ease-in-out";
+  snapper.style.zIndex = "10000";
+  document.body.appendChild(snapper);
+
+  // Walk in
+  setTimeout(() => (snapper.style.left = "40%"), 100);
+
+  // Prepare 2nd image for the snap animation
+  const snapHand = document.createElement("img");
+  snapHand.style.position = "fixed";
+  snapHand.style.bottom = "0";
+  snapHand.style.left = "40%";
+  snapHand.style.width = "220px";
+  snapHand.style.transform = "translateX(-50%)";
+  snapHand.style.opacity = "0";
+  snapHand.style.transition = "opacity 0.3s ease-in-out";
+  snapHand.style.zIndex = "10001";
+  document.body.appendChild(snapHand);
+
+  // SNAP after walking in
+  setTimeout(() => {
+    // hand snap animation
+    snapper.style.opacity = "0";
+    snapHand.style.opacity = "1";
+
+    // flash + shake
+    const flash = document.createElement("div");
+    flash.style.position = "fixed";
+    flash.style.top = "0";
+    flash.style.left = "0";
+    flash.style.width = "100%";
+    flash.style.height = "100%";
+    flash.style.background = "white";
+    flash.style.opacity = "0.9";
+    flash.style.transition = "opacity 0.4s";
+    flash.style.zIndex = "99999";
+    document.body.appendChild(flash);
+    setTimeout(() => (flash.style.opacity = "0"), 200);
+    setTimeout(() => flash.remove(), 600);
+
+    document.body.classList.add("shake-active");
+    setTimeout(() => document.body.classList.remove("shake-active"), 1000);
+
+    // burst chaos
+    const spawnList = [
+      "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
+      "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter",
+      "https://tr.rbxcdn.com/180DAY-aba6114123ad4c0fd4f23f6811e0c0e5/420/420/BackAccessory/Webp/noFilter",
+      "https://tr.rbxcdn.com/180DAY-5b7131b16d244c6f91d5987ad436bef7/420/420/WaistAccessory/Webp/noFilter",
+      "https://tr.rbxcdn.com/180DAY-01d2210153ecf3da74e0542af2ff2c56/420/420/WaistAccessory/Webp/noFilter",
+      "https://tr.rbxcdn.com/180DAY-f8d6b7a9caa978bf4fb72a9b10a24be8/420/420/BackAccessory/Webp/noFilter",
+      "https://static.wikia.nocookie.net/stealabr/images/c/c8/La_Supreme_Combinasion.png",
+      "https://tr.rbxcdn.com/30DAY-Avatar-3B8944059B8281E82ECB506F7065EB30-Png/420/420/Avatar/Png/noFilter",
+      "https://files.catbox.moe/idjpcv.png",
+      "https://tr.rbxcdn.com/180DAY-c9cc32c79c1fd6403fa368cd109c138b/420/420/BackAccessory/Webp/noFilter",
+      "https://tr.rbxcdn.com/180DAY-15538f086fe4a4076044edb934db0352/420/420/JacketAccessory/Webp/noFilter",
+      "https://steal-a-brainrot.wiki/wp-content/uploads/2025/07/Racooni-Jandelini.png",
+      "https://tr.rbxcdn.com/180DAY-0e1869f8333d3d4ea2693f280ee93c18/420/420/Hat/Webp/noFilter",
+      "https://tr.rbxcdn.com/180DAY-f7752d0653669a798baf116974851206/420/420/BackAccessory/Webp/noFilter",
+      "https://tr.rbxcdn.com/180DAY-d0387f7a0327ff9d7424d8f54ca45009/420/420/JacketAccessory/Webp/noFilter",
+      "https://tr.rbxcdn.com/180DAY-410143d5ee5883a41613650d7a7b7bcf/420/420/BackAccessory/Webp/noFilter",
+      "https://www.imagenspng.com.br/wp-content/uploads/2025/05/Tung-Tung-Tung-Sahur-Brainrot-PNG-01.png"
+    ];
+
+    let burstCount = 0;
+    const burst = setInterval(() => {
+      const img = document.createElement("img");
+      img.src = spawnList[Math.floor(Math.random() * spawnList.length)];
+      img.style.position = "fixed";
+      img.style.left = Math.random() * 100 + "vw";
+      img.style.top = Math.random() * 100 + "vh";
+      img.style.width = (40 + Math.random() * 120) + "px";
+      img.style.transform = `rotate(${Math.random() * 360}deg)`;
+      img.style.transition = "opacity 2s ease, transform 2s ease";
+      img.style.zIndex = "9999";
+      document.body.appendChild(img);
+      setTimeout(() => {
+        img.style.opacity = 0;
+        img.style.transform += " scale(1.4)";
+      }, 800);
+      setTimeout(() => img.remove(), 2500);
+      burstCount++;
+      if (burstCount > 60) clearInterval(burst);
+    }, 70);
+  }, 2500); // Snap happens after walk-in
+
+  // Walk away + cleanup
+  setTimeout(() => {
+    snapHand.style.transition = "left 2s ease-in-out, opacity 1s";
+    snapHand.style.left = "110%";
+    setTimeout(() => {
+      snapper.remove();
+      snapHand.remove();
+    }, 2000);
+  }, 5000);
+}
+
 }
 
 
@@ -1509,7 +1617,7 @@ document.body.appendChild(menu);
 
 
 const adminCmds = ["announce", "refreshall", "warning", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween"];
+const eventCmds = ["crab","taco","brazil", "snap", "drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
 function fillList(listId, arr, prefix="") {
