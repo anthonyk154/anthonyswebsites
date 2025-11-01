@@ -770,10 +770,8 @@ setTimeout(showPopup, 3000);
 const commands = [
   "announce","playmusic","stopmusic","startevent","stopevent",
   "colorbackstart","colorbackstop","spawn","clearchat",
-  "startrainbow","stoprainbow",
-  "scrollupstart","scrollupstop",
-  "matrixstart","matrixstop",
-  "refreshall"
+  "startrainbow","stoprainbow","scrollupstart","scrollupstop",
+  "matrixstart","matrixstop","warning"
 ];
 
 
@@ -872,6 +870,7 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
       case "matrixstart": startMatrix(); break;
       case "matrixstop": stopMatrix(); break;
       case "refreshall":triggerRefreshAll();break;
+      case "warning": showWarning(); break;
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
@@ -1229,6 +1228,43 @@ function stopMatrix() {
   matrixCtx = null;
 }
 
+function showWarning() {
+  const warn = document.createElement("div");
+  warn.innerHTML = `
+    ⚠️ <br>
+    <span style="font-size:1.8rem;">If you are epileptic or prone to seizures,<br>please leave immediately.</span>
+  `;
+  Object.assign(warn.style, {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    background: "rgba(0,0,0,0.85)",
+    color: "#ff0000",
+    padding: "30px 40px",
+    borderRadius: "15px",
+    fontFamily: "monospace",
+    textAlign: "center",
+    fontSize: "2rem",
+    fontWeight: "bold",
+    zIndex: "999999",
+    animation: "fadeWarn 4s ease forwards"
+  });
+
+  // Add keyframes for fade effect
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes fadeWarn {
+      0% {opacity: 0; transform: translate(-50%, -50%) scale(0.9);}
+      10%,80% {opacity: 1; transform: translate(-50%, -50%) scale(1);}
+      100% {opacity: 0; transform: translate(-50%, -50%) scale(1.1);}
+    }
+  `;
+  document.head.appendChild(style);
+
+  document.body.appendChild(warn);
+  setTimeout(() => warn.remove(), 4500);
+}
 
 
 function scrollUpStart() {
@@ -1472,7 +1508,7 @@ menu.innerHTML = `
 document.body.appendChild(menu);
 
 
-const adminCmds = ["announce", "refreshall", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
+const adminCmds = ["announce", "refreshall", "warning", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
 const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
