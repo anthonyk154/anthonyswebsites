@@ -777,8 +777,10 @@ setTimeout(showPopup, 3000);
 const commands = [
   "announce","playmusic","stopmusic","startevent","stopevent",
   "colorbackstart","colorbackstop","spawn","clearchat",
-  "startrainbow","stoprainbow"
+  "startrainbow","stoprainbow",
+  "scrollupstart","scrollupstop"
 ];
+
 
   const input = document.getElementById("adminInput");
   const suggBox = document.getElementById("suggestions");
@@ -868,6 +870,9 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
       case "clearcheat": clearChat(); break;
       case "startrainbow": startRainbow(); break;
       case "stoprainbow": stopRainbow(); break;
+      case "scrollupstart": scrollUpStart(); break;
+      case "scrollupstop": stopScrollUp(); break;
+
 
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
@@ -1127,6 +1132,23 @@ function stopRainbow() {
   laserInterval = null;
   document.querySelectorAll(".laser").forEach(el => el.remove());
 }
+let scrollInterval = null;
+
+function scrollUpStart() {
+  stopScrollUp(); 
+  let dir = 1;
+  scrollInterval = setInterval(() => {
+    window.scrollBy(0, dir * 10);
+    if (document.body.scrollHeight || window.scrollY <= 0) {
+      dir *= -1; 
+    }
+  }, 20); 
+}
+
+function stopScrollUp() {
+  clearInterval(scrollInterval);
+  scrollInterval = null;
+}
 
 
   function spawnImage(input) {
@@ -1306,7 +1328,7 @@ menu.innerHTML = `
 document.body.appendChild(menu);
 
 
-const adminCmds = ["announce","playmusic","stopmusic","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "startrainbow", "stoprainbow"];
+const adminCmds = ["announce","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent","scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
 const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
