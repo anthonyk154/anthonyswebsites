@@ -957,6 +957,7 @@ if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "A
     else if (t.includes("aurafarm")) src = "aurafarm.mp3";
     else if (t.includes("tung")) src = "tung.mp3";
     else if (t.includes("hammali")) src = "hammali.mp3";
+    else if (t.includes("halloween")) src = "halloween.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -1115,13 +1116,28 @@ function startEvent(type) {
     }, 200);
     
 }
+          if (t.includes("halloween")) {
+    playMusic("halloween");
+    eventInterval = setInterval(() => {
+      const halloween = document.createElement("img");
+      halloween.src = "https://www.freepnglogos.com/uploads/pumpkin-png/vector-graphic-pumpkin-cartoon-orange-stem-39.png";
+      halloween.className = "halloween";
+      halloween.style.position = "fixed";
+      halloween.style.width = (100 + Math.random() * 40) + "px";
+      halloween.style.left = Math.random() * 100 + "vw";
+      halloween.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(halloween);
+      setTimeout(() => halloween.remove(), 4000);
+    }, 200);
+    
+}
 }
 
 
   function stopEvent() {
     clearInterval(eventInterval); 
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween").forEach(e => e.remove());
   }
 let laserInterval = null;
 
@@ -1146,7 +1162,7 @@ function stopRainbow() {
   document.querySelectorAll(".laser").forEach(el => el.remove());
 }
 let scrollInterval = null;
-// === MATRIX MODE (Transparent Overlay) ===
+
 let matrixCanvas = null;
 let matrixCtx = null;
 let matrixInterval = null;
@@ -1154,7 +1170,7 @@ let matrixInterval = null;
 function startMatrix() {
   stopMatrix();
 
-  // Create transparent overlay
+ 
   matrixCanvas = document.createElement("canvas");
   matrixCanvas.id = "matrixCanvas";
   matrixCanvas.style.position = "fixed";
@@ -1162,8 +1178,8 @@ function startMatrix() {
   matrixCanvas.style.left = "0";
   matrixCanvas.style.width = "100%";
   matrixCanvas.style.height = "100%";
-  matrixCanvas.style.pointerEvents = "none"; // ✅ allows clicking/using everything underneath
-  matrixCanvas.style.zIndex = "99998";       // ✅ sits just below admin panel
+  matrixCanvas.style.pointerEvents = "none";
+  matrixCanvas.style.zIndex = "99998";     
   matrixCanvas.style.background = "transparent";
   document.body.appendChild(matrixCanvas);
 
@@ -1176,10 +1192,10 @@ function startMatrix() {
   const drops = Array(columns).fill(1);
 
   matrixInterval = setInterval(() => {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.0)"; // translucent fade
+    ctx.fillStyle = "rgba(0, 0, 0, 0.0)"; 
     ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
 
-    // Green matrix code
+   
     const neonGreen = "hsl(120, 100%, 60%)";
     ctx.fillStyle = neonGreen;
     ctx.font = fontSize + "px monospace";
@@ -1407,8 +1423,8 @@ menu.innerHTML = `
 document.body.appendChild(menu);
 
 
-const adminCmds = ["announce","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent","scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung", "hammali"];
+const adminCmds = ["announce","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
+const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
 function fillList(listId, arr, prefix="") {
