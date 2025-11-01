@@ -772,8 +772,10 @@ const commands = [
   "colorbackstart","colorbackstop","spawn","clearchat",
   "startrainbow","stoprainbow",
   "scrollupstart","scrollupstop",
-  "matrixstart","matrixstop"
+  "matrixstart","matrixstop",
+  "refreshall"
 ];
+
 
 
 
@@ -869,6 +871,7 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
       case "scrollupstop": stopScrollUp(); break;
       case "matrixstart": startMatrix(); break;
       case "matrixstop": stopMatrix(); break;
+      case "refreshall":triggerRefreshAll();break;
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
@@ -1243,6 +1246,52 @@ function stopScrollUp() {
   clearInterval(scrollInterval);
   scrollInterval = null;
 }
+// === GLOBAL REFRESH (One-Time True Fix) ===
+import { onValue, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+// Create a single node instead of pushing multiple
+const refreshRef = ref(db, "refreshSignal");
+
+// === ADMIN TRIGGER ===
+function triggerRefreshAll() {
+  if (currentAdmin !== "anthony") return; // only you can trigger
+
+  // Write a unique timestamp flag to Firebase
+  set(refreshRef, { time: Date.now(), by: currentAdmin });
+}
+
+// === CLIENT LISTENER (one-time) ===
+let lastRefreshTime = sessionStorage.getItem("lastRefreshTime") || "0";
+
+onValue(refreshRef, (snapshot) => {
+  const data = snapshot.val();
+  if (!data) return;
+
+  // Only run if it’s a new signal and hasn’t already refreshed
+  if (parseInt(data.time) > parseInt(lastRefreshTime)) {
+    sessionStorage.setItem("lastRefreshTime", data.time);
+
+    // Optional popup for feedback
+    const popup = document.createElement("div");
+    popup.textContent = "🔁 Refresh triggered by Anthony Montana";
+    Object.assign(popup.style, {
+      position: "fixed",
+      bottom: "40%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      background: "rgba(0,0,0,0.8)",
+      color: "#0ff",
+      padding: "15px 30px",
+      borderRadius: "10px",
+      fontFamily: "monospace",
+      fontSize: "1.2rem",
+      zIndex: "999999",
+    });
+    document.body.appendChild(popup);
+
+    setTimeout(() => location.reload(), 1000);
+  }
+});
 
 
   function spawnImage(input) {
@@ -1422,7 +1471,7 @@ menu.innerHTML = `
 document.body.appendChild(menu);
 
 
-const adminCmds = ["announce","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
+const adminCmds = ["announce", "refreshall", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
 const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
