@@ -605,20 +605,30 @@ onValue(stateRef, (snap) => {
   const state = snap.val();
   if (!state) return;
 
-  // Restore active states
-  if (state.event) startEvent(state.event);
-  if (state.matrixActive) startMatrix();
+  // === Restore Active States ===
+  if (state.colorActive) startColorBackground();
   if (state.rainbowActive) startRainbow();
   if (state.scrollActive) scrollUpStart();
-  if (state.colorActive) startColorBackground();
+  if (state.matrixActive) startMatrix();
 
-  // Stop inactive ones
-  if (!state.event) stopEvent();
-  if (!state.matrixActive) stopMatrix();
+  // === Event + Music Sync ===
+  if (state.event) {
+    // only restart if not already same event
+    if (!window.currentEvent || window.currentEvent !== state.event) {
+      startEvent(state.event);
+      window.currentEvent = state.event;
+    }
+  } else {
+    stopEvent();
+    window.currentEvent = null;
+  }
+  // === Stop Inactive States ===
+  if (!state.colorActive) stopColorBackground();
   if (!state.rainbowActive) stopRainbow();
   if (!state.scrollActive) stopScrollUp();
-  if (!state.colorActive) stopColorBackground();
+  if (!state.matrixActive) stopMatrix();
 });
+
 
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
