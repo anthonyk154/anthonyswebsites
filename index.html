@@ -700,18 +700,11 @@ setTimeout(showPopup, 3000);
       .shake-active {
         animation: screenShake 0.3s infinite;
       }
-      .taco, .crab, .brazil,{
+      .taco, .crab{
         position: fixed;
         font-size: 2.5rem;
         animation: fall 3s linear infinite;
         z-index: 9998;
-      }
-      .drill, .dstop, .crab, .taco {
-         position: fixed;
-        font-size: 2.5rem;
-        animation: reverse 3s linear infinite;
-        z-index: 5000;
-       max-width: 100%;
       }
       .spawned-img {
         position: fixed;
@@ -960,6 +953,7 @@ if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "A
     else if (t.includes("la")) src = "la.mp3";
     else if (t.includes("aurafarm")) src = "aurafarm.mp3";
     else if (t.includes("tung")) src = "tung.mp3";
+    else if (t.includes("hammali")) src = "hammali.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -1101,14 +1095,30 @@ function startEvent(type) {
       document.body.appendChild(tung);
       setTimeout(() => tung.remove(), 4000);
     }, 200);
-  }
+    
+}
+          if (t.includes("hammali")) {
+    playMusic("hammali");
+    eventInterval = setInterval(() => {
+      const hammali = document.createElement("img");
+      hammali.src = "https://files.catbox.moe/fercyk.png";
+      hammali.className = "hammali";
+      hammali.style.position = "fixed";
+      hammali.style.width = (100 + Math.random() * 40) + "px";
+      hammali.style.left = Math.random() * 100 + "vw";
+      hammali.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(hammali);
+      setTimeout(() => hammali.remove(), 4000);
+    }, 200);
+    
+}
 }
 
 
   function stopEvent() {
-    clearInterval(eventInterval);
+    clearInterval(eventInterval); 
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali").forEach(e => e.remove());
   }
 let laserInterval = null;
 
@@ -1329,7 +1339,7 @@ document.body.appendChild(menu);
 
 
 const adminCmds = ["announce","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent","scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung"];
+const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung", "hammali"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
 function fillList(listId, arr, prefix="") {
