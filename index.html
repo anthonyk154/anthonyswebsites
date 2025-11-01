@@ -589,33 +589,6 @@ setTimeout(showPopup, 3000);
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-  // === Shared Global State ===
-import { onValue, set, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-const stateRef = ref(db, "state");
-
-// Save a key → value pair to shared state
-async function setState(key, value) {
-  const snapshot = await get(stateRef);
-  const current = snapshot.exists() ? snapshot.val() : {};
-  current[key] = value;
-  set(stateRef, current);
-}
-
-// Restore effects when someone joins
-onValue(stateRef, (snap) => {
-  const state = snap.val();
-  if (!state) return;
-
-  if (state.event) startEvent(state.event);
-  if (state.matrixActive) startMatrix();
-  if (state.rainbowActive) startRainbow();
-  if (state.scrollActive) scrollUpStart();
-
-  if (!state.event) stopEvent();
-  if (!state.matrixActive) stopMatrix();
-  if (!state.rainbowActive) stopRainbow();
-  if (!state.scrollActive) stopScrollUp();
-});
 
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
@@ -879,81 +852,24 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
     const key = snapshot.key;
     if (!data) return;
 
-switch (data.type) {
-  case "announce":
-    showAnnouncement(data.text, data.admin);
-    break;
-
-  case "colorbackstart":
-    startColorBackground();
-    setState("colorActive", true);
-    break;
-
-  case "colorbackstop":
-    stopColorBackground();
-    setState("colorActive", false);
-    break;
-
-  case "startevent":
-    startEvent(data.text);
-    setState("event", data.text);
-    break;
-
-  case "stopevent":
-    stopEvent();
-    setState("event", null);
-    break;
-
-  case "playmusic":
-    playMusic(data.text);
-    setState("music", data.text);
-    break;
-
-  case "stopmusic":
-    stopMusic();
-    setState("music", null);
-    break;
-
-  case "spawn":
-    spawnImage(data.text);
-    break;
-
-  case "clearchat":
-  case "clearcheat":
-    clearChat();
-    break;
-
-  case "startrainbow":
-    startRainbow();
-    setState("rainbowActive", true);
-    break;
-
-  case "stoprainbow":
-    stopRainbow();
-    setState("rainbowActive", false);
-    break;
-
-  case "scrollupstart":
-    scrollUpStart();
-    setState("scrollActive", true);
-    break;
-
-  case "scrollupstop":
-    stopScrollUp();
-    setState("scrollActive", false);
-    break;
-
-  case "matrixstart":
-    startMatrix();
-    setState("matrixActive", true);
-    break;
-
-  case "matrixstop":
-    stopMatrix();
-    setState("matrixActive", false);
-    break;
-}
-
+    switch (data.type) {
+      case "announce": showAnnouncement(data.text, data.admin); break;
+      case "colorbackstart": startColorBackground(); break;
+      case "colorbackstop": stopColorBackground(); break;
+      case "startevent": startEvent(data.text); break;
+      case "stopevent": stopEvent(); break;
+      case "playmusic": playMusic(data.text); break;
+      case "stopmusic": stopMusic(); break;
+      case "spawn": spawnImage(data.text); break;
+      case "clearchat":
+      case "clearcheat": clearChat(); break;
+      case "startrainbow": startRainbow(); break;
+      case "stoprainbow": stopRainbow(); break;
+      case "scrollupstart": scrollUpStart(); break;
+      case "scrollupstop": stopScrollUp(); break;
+      case "matrixstart": startMatrix(); break;
+      case "matrixstop": stopMatrix(); break;
+    }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
 
