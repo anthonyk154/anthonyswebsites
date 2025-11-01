@@ -1318,7 +1318,8 @@ onValue(refreshRef, (snapshot) => {
       "jobjob" : "https://tr.rbxcdn.com/180DAY-0e1869f8333d3d4ea2693f280ee93c18/420/420/Hat/Webp/noFilter",
       "graipuss" : "https://tr.rbxcdn.com/180DAY-f7752d0653669a798baf116974851206/420/420/BackAccessory/Webp/noFilter",
       "chiclitera" : "https://tr.rbxcdn.com/180DAY-d0387f7a0327ff9d7424d8f54ca45009/420/420/JacketAccessory/Webp/noFilter",
-      "burguro" : "https://tr.rbxcdn.com/180DAY-410143d5ee5883a41613650d7a7b7bcf/420/420/BackAccessory/Webp/noFilter"
+      "burguro" : "https://tr.rbxcdn.com/180DAY-410143d5ee5883a41613650d7a7b7bcf/420/420/BackAccessory/Webp/noFilter",
+      "tungtung" : "https://www.imagenspng.com.br/wp-content/uploads/2025/05/Tung-Tung-Tung-Sahur-Brainrot-PNG-01.png"
     };
     url = library[url.toLowerCase()] || url;
     const img = document.createElement("img");
@@ -1336,7 +1337,7 @@ onValue(refreshRef, (snapshot) => {
   chatDiv.id = "liveChat";
   chatDiv.innerHTML = `
     <style>
-      /*      #liveChat {
+           #liveChat {
         position: fixed;
         bottom: 20px;
         right: 20px;
@@ -1360,7 +1361,7 @@ onValue(refreshRef, (snapshot) => {
       .msg .who {font-weight:bold; color:#22d3ee;}
       #chatInputBar {display:flex; border-top:1px solid rgba(255,255,255,0.2);}
       #chatInputBar input {flex:1; padding:6px; border:none; background:transparent; color:white;}
-      #chatInputBar button {background:#22d3ee; border:none; color:#000; padding:6px 10px; cursor:pointer;}*/
+      #chatInputBar button {background:#22d3ee; border:none; color:#000; padding:6px 10px; cursor:pointer;}
     </style>
     <div id="chatMessages"></div>
     <div id="chatInputBar"><input id="chatInput" placeholder="Type..." /><button id="chatSend">Send</button></div>
@@ -1473,7 +1474,7 @@ document.body.appendChild(menu);
 
 const adminCmds = ["announce", "refreshall", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
 const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween"];
-const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
+const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
 function fillList(listId, arr, prefix="") {
   const ul = document.getElementById(listId);
