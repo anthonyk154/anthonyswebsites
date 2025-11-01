@@ -601,34 +601,21 @@ async function setState(key, value) {
   set(stateRef, current);
 }
 
+// Restore effects when someone joins
 onValue(stateRef, (snap) => {
   const state = snap.val();
   if (!state) return;
 
-  // === Restore Active States ===
-  if (state.colorActive) startColorBackground();
+  if (state.event) startEvent(state.event);
+  if (state.matrixActive) startMatrix();
   if (state.rainbowActive) startRainbow();
   if (state.scrollActive) scrollUpStart();
-  if (state.matrixActive) startMatrix();
 
-  // === Event + Music Sync ===
-  if (state.event) {
-    // only restart if not already same event
-    if (!window.currentEvent || window.currentEvent !== state.event) {
-      startEvent(state.event);
-      window.currentEvent = state.event;
-    }
-  } else {
-    stopEvent();
-    window.currentEvent = null;
-  }
-  // === Stop Inactive States ===
-  if (!state.colorActive) stopColorBackground();
+  if (!state.event) stopEvent();
+  if (!state.matrixActive) stopMatrix();
   if (!state.rainbowActive) stopRainbow();
   if (!state.scrollActive) stopScrollUp();
-  if (!state.matrixActive) stopMatrix();
 });
-
 
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
