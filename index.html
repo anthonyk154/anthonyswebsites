@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AnthonysWebsites — Custom Sites by Anthony Kremyanskiy</title>
   <meta name="description" content="I build modern, fast, mobile-friendly websites for small businesses and creators. Message me to start your site today." />
-  <link rel="icon" type="image/png" href="world-globe.png" />
+  <link rel="icon" type="image/x-icon" href="https://files.catbox.moe/vdbq3u.png">
   <style>
-    /* (everything from your CSS stays the same) */
         :root{
       --bg:#0b1220;
       --bg-2:#0f172a;
@@ -23,7 +22,6 @@
       --shadow:0 10px 30px rgba(0,0,0,.35);
       --shadow-soft:0 6px 20px rgba(0,0,0,.25);
       --container:1100px;
-      --logo-anthony: <img src="computer.png" alt="">;
     }
 
     *{box-sizing:border-box}
@@ -289,8 +287,7 @@
 </head>
 
 <body id="top">
-  <!-- your full content unchanged -->
-  <!-- ... -->
+
   <header>
   <nav class="nav">
     <a href="#top" class="brand">
@@ -371,6 +368,12 @@
         <p>Sharp, high-converting landing pages for campaigns and product launches.</p>
         <div class="chip">A/B Ready</div><div class="chip">Analytics</div>
       </div>
+    </div>
+  </section>
+  
+  <section id="websitegallery">
+    <div class="container-gallery">
+      
     </div>
   </section>
 
@@ -456,7 +459,6 @@
         </div>
         <p style="margin-top:14px; color:#cbd5e1">Phone: <b>+1(929) 460-3635</b><br>Email: <b>anthonymakeswebsites@gmail.com</b><br></p>
       </div>
-
       <div class="card reveal">
         <h3 style="margin-top:0">Message Form</h3>
         <form id="contactForm" novalidate="">
@@ -730,7 +732,6 @@ setTimeout(showPopup, 3000);
         0% { transform: translateY(-10vh); opacity: 1; }
         100% { transform: translateY(110vh); opacity: 0; }
       }
-/* === PARTY LASER BEAMS === */
 .laser {
   position: fixed;
   top: 0;
@@ -889,10 +890,10 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
       document.body.appendChild(container);
     }
 
-let face = "anthonyface.png";
+let face = "https://files.catbox.moe/kfyiag.png";
 let name = "AnthonyOwner";
-if (admin === "mark") { face = "markface.png"; name = "MarkTheDev"; }
-if (admin === "alice") { face = "aliceface.png"; name = "AliceAdmin"; }
+if (admin === "mark") { face = "https://files.catbox.moe/pe8mn7.png"; name = "MarkTheDev"; }
+if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "AliceAdmin"; }
 
 
     const msg = document.createElement("div");
@@ -1030,7 +1031,7 @@ function startEvent(type) {
     playMusic("dstop");
     eventInterval = setInterval(() => {
       const dstop = document.createElement("img");
-      dstop.src = "dstopface.png";
+      dstop.src = "https://files.catbox.moe/h7t66k.png";
       dstop.className = "dstop";
       dstop.style.position = "fixed";
       dstop.style.width = (100 + Math.random() * 40) + "px";
@@ -1058,7 +1059,7 @@ function startEvent(type) {
     playMusic("la");
     eventInterval = setInterval(() => {
       const la = document.createElement("img");
-      la.src = "lacockroach.png";
+      la.src = "https://files.catbox.moe/qrg039.png";
       la.className = "la";
       la.style.position = "fixed";
       la.style.width = (100 + Math.random() * 40) + "px";
@@ -1072,7 +1073,7 @@ function startEvent(type) {
     playMusic("aurafarm");
     eventInterval = setInterval(() => {
       const aurafarm = document.createElement("img");
-      aurafarm.src = "aurafarmpic.png";
+      aurafarm.src = "https://files.catbox.moe/20myif.png";
       aurafarm.className = "aurafarm";
       aurafarm.style.position = "fixed";
       aurafarm.style.width = (100 + Math.random() * 40) + "px";
@@ -1104,8 +1105,6 @@ function startEvent(type) {
     stopMusic();
     document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung").forEach(e => e.remove());
   }
-  // === RAINBOW LASER COMMAND ===
-// === PARTY LASER MODE ===
 let laserInterval = null;
 
 function startRainbow() {
@@ -1139,8 +1138,8 @@ function stopRainbow() {
     const library = {
       "67": "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
       "lavaca": "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter",
-      "mark": "markface.png",
-      "anthony" : "anthonyface.png",
+      "mark": "https://files.catbox.moe/pe8mn7.png",
+      "anthony" : "https://files.catbox.moe/kfyiag.png",
       "dragon": "https://tr.rbxcdn.com/180DAY-aba6114123ad4c0fd4f23f6811e0c0e5/420/420/BackAccessory/Webp/noFilter",
       "elephant": "https://tr.rbxcdn.com/180DAY-5b7131b16d244c6f91d5987ad436bef7/420/420/WaistAccessory/Webp/noFilter",
       "kark" : "https://tr.rbxcdn.com/180DAY-01d2210153ecf3da74e0542af2ff2c56/420/420/WaistAccessory/Webp/noFilter",
@@ -1168,7 +1167,6 @@ function stopRainbow() {
     }, 4000);
   }
 
-  // === LIVE CHAT WIDGET ===
   const chatDiv = document.createElement("div");
   chatDiv.id = "liveChat";
   chatDiv.innerHTML = `
@@ -1236,7 +1234,6 @@ function stopRainbow() {
     remove(chatRef);
     chatMessages.innerHTML = "";
   }
-// === DRAGGABLE COMMAND MENU (ENHANCED) ===
 const menu = document.createElement("div");
 menu.id = "commandMenu";
 menu.innerHTML = `
@@ -1261,6 +1258,9 @@ menu.innerHTML = `
       overflow: auto;
       min-width: 200px;
       min-height: 150px;
+            cursor: move;
+      display: none;
+      user-select: none;
 
     }
     #commandMenu h3 {
@@ -1305,7 +1305,7 @@ menu.innerHTML = `
 `;
 document.body.appendChild(menu);
 
-// Fill out lists
+
 const adminCmds = ["announce","playmusic","stopmusic","colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "startrainbow", "stoprainbow"];
 const eventCmds = ["crab","taco","brazil","drill","dstop","russain","la", "aurafarm", "tung"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "dragon", "elephant", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
@@ -1316,7 +1316,7 @@ function fillList(listId, arr, prefix="") {
     const li = document.createElement("li");
     li.textContent = cmd;
     li.onclick = () => {
-      // auto-fill into admin input if console open
+     
       const input = document.getElementById("adminInput");
       if (input) {
         input.value = prefix + cmd;
@@ -1331,7 +1331,7 @@ fillList("adminCmds", adminCmds);
 fillList("eventCmds", eventCmds, "startevent ");
 fillList("spawnCmds", spawnCmds, "spawn ");
 
-// Toggle menu with F3
+
 let menuVisible = false;
 document.addEventListener("keydown", e => {
   if (e.key === "F2") {
@@ -1341,7 +1341,18 @@ document.addEventListener("keydown", e => {
   }
 });
 
-
+let offsetX, offsetY, isDragging = false;
+menu.addEventListener("mousedown", e => {
+  isDragging = true;
+  offsetX = e.clientX - menu.offsetLeft;
+  offsetY = e.clientY - menu.offsetTop;
+});
+document.addEventListener("mouseup", () => (isDragging = false));
+document.addEventListener("mousemove", e => {
+  if (!isDragging) return;
+  menu.style.left = e.clientX - offsetX + "px";
+  menu.style.top = e.clientY - offsetY + "px";
+});
 </script>
 
 </body>
