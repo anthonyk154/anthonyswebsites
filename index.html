@@ -771,7 +771,7 @@ const commands = [
   "announce","playmusic","stopmusic","startevent","stopevent",
   "colorbackstart","colorbackstop","spawn","clearchat",
   "startrainbow","stoprainbow","scrollupstart","scrollupstop",
-  "matrixstart","matrixstop","warning"
+  "matrixstart","matrixstop","warning", "flashbang"
 ];
 
 
@@ -871,9 +871,29 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
       case "matrixstop": stopMatrix(); break;
       case "refreshall":triggerRefreshAll();break;
       case "warning": showWarning(); break;
+      case "flashbang": flashbang(); break;
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
+  function flashbang() {
+  const flash = document.createElement("div");
+  flash.style.position = "fixed";
+  flash.style.top = "0";
+  flash.style.left = "0";
+  flash.style.width = "100%";
+  flash.style.height = "100%";
+  flash.style.background = "white";
+  flash.style.opacity = "1";
+  flash.style.transition = "opacity 1s ease-out";
+  flash.style.zIndex = "999999";
+  flash.style.pointerEvents = "none";
+  document.body.appendChild(flash);
+
+
+  setTimeout(() => (flash.style.opacity = "0"), 1000);
+  setTimeout(() => flash.remove(), 30000);
+}
+
 
   function showAnnouncement(text, admin = "anthony") {
     const containerId = "announcementContainer";
@@ -1149,13 +1169,13 @@ function startEvent(type) {
     }, 200);
     
 }
-// === SNAP EVENT (Animated) ===
+
 if (t.includes("snap")) {
   playMusic("snap");
 
-  // Create snapper
+
   const snapper = document.createElement("img");
-  snapper.src = "https://files.catbox.moe/49vmfx.png"; // standing pose
+  snapper.src = "https://files.catbox.moe/49vmfx.png"; 
   snapper.style.position = "fixed";
   snapper.style.bottom = "0";
   snapper.style.left = "-300px";
@@ -1164,10 +1184,10 @@ if (t.includes("snap")) {
   snapper.style.zIndex = "10000";
   document.body.appendChild(snapper);
 
-  // Walk in
+ 
   setTimeout(() => (snapper.style.left = "40%"), 100);
 
-  // Prepare 2nd image for the snap animation
+
   const snapHand = document.createElement("img");
   snapHand.style.position = "fixed";
   snapHand.style.bottom = "0";
@@ -1179,13 +1199,13 @@ if (t.includes("snap")) {
   snapHand.style.zIndex = "10001";
   document.body.appendChild(snapHand);
 
-  // SNAP after walking in
+ 
   setTimeout(() => {
-    // hand snap animation
+  
     snapper.style.opacity = "0";
     snapHand.style.opacity = "1";
 
-    // flash + shake
+   
     const flash = document.createElement("div");
     flash.style.position = "fixed";
     flash.style.top = "0";
@@ -1203,7 +1223,7 @@ if (t.includes("snap")) {
     document.body.classList.add("shake-active");
     setTimeout(() => document.body.classList.remove("shake-active"), 1000);
 
-    // burst chaos
+   
     const spawnList = [
       "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
       "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter",
@@ -1244,9 +1264,9 @@ if (t.includes("snap")) {
       burstCount++;
       if (burstCount > 60) clearInterval(burst);
     }, 70);
-  }, 2500); // Snap happens after walk-in
+  }, 2500); 
 
-  // Walk away + cleanup
+  
   setTimeout(() => {
     snapHand.style.transition = "left 2s ease-in-out, opacity 1s";
     snapHand.style.left = "110%";
@@ -1376,7 +1396,6 @@ function showWarning() {
     animation: "fadeWarn 4s ease forwards"
   });
 
-  // Add keyframes for fade effect
   const style = document.createElement("style");
   style.textContent = `
     @keyframes fadeWarn {
@@ -1407,32 +1426,32 @@ function stopScrollUp() {
   clearInterval(scrollInterval);
   scrollInterval = null;
 }
-// === GLOBAL REFRESH (One-Time True Fix) ===
+
 import { onValue, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-// Create a single node instead of pushing multiple
+
 const refreshRef = ref(db, "refreshSignal");
 
-// === ADMIN TRIGGER ===
-function triggerRefreshAll() {
-  if (currentAdmin !== "anthony") return; // only you can trigger
 
-  // Write a unique timestamp flag to Firebase
+function triggerRefreshAll() {
+  if (currentAdmin !== "anthony") return; 
+
+ 
   set(refreshRef, { time: Date.now(), by: currentAdmin });
 }
 
-// === CLIENT LISTENER (one-time) ===
+
 let lastRefreshTime = sessionStorage.getItem("lastRefreshTime") || "0";
 
 onValue(refreshRef, (snapshot) => {
   const data = snapshot.val();
   if (!data) return;
 
-  // Only run if it’s a new signal and hasn’t already refreshed
+
   if (parseInt(data.time) > parseInt(lastRefreshTime)) {
     sessionStorage.setItem("lastRefreshTime", data.time);
 
-    // Optional popup for feedback
+  
     const popup = document.createElement("div");
     Object.assign(popup.style, {
     });
@@ -1623,7 +1642,7 @@ menu.innerHTML = `
 document.body.appendChild(menu);
 
 
-const adminCmds = ["announce", "refreshall", "warning", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
+const adminCmds = ["announce", "refreshall", "warning", "flashbang", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
 const eventCmds = ["crab","taco","brazil", "snap", "drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween", "christmas"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "dragon", "spooky", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
