@@ -771,7 +771,7 @@ const commands = [
   "announce","playmusic","stopmusic","startevent","stopevent",
   "colorbackstart","colorbackstop","spawn","clearchat",
   "startrainbow","stoprainbow","scrollupstart","scrollupstop",
-  "matrixstart","matrixstop","warning", "flashbang"
+  "matrixstart","matrixstop","warning", "flashbang", "volup","voldown"
 ];
 
 
@@ -872,6 +872,8 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
       case "refreshall":triggerRefreshAll();break;
       case "warning": showWarning(); break;
       case "flashbang": flashbang(); break;
+      case "volup": volumeUp(); break;
+      case "voldown": volumeDown(); break;
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
@@ -980,11 +982,25 @@ if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "A
     else if (t.includes("hammali")) src = "hammali.mp3";
     else if (t.includes("halloween")) src = "halloween.mp3";
     else if (t.includes("christmas")) src = "christmas.mp3";
+    else if (t.includes("theme")) src = "theme.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
     audio.play();
   }
+function volumeUp() {
+  if (audio) {
+    audio.volume = Math.min(1, audio.volume + 0.1);
+    showAnnouncement("🔊 Volume: " + Math.round(audio.volume * 100) + "%", "anthony");
+  }
+}
+
+function volumeDown() {
+  if (audio) {
+    audio.volume = Math.max(0, audio.volume - 0.1);
+    showAnnouncement("🔉 Volume: " + Math.round(audio.volume * 100) + "%", "anthony");
+  }
+}
 
   function stopMusic() {
     if (audio) {
@@ -1169,7 +1185,20 @@ function startEvent(type) {
     }, 200);
     
 }
-
+          if (t.includes("theme")) {
+    playMusic("theme");
+    eventInterval = setInterval(() => {
+      const theme = document.createElement("img");
+      theme.className = "theme";
+      theme.style.position = "fixed";
+      theme.style.width = (100 + Math.random() * 40) + "px";
+      theme.style.left = Math.random() * 100 + "vw";
+      theme.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(theme);
+      setTimeout(() => theme.remove(), 4000);
+    }, 200);
+    
+}
 if (t.includes("snap")) {
   playMusic("snap");
 
@@ -1283,7 +1312,7 @@ if (t.includes("snap")) {
   function stopEvent() {
     clearInterval(eventInterval); 
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas, .theme").forEach(e => e.remove());
   }
 let laserInterval = null;
 
@@ -1643,7 +1672,7 @@ document.body.appendChild(menu);
 
 
 const adminCmds = ["announce", "refreshall", "warning", "flashbang", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["crab","taco","brazil", "snap", "drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween", "christmas"];
+const eventCmds = ["theme", "crab","taco","brazil", "snap", "drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween", "christmas"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "dragon", "spooky", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
 function fillList(listId, arr, prefix="") {
