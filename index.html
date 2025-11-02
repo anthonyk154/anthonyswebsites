@@ -959,6 +959,7 @@ if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "A
     else if (t.includes("tung")) src = "tung.mp3";
     else if (t.includes("hammali")) src = "hammali.mp3";
     else if (t.includes("halloween")) src = "halloween.mp3";
+    else if (t.includes("christmas")) src = "christmas.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -1117,6 +1118,22 @@ function startEvent(type) {
     }, 200);
     
 }
+          if (t.includes("christmas")) {
+    playMusic("christmas");
+    eventInterval = setInterval(() => {
+      const christmas = document.createElement("img");
+      christmas.src = "https://png.pngtree.com/png-vector/20230803/ourmid/pngtree-christmas-jingle-bells-vector-png-image_6884130.png";
+      christmas.className = "christmas";
+      christmas.style.position = "fixed";
+      christmas.style.width = (100 + Math.random() * 40) + "px";
+      christmas.style.left = Math.random() * 100 + "vw";
+      christmas.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(christmas);
+      setTimeout(() => christmas.remove(), 4000);
+    }, 200);
+    
+}
+
           if (t.includes("halloween")) {
     playMusic("halloween");
     eventInterval = setInterval(() => {
@@ -1246,7 +1263,7 @@ if (t.includes("snap")) {
   function stopEvent() {
     clearInterval(eventInterval); 
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas").forEach(e => e.remove());
   }
 let laserInterval = null;
 
@@ -1417,19 +1434,7 @@ onValue(refreshRef, (snapshot) => {
 
     // Optional popup for feedback
     const popup = document.createElement("div");
-    popup.textContent = "🔁 Refresh triggered by Anthony Montana";
     Object.assign(popup.style, {
-      position: "fixed",
-      bottom: "40%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      background: "rgba(0,0,0,0.8)",
-      color: "#0ff",
-      padding: "15px 30px",
-      borderRadius: "10px",
-      fontFamily: "monospace",
-      fontSize: "1.2rem",
-      zIndex: "999999",
     });
     document.body.appendChild(popup);
 
@@ -1618,7 +1623,7 @@ document.body.appendChild(menu);
 
 
 const adminCmds = ["announce", "refreshall", "warning", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["crab","taco","brazil", "snap", "drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween"];
+const eventCmds = ["crab","taco","brazil", "snap", "drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween", "christmas"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "dragon", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
 
 function fillList(listId, arr, prefix="") {
