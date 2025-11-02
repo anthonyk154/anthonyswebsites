@@ -25,7 +25,9 @@
       --container:1100px;
     }
 
-    *{box-sizing:border-box}
+    *{
+      box-sizing:border-box
+    }
     html,body{margin:0;padding:0;background:radial-gradient(1200px 600px at 90% -10%, rgba(79,70,229,.25), transparent 60%), radial-gradient(900px 500px at -10% 20%, rgba(34,211,238,.2), transparent 60%), var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; scroll-behavior:smooth}
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
@@ -119,7 +121,7 @@
 
     
     .reveal{opacity:0; transform:translateY(18px); transition:all .6s cubic-bezier(.2,.65,.2,1)}
-    .reveal.show{opacity:1; transform:none} 
+    .reveal.show{ text-align: center; opacity:1; transform:none} 
     .pop{animation:pop .6s ease .1s both}
     @keyframes pop{from{transform:scale(.98); opacity:0} to{transform:scale(1); opacity:1}}
 
@@ -284,6 +286,102 @@
 @media(max-width:600px){
   .promo-popup{bottom:15px; right:15px; padding:16px;}
   }
+* {
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+
+/* Position the image container (needed to position the left and right arrows) */
+.container {
+  position: relative;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+  width: 1000px;
+  border-radius: 20px;
+}
+
+
+.cursor {
+  cursor: pointer;
+}
+
+
+.prev{
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: rgb(25, 0, 255);
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  right: 0px;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: rgb(25, 0, 255);
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.column {
+  float: left;
+  width: 16.66%;
+}
+
+
+.demo {
+  opacity: 0.6;
+}
+
+.active,
+.demo:hover {
+  opacity: 1;
+}
+#webgallery{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
   </style>
 </head>
 
@@ -301,6 +399,7 @@
 
     <div class="links" style="transition: color 0.3s ease;">
       <a href="#services">Services</a>
+      <a href="#webgallery">Work</a>
       <a href="#skillsmenu">Skills</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact" class="cta">Contact Me</a>
@@ -372,11 +471,50 @@
     </div>
   </section>
   
-  <section id="websitegallery">
-    <div class="container-gallery">
-      
-    </div>
-  </section>
+  <section id="webgallery">
+<div class="container">
+  <br>
+  <br>
+  <div class="portclass"><h2 style=" text-align: center; opacity:1; transform:none">Work</h2></div>
+<div class="container">
+  <div class="mySlides">
+    <a href="https://www.fortuneflowers.net/"><img src="https://files.catbox.moe/s80w4y.png" style="width:100%"></a>
+  </div>
+
+  <div class="mySlides">
+      <a href="https://anthonykrem154.github.io/yuri-skatewebsite/"><img src="https://files.catbox.moe/la47h1.png" style="width:100%"></a>
+  </div>
+
+  <div class="mySlides">
+      <img src="packsmartsite.png" style="width:100%">
+  </div>
+
+  <div class="mySlides">
+      <img src="img_lights_wide.jpg" style="width:100%">
+  </div>
+
+  <div class="mySlides">
+      <img src="img_nature_wide.jpg" style="width:100%">
+  </div>
+
+  <div class="mySlides">
+      <img src="img_snow_wide.jpg" style="width:100%">
+  </div>
+<div class="openclick" style="text-align: center;"><small style="text-align: center;">(click to open)</small></div>
+
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+
+  <div class="caption-container">
+    <p id="caption"></p>
+  </div>
+  </div>
+</div>
+    </section>
+<a href="CalculatorApp.exe" style="text-align: center;"  download>
+  ⬇️ Download Calculator App for Windows
+</a>
 
 <section id="skillsmenu" class="section" style="text-align:center;">
   <h2 class="reveal show">My Skills &amp; Tools</h2>
@@ -483,7 +621,38 @@
       <small>Built with love and clean code 💙💙💙💻</small>
     </div>
   </footer>
+<script>
+let slideIndex = 1;
+showSlides(slideIndex);
 
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("demo");
+  let captionText = document.getElementById("caption");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  captionText.innerHTML = dots[slideIndex-1].alt;
+}
+</script>
   <script>
 
 
