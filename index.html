@@ -1186,6 +1186,7 @@ function clearAll() {
     if (t.includes("taco")) src = "raintacos.mp3";
     else if (t.includes("brazil")) src = "brazil.mp3";
     else if (t.includes("drill")) src = "drill.mp3";
+    else if (t.includes("stilldre")) src = "stilldre.mp3";
     else if (t.includes("crab")) src = "crabravesound.mp3";
     else if (t.includes("dstop")) src = "dstop.mp3";
     else if (t.includes("russain")) src = "russain.mp3";
@@ -1237,6 +1238,32 @@ function startEvent(type) {
       setTimeout(() => taco.remove(), 3000);
     }, 150);
   }
+  if (t.includes("stilldre")) {
+  flashbang(); 
+  playMusic("stilldre");
+  document.body.style.backgroundColor = "black";
+  eventInterval = setInterval(() => {
+    const dre = document.createElement("img");
+    dre.src = "https://files.catbox.moe/ue2xqt.jpg";
+    dre.className = "stilldre";
+    dre.style.position = "fixed";
+    dre.style.width = (200 + Math.random() * 40) + "px";
+    dre.style.left = Math.random() * 100 + "vw";
+    dre.style.bottom = Math.random() * 50 + "vh";
+    dre.style.transition = "transform 3s linear, opacity 3s ease";
+    dre.style.opacity = "1";
+    document.body.appendChild(dre);
+
+  
+    setTimeout(() => {
+      dre.style.transform = "translateY(-100vh) rotate(" + (Math.random() * 360) + "deg)";
+      dre.style.opacity = "0";
+    }, 200);
+
+    setTimeout(() => dre.remove(), 4000);
+  }, 200);
+}
+
 
   if (t.includes("crab")) {
     playMusic("crab");
@@ -1280,7 +1307,7 @@ function startEvent(type) {
       document.body.appendChild(drill);
       setTimeout(() => drill.remove(), 4000);
     }, 200);
-  }
+}
 
   if (t.includes("dstop")) {
     playMusic("dstop");
@@ -1432,8 +1459,6 @@ function startEvent(type) {
       document.body.appendChild(strawberry);
       setTimeout(() => strawberry.remove(), 4000);
     }, 200);
-    
-    
 }
 if (t.includes("snap")) {
   playMusic("snap");
@@ -1548,7 +1573,7 @@ if (t.includes("snap")) {
   function stopEvent() {
     clearInterval(eventInterval); 
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas, .theme, .strawberry").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas, .theme, .strawberry, .stilldre").forEach(e => e.remove());
   }
 let laserInterval = null;
 
@@ -1915,7 +1940,7 @@ document.body.appendChild(menu);
 
 
 const adminCmds = ["announce", "refreshall", "warning", "flashbang", "volup", "voldown", "colorbackstart","colorbackstop","clearchat", "clearall", "jumpscare", "spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween", "christmas"];
+const eventCmds = ["theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "aurafarm", "stilldre", "tung", "hammali", "halloween", "christmas"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "dragon", "spookylcky", "adminlcky", "tacolcky", "secretlcky", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "lostraliotes", "ketupat", "duldul", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro", "skibidi"];
 
 function fillList(listId, arr, prefix="") {
