@@ -940,7 +940,8 @@ const commands = [
   "announce","playmusic","stopmusic","startevent","stopevent",
   "colorbackstart","colorbackstop","spawn","clearchat",
   "startrainbow","stoprainbow","scrollupstart","scrollupstop",
-  "matrixstart","matrixstop","warning", "flashbang", "volup","voldown"
+  "matrixstart","matrixstop","warning", "flashbang", "volup","voldown",
+   "jumpscare","clearall",
 ];
 
 
@@ -1043,6 +1044,9 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem") {
       case "flashbang": flashbang(); break;
       case "volup": volumeUp(); break;
       case "voldown": volumeDown(); break;
+      case "jumpscare": startJumpscare(); break;
+      case "clearall": clearAll(); break;
+
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
@@ -1134,6 +1138,46 @@ if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "A
     colorInterval = null;
     document.body.style.background = "";
   }
+  // === JUMPSCARE ===
+function startJumpscare() {
+  const img = document.createElement("img");
+  img.src = "https://i.pinimg.com/236x/05/81/c2/0581c2e4a446bdcd66cbdb8b35153872.jpg"; // use your own scary image
+  img.style.position = "fixed";
+  img.style.top = "0";
+  img.style.left = "0";
+  img.style.width = "100vw";
+  img.style.height = "100vh";
+  img.style.objectFit = "cover";
+  img.style.zIndex = "999999";
+  img.style.transition = "opacity 0.3s ease";
+  img.style.opacity = "1";
+  document.body.appendChild(img);
+
+  const scream = new Audio("https://www.myinstants.com/media/sounds/scream.mp3");
+  scream.volume = 1;
+  scream.play();
+
+  setTimeout(() => {
+    img.style.opacity = "0";
+    setTimeout(() => img.remove(), 500);
+  }, 2000);
+}
+
+// === CLEAR EVERYTHING ===
+function clearAll() {
+  // Stop music and intervals
+  stopMusic();
+  stopEvent();
+  stopRainbow();
+  stopMatrix();
+  stopScrollUp();
+  document.body.style.background = "";
+  document.body.style.filter = "";
+  document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .laser, canvas, img, div.spawned-img").forEach(e => {
+    if (e.id !== "commandMenu" && e.id !== "liveChat" && e.id !== "adminConsole")
+      e.remove();
+  }); 
+}
 
   function playMusic(type = "") {
     stopMusic();
@@ -1160,14 +1204,14 @@ if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "A
 function volumeUp() {
   if (audio) {
     audio.volume = Math.min(1, audio.volume + 0.1);
-    showAnnouncement("🔊 Volume: " + Math.round(audio.volume * 100) + "%", "anthony");
+    showAnnouncement("🔊 Volume: " + Math.round(audio.volume * 100) + "%");
   }
 }
 
 function volumeDown() {
   if (audio) {
     audio.volume = Math.max(0, audio.volume - 0.1);
-    showAnnouncement("🔉 Volume: " + Math.round(audio.volume * 100) + "%", "anthony");
+    showAnnouncement("🔉 Volume: " + Math.round(audio.volume * 100) + "%");
   }
 }
 
@@ -1372,6 +1416,24 @@ function startEvent(type) {
       setTimeout(() => theme.remove(), 4000);
     }, 200);
     
+    
+}
+          if (t.includes("strawberry")) {
+            flashbang();
+    document.body.style.backgroundColor = "#b70321";
+    eventInterval = setInterval(() => {
+      const strawberry = document.createElement("img");
+      strawberry.src = "https://files.catbox.moe/xcc5b3.png";
+      strawberry.className = "strawberry";
+      strawberry.style.position = "fixed";
+      strawberry.style.width = (100 + Math.random() * 40) + "px";
+      strawberry.style.left = Math.random() * 100 + "vw";
+      strawberry.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(strawberry);
+      setTimeout(() => strawberry.remove(), 4000);
+    }, 200);
+    
+    
 }
 if (t.includes("snap")) {
   playMusic("snap");
@@ -1486,7 +1548,7 @@ if (t.includes("snap")) {
   function stopEvent() {
     clearInterval(eventInterval); 
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas, .theme").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas, .theme, .strawberry").forEach(e => e.remove());
   }
 let laserInterval = null;
 
@@ -1678,7 +1740,7 @@ onValue(refreshRef, (snapshot) => {
       "anthony" : "https://files.catbox.moe/kfyiag.png",
       "alice" : "https://files.catbox.moe/5qlb84.png",
       "dragon": "https://tr.rbxcdn.com/180DAY-aba6114123ad4c0fd4f23f6811e0c0e5/420/420/BackAccessory/Webp/noFilter",
-      "spooky" : "https://files.catbox.moe/g3votc.png",
+      "spookylcky" : "https://files.catbox.moe/g3votc.png",
       "elephant": "https://tr.rbxcdn.com/180DAY-5b7131b16d244c6f91d5987ad436bef7/420/420/WaistAccessory/Webp/noFilter",
       "kark" : "https://tr.rbxcdn.com/180DAY-01d2210153ecf3da74e0542af2ff2c56/420/420/WaistAccessory/Webp/noFilter",
       "garama" : "https://tr.rbxcdn.com/180DAY-f8d6b7a9caa978bf4fb72a9b10a24be8/420/420/BackAccessory/Webp/noFilter",
@@ -1692,7 +1754,14 @@ onValue(refreshRef, (snapshot) => {
       "graipuss" : "https://tr.rbxcdn.com/180DAY-f7752d0653669a798baf116974851206/420/420/BackAccessory/Webp/noFilter",
       "chiclitera" : "https://tr.rbxcdn.com/180DAY-d0387f7a0327ff9d7424d8f54ca45009/420/420/JacketAccessory/Webp/noFilter",
       "burguro" : "https://tr.rbxcdn.com/180DAY-410143d5ee5883a41613650d7a7b7bcf/420/420/BackAccessory/Webp/noFilter",
-      "tungtung" : "https://www.imagenspng.com.br/wp-content/uploads/2025/05/Tung-Tung-Tung-Sahur-Brainrot-PNG-01.png"
+      "tungtung" : "https://www.imagenspng.com.br/wp-content/uploads/2025/05/Tung-Tung-Tung-Sahur-Brainrot-PNG-01.png",
+      "skibidi" : "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Skibidi_Toilet.svg/1181px-Skibidi_Toilet.svg.png",
+      "lostraliotes" : "https://tr.rbxcdn.com/180DAY-26182675b92f2ad9a61ecae30a2b8ead/420/420/BackAccessory/Webp/noFilter",
+      "ketupat" : "https://cdn.salla.sa/jDznl/9f9f72b5-e640-4a02-bd05-9ace64cdcf8a-1000x1000-R5eCNaBnp3blvTv8GJrR69vIVa0eILaTfKb6BzLH.png",
+      "duldul" : "https://steal-a-brainrot.wiki/wp-content/uploads/2025/07/Dul-Dul-Dul.png",
+      "secretlcky" : "https://tr.rbxcdn.com/180DAY-adb72ef001e78f6706df0163a600e476/420/420/Hat/Webp/noFilter",
+      "adminlcky" : "https://tr.rbxcdn.com/180DAY-89e48837fde1f608bd6617e6d500e3d3/420/420/BackAccessory/Webp/noFilter",
+      "tacolcky" : "https://files.catbox.moe/x0gm0c.png"
     };
     url = library[url.toLowerCase()] || url;
     const img = document.createElement("img");
@@ -1845,9 +1914,9 @@ menu.innerHTML = `
 document.body.appendChild(menu);
 
 
-const adminCmds = ["announce", "refreshall", "warning", "flashbang", "volup", "voldown", "colorbackstart","colorbackstop","clearchat","spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["theme", "crab","taco","brazil", "snap", "drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween", "christmas"];
-const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "dragon", "spooky", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro"];
+const adminCmds = ["announce", "refreshall", "warning", "flashbang", "volup", "voldown", "colorbackstart","colorbackstop","clearchat", "clearall", "jumpscare", "spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
+const eventCmds = ["theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "aurafarm", "tung", "hammali", "halloween", "christmas"];
+const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "dragon", "spookylcky", "adminlcky", "tacolcky", "secretlcky", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "lostraliotes", "ketupat", "duldul", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro", "skibidi"];
 
 function fillList(listId, arr, prefix="") {
   const ul = document.getElementById(listId);
