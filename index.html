@@ -1197,6 +1197,7 @@ function clearAll() {
     else if (t.includes("halloween")) src = "halloween.mp3";
     else if (t.includes("christmas")) src = "christmas.mp3";
     else if (t.includes("theme")) src = "theme.mp3";
+    else if (t.includes("nextepisode")) src = "nextepisode.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -1241,6 +1242,31 @@ function startEvent(type) {
   if (t.includes("stilldre")) {
   flashbang(); 
   playMusic("stilldre");
+  document.body.style.backgroundColor = "black";
+  eventInterval = setInterval(() => {
+    const dre = document.createElement("img");
+    dre.src = "https://files.catbox.moe/ue2xqt.jpg";
+    dre.className = "stilldre";
+    dre.style.position = "fixed";
+    dre.style.width = (200 + Math.random() * 40) + "px";
+    dre.style.left = Math.random() * 100 + "vw";
+    dre.style.bottom = Math.random() * 50 + "vh";
+    dre.style.transition = "transform 3s linear, opacity 3s ease";
+    dre.style.opacity = "1";
+    document.body.appendChild(dre);
+
+  
+    setTimeout(() => {
+      dre.style.transform = "translateY(-100vh) rotate(" + (Math.random() * 360) + "deg)";
+      dre.style.opacity = "0";
+    }, 200);
+
+    setTimeout(() => dre.remove(), 4000);
+  }, 200);
+}
+  if (t.includes("nextepisode")) {
+  flashbang(); 
+  playMusic("nextepisode");
   document.body.style.backgroundColor = "black";
   eventInterval = setInterval(() => {
     const dre = document.createElement("img");
@@ -1940,7 +1966,7 @@ document.body.appendChild(menu);
 
 
 const adminCmds = ["announce", "refreshall", "warning", "flashbang", "volup", "voldown", "colorbackstart","colorbackstop","clearchat", "clearall", "jumpscare", "spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "aurafarm", "stilldre", "tung", "hammali", "halloween", "christmas"];
+const eventCmds = ["theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "aurafarm", "stilldre", "nextepisode", "tung", "hammali", "halloween", "christmas"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "dragon", "spookylcky", "adminlcky", "tacolcky", "secretlcky", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "lostraliotes", "ketupat", "duldul", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro", "skibidi"];
 
 function fillList(listId, arr, prefix="") {
