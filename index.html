@@ -32,8 +32,8 @@
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
 
-   
-    header{
+    
+      header{
       position:sticky; top:0; z-index:50;
       backdrop-filter:saturate(140%) blur(10px);
       background:rgba(15,23,42,.65);
@@ -1240,13 +1240,14 @@ function startEvent(type) {
       setTimeout(() => taco.remove(), 3000);
     }, 150);
   }
-  if (t.includes("stilldre")) {
-  flashbang(); 
+if (t.includes("stilldre")) {
+  flashbang(); // 💥 quick white flash
   playMusic("stilldre");
-  document.body.style.backgroundColor = "black";
+  startGreenRainbow(); // 🟢 trigger green lasers
+
   eventInterval = setInterval(() => {
     const dre = document.createElement("img");
-    dre.src = "https://files.catbox.moe/ue2xqt.jpg";
+    dre.src = "https://files.catbox.moe/ue2xqt.jpg"; // Still Dre album art
     dre.className = "stilldre";
     dre.style.position = "fixed";
     dre.style.width = (200 + Math.random() * 40) + "px";
@@ -1256,18 +1257,20 @@ function startEvent(type) {
     dre.style.opacity = "1";
     document.body.appendChild(dre);
 
-  
+    // drift upward and fade
     setTimeout(() => {
       dre.style.transform = "translateY(-100vh) rotate(" + (Math.random() * 360) + "deg)";
       dre.style.opacity = "0";
-    }, 200);
+    }, 50);
 
     setTimeout(() => dre.remove(), 4000);
-  }, 200);
+  }, 250);
 }
+
   if (t.includes("nextepisode")) {
   flashbang(); 
   playMusic("nextepisode");
+   startGreenRainbow(); // 🟢 trigger green lasers
   document.body.style.backgroundColor = "black";
   eventInterval = setInterval(() => {
     const dre = document.createElement("img");
@@ -1624,7 +1627,7 @@ if (t.includes("snap")) {
   function stopEvent() {
     clearInterval(eventInterval); 
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas, .theme, .strawberry, .stilldre").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas, .theme, .strawberry, .stilldre, .nextepisode").forEach(e => e.remove());
   }
 let laserInterval = null;
 
@@ -1653,6 +1656,28 @@ let scrollInterval = null;
 let matrixCanvas = null;
 let matrixCtx = null;
 let matrixInterval = null;
+
+let greenLaserInterval = null;
+
+function startGreenRainbow() {
+  stopGreenRainbow();
+  greenLaserInterval = setInterval(() => {
+    const beam = document.createElement("div");
+    beam.className = "laser";
+    beam.style.setProperty("--hue", 120); // pure green hue
+    beam.style.left = Math.random() * 100 + "vw";
+    beam.style.transform = `rotate(${Math.random() * 360}deg) scaleY(${1 + Math.random()})`;
+    beam.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+    document.body.appendChild(beam);
+    setTimeout(() => beam.remove(), 2500);
+  }, 100);
+}
+
+function stopGreenRainbow() {
+  clearInterval(greenLaserInterval);
+  greenLaserInterval = null;
+  document.querySelectorAll(".laser").forEach(el => el.remove());
+}
 
 function startMatrix() {
   stopMatrix();
@@ -1990,7 +2015,7 @@ menu.innerHTML = `
 document.body.appendChild(menu);
 
 
-const adminCmds = ["announce", "refreshall", "warning", "flashbang", "volup", "voldown", "colorbackstart","colorbackstop","clearchat", "clearall", "jumpscare", "spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
+const adminCmds = ["announce", "refreshall", "warning", "flashbang", "volup", "voldown", "colorbackstart","colorbackstop", "clearall", "clearchat", "jumpscare", "spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
 const eventCmds = ["theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "mustafa", "aurafarm", "stilldre", "nextepisode", "tung", "hammali", "halloween", "christmas"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "dragon", "spookylcky", "adminlcky", "tacolcky", "secretlcky", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "lostraliotes", "ketupat", "duldul", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro", "skibidi"];
 
