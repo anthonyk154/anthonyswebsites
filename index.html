@@ -408,6 +408,8 @@
   </nav>
 </header>
 
+  <h1 style="text-align: center; padding-top: 0%;">admin abuse at 8:00 est</h1><!--admin abuse at TEXT est-->
+  <h4 style="text-align: center; padding-bottom: 0px;">Anthony</h4> <!-- name-->
   
   <section class="section hero">
     <div>
@@ -941,7 +943,7 @@ const commands = [
   "colorbackstart","colorbackstop","spawn","clearchat",
   "startrainbow","stoprainbow","scrollupstart","scrollupstop",
   "matrixstart","matrixstop","warning", "flashbang", "volup","voldown",
-   "jumpscare","clearall",
+   "jumpscare","clearall", "revokeadmin","giveadmin"
 ];
 
 
@@ -1233,6 +1235,7 @@ function startEvent(type) {
 
   if (t.includes("taco")) {
     playMusic("taco");
+    starttacoRainbow(); 
     eventInterval = setInterval(() => {
       const taco = document.createElement("div");
       taco.textContent = "🌮";
@@ -1324,6 +1327,7 @@ if (t.includes("stilldre")) {
 
   if (t.includes("crab")) {
     playMusic("crab");
+    startcrabRainbow();
     eventInterval = setInterval(() => {
       const crab = document.createElement("div");
       crab.textContent = "🦀";
@@ -1667,7 +1671,7 @@ function startGreenRainbow() {
   greenLaserInterval = setInterval(() => {
     const beam = document.createElement("div");
     beam.className = "laser";
-    beam.style.setProperty("--hue", 120); // pure green hue
+    beam.style.setProperty("--hue", 120); 
     beam.style.left = Math.random() * 100 + "vw";
     beam.style.transform = `rotate(${Math.random() * 360}deg) scaleY(${1 + Math.random()})`;
     beam.style.animationDuration = (1.5 + Math.random() * 2) + "s";
@@ -1677,6 +1681,44 @@ function startGreenRainbow() {
 }
 
 function stopGreenRainbow() {
+  clearInterval(greenLaserInterval);
+  greenLaserInterval = null;
+  document.querySelectorAll(".laser").forEach(el => el.remove());
+}
+function startcrabRainbow() {
+  stopGreenRainbow();
+  greenLaserInterval = setInterval(() => {
+    const beam = document.createElement("div");
+    beam.className = "laser";
+    beam.style.setProperty("--hue", 340);
+    beam.style.left = Math.random() * 100 + "vw";
+    beam.style.transform = `rotate(${Math.random() * 360}deg) scaleY(${1 + Math.random()})`;
+    beam.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+    document.body.appendChild(beam);
+    setTimeout(() => beam.remove(), 2500);
+  }, 100);
+}
+
+function stopcrabRainbow() {
+  clearInterval(greenLaserInterval);
+  greenLaserInterval = null;
+  document.querySelectorAll(".laser").forEach(el => el.remove());
+}
+function starttacoRainbow() {
+  stopGreenRainbow();
+  greenLaserInterval = setInterval(() => {
+    const beam = document.createElement("div");
+    beam.className = "laser";
+    beam.style.setProperty("--hue", 46); 
+    beam.style.left = Math.random() * 100 + "vw";
+    beam.style.transform = `rotate(${Math.random() * 360}deg) scaleY(${1 + Math.random()})`;
+    beam.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+    document.body.appendChild(beam);
+    setTimeout(() => beam.remove(), 2500);
+  }, 100);
+}
+
+function stoptacoRainbow() {
   clearInterval(greenLaserInterval);
   greenLaserInterval = null;
   document.querySelectorAll(".laser").forEach(el => el.remove());
