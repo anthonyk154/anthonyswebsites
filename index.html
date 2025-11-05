@@ -1052,6 +1052,7 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem" || p
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
   function flashbang() {
+    if (currentAdmin !== "anthony") return; 
   const flash = document.createElement("div");
   flash.style.position = "fixed";
   flash.style.top = "0";
