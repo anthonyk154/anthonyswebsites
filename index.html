@@ -399,7 +399,7 @@
 
     <div class="links" style="transition: color 0.3s ease;">
       <a href="#services">Services</a>
-      <a href="#webgallery">Work</a>
+     <!-- <a href="#webgallery">Work</a> --> <!--WORK SECTION BUT I NEED TO FIX IT FOR MOBILE DEBUG-->
       <a href="#skillsmenu">Skills</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact" class="cta">Contact Me</a>
@@ -410,9 +410,8 @@
   <h1 style="text-align: center; padding-top: 0%;"></h1><!--admin abuse at TEXT est-->
   <h4 style="text-align: center; padding-bottom: 0px;"></h4> <!-- name whhos is hhosting admin abuse-->
   <!-- Display the countdown timer in an element -->
-<!--EVENTS-->
-
-  <a href="events.html" class="eventscss"><h2 style="text-align: center; text-decoration: underline; cursor: pointer; color: #1546A0;">Events</h2></a>
+   <!--EVENTS ARE HERE BUT I DONT IKE IT-->
+ <!--<a href="events.html" class="eventscss"><h2 style="text-align: center; text-decoration: underline; cursor: pointer; color: #1546A0;">Events</h2></a>-->
 
   <section class="section hero">
     <div>
@@ -475,7 +474,8 @@
       </div>
     </div>
   </section>
-  
+  <!--FIX THIS FOR MOBILE DEBUG-->
+<!--  
   <section id="webgallery">
 <div class="container">
   <br>
@@ -516,10 +516,8 @@
   </div>
   </div>
 </div>
+-->
     </section>
-<a href="CalculatorApp.exe" style="text-align: center;"  download>
-  ⬇️ Download Calculator App for Windows
-</a>
 
 <section id="skillsmenu" class="section" style="text-align:center;">
   <h2 class="reveal show">My Skills &amp; Tools</h2>
@@ -749,7 +747,7 @@ setTimeout(showPopup, 3000);
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
+import { onValue, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js"
   const firebaseConfig = {
     apiKey: "AIzaSyBFt1HGfakR4xgUgzqTpOb7KSZ5hcUmSa0",
     authDomain: "niceboyyy-b5099.firebaseapp.com",
@@ -946,7 +944,8 @@ const commands = [
   "colorbackstart","colorbackstop","spawn","clearchat",
   "startrainbow","stoprainbow","scrollupstart","scrollupstop",
   "matrixstart","matrixstop","warning", "flashbang", "volup","voldown",
-   "jumpscare","clearall", "revokeadmin","giveadmin"
+   "jumpscare","clearall", "revokeadmin","giveadmin",
+
 ];
 
 
@@ -1052,7 +1051,6 @@ if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem" || p
       case "voldown": volumeDown(); break;
       case "jumpscare": startJumpscare(); break;
       case "clearall": clearAll(); break;
-
     }
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
@@ -1146,6 +1144,7 @@ if (admin === "alexbigy") { face = "https://files.catbox.moe/m9o0n1.png"; name =
     colorInterval = null;
     document.body.style.background = "";
   }
+  
   // === JUMPSCARE ===
 function startJumpscare() {
   const img = document.createElement("img");
@@ -1840,8 +1839,6 @@ function stopScrollUp() {
   clearInterval(scrollInterval);
   scrollInterval = null;
 }
-
-import { onValue, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
 
 const refreshRef = ref(db, "refreshSignal");
