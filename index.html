@@ -533,9 +533,6 @@
     <div class="skill"><img src="https://cdn.freebiesupply.com/logos/large/2x/namecheap-logo-svg-vector.svg" alt="NameCheap"><span>NameCheap</span></div>
   </div>
 </section>
-<!-- Elfsight Accessibility | Untitled Accessibility -->
-<script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-5e23d237-cc1e-4079-819b-21d237b450c5" data-elfsight-app-lazy></div>
 
 <section id="pricing" class="section">
   <h2 class="reveal">Pricing</h2>
@@ -585,6 +582,7 @@
   </div>
 </div>
 </section>
+
 
 
  
@@ -763,6 +761,224 @@ import { onValue, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
+// ---------- F8-double-press Firebase Auth owner-login (paste after firebase init) ----------
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+// make sure `app` exists (from your firebase initializeApp)
+const auth = getAuth(app);
+
+// create modal html + styles (accessible + toggleable)
+const ownerModalHtml = `
+  <style id="ownerModalStyles">
+    #ownerModal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 999999; background: rgba(0,0,0,0.6); }
+    #ownerModal .card { width: 360px; max-width: 92%; background: var(--card, #111827); border-radius: 12px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); color: var(--text, #fff); font-family: system-ui; }
+    #ownerModal h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    #ownerModal label { font-size: 0.85rem; color: #cbd5e1; display:block; margin-top:8px; }
+    #ownerModal input { width:100%; padding:10px 12px; margin-top:6px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.15); color: inherit; }
+    #ownerModal .row { display:flex; gap:8px; margin-top:12px; align-items:center; }
+    #ownerModal button { flex:1; padding:10px 12px; border-radius:8px; border:none; font-weight:700; cursor:pointer; }
+    #ownerModal .btn-primary { background: linear-gradient(135deg,#4f46e5,#22d3ee); color:#fff; }
+    #ownerModal .btn-ghost { background: transparent; color:#cbd5e1; border:1px solid rgba(255,255,255,0.06); }
+    #ownerModal .hint { font-size: 0.8rem; color:#94a3b8; margin-top:8px; }
+  </style>
+
+  <div id="ownerModal" role="dialog" aria-modal="true" aria-labelledby="ownerModalTitle">
+    <div class="card" role="document">
+      <h3 id="ownerModalTitle">Owner Login</h3>
+      <div>
+        <label for="ownerEmail">Email</label>
+        <input id="ownerEmail" type="email" autocomplete="username" spellcheck="false" />
+        <label for="ownerPassword">Password</label>
+        <input id="ownerPassword" type="password" autocomplete="current-password" spellcheck="false" />
+        <div class="hint">Your password is hidden locally. Sign-in is handled securely by Firebase.</div>
+        <div class="row">
+          <button id="ownerCancel" class="btn-ghost" type="button">Cancel</button>
+          <button id="ownerSubmit" class="btn-primary" type="button">Sign in</button>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+
+// append modal (hidden by default)
+const modalContainer = document.createElement('div');
+modalContainer.innerHTML = ownerModalHtml;
+modalContainer.style.display = 'none';
+document.body.appendChild(modalContainer);
+
+// DOM refs
+const ownerModal = document.getElementById('ownerModal');
+const ownerEmailInput = document.getElementById('ownerEmail');
+const ownerPasswordInput = document.getElementById('ownerPassword');
+const ownerSubmitBtn = document.getElementById('ownerSubmit');
+const ownerCancelBtn = document.getElementById('ownerCancel');
+
+// helper: show/hide modal and focus
+function openOwnerModal() {
+  modalContainer.style.display = '';
+  // trap focus simply by focusing the email input
+  setTimeout(() => ownerEmailInput.focus(), 30);
+}
+function closeOwnerModal() {
+  modalContainer.style.display = 'none';
+  // clear fields for safety
+  ownerPasswordInput.value = '';
+  ownerEmailInput.value = '';
+}
+
+// double F8 detection (two presses quickly)
+let lastF8 = 0;
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'F8') {
+    const now = Date.now();
+    // if two presses within 600ms -> open login
+    if (now - lastF8 < 600) {
+      e.preventDefault();
+      // If already signed in, toggle sign-out prompt
+      if (auth.currentUser) {
+        // option: sign out if they press F8 twice and already signed in
+        if (confirm('You are currently signed in as ' + (auth.currentUser.email || '[unknown]').slice(0,30) + '. Sign out?')) {
+          signOut(auth).then(() => {
+            sessionStorage.removeItem('ff_owner');
+            alert('Signed out.');
+          }).catch(()=>alert('Sign-out failed.'));
+        }
+      } else {
+        openOwnerModal();
+      }
+    }
+    lastF8 = now;
+  }
+});
+
+// submit handlers
+ownerCancelBtn.addEventListener('click', closeOwnerModal);
+
+ownerSubmitBtn.addEventListener('click', async () => {
+  const email = ownerEmailInput.value.trim();
+  const password = ownerPasswordInput.value;
+  if (!email || !password) return alert('Please enter email and password.');
+
+  // disable UI while signing in
+  ownerSubmitBtn.disabled = true;
+  ownerSubmitBtn.textContent = 'Signing in...';
+
+  try {
+    // signInWithEmailAndPassword uses secure Firebase SDK (no credentials stored in JS)
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    const user = cred.user;
+    // store session marker (not the password)
+    sessionStorage.setItem('ff_owner', user.email || 'owner');
+
+    // success -> enable owner mode (customize below)
+    enableOwnerMode(user.email);
+
+    closeOwnerModal();
+  } catch (err) {
+    console.error('signin-err', err); // do NOT log sensitive user values here
+    alert('Sign-in failed: ' + (err && err.message ? err.message : 'unknown error'));
+  } finally {
+    ownerSubmitBtn.disabled = false;
+    ownerSubmitBtn.textContent = 'Sign in';
+  }
+});
+
+// watch auth state and restore session on reload (optional)
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // user is signed in - enable owner mode if not already
+    if (!sessionStorage.getItem('ff_owner')) sessionStorage.setItem('ff_owner', user.email);
+    enableOwnerMode(user.email);
+  } else {
+    // signed out - disable owner mode
+    disableOwnerMode();
+  }
+});
+
+function enableOwnerMode(email) {
+  document.body.classList.add('owner-mode');
+  sessionStorage.setItem('ff_owner', email);
+
+  const banner = document.createElement('div');
+  banner.id = "editBanner";
+  banner.textContent = `📝 Editing (Draft Mode) — Signed in as ${email}`;
+  banner.style.cssText = `
+    position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+    background: #22d3ee; color: black; padding: 6px 14px; border-radius: 8px;
+    font-weight: bold; z-index: 999999; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  `;
+  document.body.appendChild(banner);
+
+  // make every visible text node editable
+  const editableEls = Array.from(document.querySelectorAll('body *')).filter(el => {
+    const tag = el.tagName.toLowerCase();
+    return !['script', 'style', 'link', 'meta', 'head'].includes(tag) && el.offsetParent !== null;
+  });
+
+  editableEls.forEach(el => {
+    if (el.closest('#ownerModal')) return;
+
+    el.contentEditable = true;
+    el.setAttribute('aria-label', 'Editable');
+    el.addEventListener('blur', () => saveDraftElement(el)); // auto-save draft
+    el.addEventListener('mouseenter', () => el.style.outline = '2px dashed rgba(79,70,229,0.4)');
+    el.addEventListener('mouseleave', () => el.style.outline = '');
+  });
+
+  alert(`✅ ${email} is now editing this website in DRAFT mode.`);
+}
+
+
+
+function disableOwnerMode() {
+  document.body.classList.remove('owner-mode');
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    el.removeAttribute('contenteditable');
+    el.style.outline = '';
+  });
+  const banner = document.getElementById('editBanner');
+  if (banner) banner.remove();
+  sessionStorage.removeItem('ff_owner');
+}
+// -------- Firebase Draft Mode Integration --------
+
+// Site identifier (change if you're managing multiple client sites)
+const SITE_ID = "fortuneFlowers";
+
+// Save a single field as draft
+async function saveDraftElement(el) {
+  const id = el.id || el.tagName + '-' + Math.random().toString(36).slice(2, 8);
+  const value = el.innerText.trim();
+
+  try {
+    await set(ref(db, `drafts/${SITE_ID}/${id}`), value);
+    el.style.outline = "2px dashed #fbbf24";
+    setTimeout(() => el.style.outline = "", 800);
+    console.log("💾 Draft saved:", id, value);
+  } catch (err) {
+    console.error("⚠️ Draft save failed:", err);
+  }
+}
+
+// Load live content for everyone (visitors see only this)
+onValue(ref(db, `live/${SITE_ID}`), (snap) => {
+  const data = snap.val();
+  if (!data) return;
+  for (const id in data) {
+    const el = document.getElementById(id);
+    if (el) el.innerText = data[id];
+  }
+});
+
+
+// small UX: close modal when clicking outside
+ownerModal.addEventListener('click', (ev) => {
+  if (ev.target === ownerModal) closeOwnerModal();
+});
+ownerModal.addEventListener('keydown', (ev) => {
+  if (ev.key === 'Escape') closeOwnerModal();
+});
+// ---------- end owner-login snippet ----------
 
   const consoleEl = document.createElement("div");
   consoleEl.innerHTML = `
@@ -978,10 +1194,11 @@ const commands = [
           return;
         }
         const pass = prompt("Enter admin code:");
-if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem" || pass === "alex11235") {
+if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem" || pass === "alex11235" || pass === "ariel11235") {
   if (pass === "mark11235") currentAdmin = "mark";
   else if (pass === "alicekrem") currentAdmin = "alice";
   else if (pass === "alex11235") currentAdmin = "alexbigy";
+  else if (pass === "ariel11235") currentAdmin = "arielfattie";
   else currentAdmin = "anthony";
           adminMode = true;
           sessionStorage.setItem("adminUnlocked", currentAdmin);
@@ -2110,6 +2327,138 @@ document.addEventListener("mousemove", e => {
   menu.style.top = e.clientY - offsetY + "px";
 });
 </script>
+<!-- ♿ Accessibility Assistant (left side) -->
+<div id="accessibility-btn" aria-label="Accessibility options" title="Accessibility Assistant">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="white">
+    <path id="icon-color" d="M5.72462 6.44189C4.91472 6.09669 3.97869 6.46844 3.63349 7.27834C3.28828 8.08824 3.66004 9.02427 4.46994 9.36947L5.25992 9.70803C6.40838 10.1993 7.59667 10.5644 8.81816 10.7901V14.116C8.81816 14.4015 8.77169 14.6869 8.67875 14.9525L6.7735 20.6682C6.49468 21.5047 6.9461 22.4075 7.78255 22.6863C8.619 22.9651 9.52184 22.5137 9.80066 21.6773L11.4205 16.8179C11.5068 16.5656 11.7391 16.393 12.0046 16.393C12.2702 16.393 12.5092 16.5656 12.5888 16.8179L14.2086 21.6773C14.4874 22.5137 15.3903 22.9651 16.2267 22.6863C17.0632 22.4075 17.5146 21.5047 17.2358 20.6682L15.3305 14.9525C15.2376 14.6803 15.1911 14.4015 15.1911 14.116V10.7901C16.4126 10.5578 17.6009 10.1993 18.7494 9.70803L19.5393 9.36947C20.3492 9.02427 20.721 8.08824 20.3758 7.27834C20.0306 6.46844 19.0946 6.09669 18.2847 6.44189L17.488 6.78045C15.7554 7.52397 13.89 7.909 11.998 7.909C10.106 7.909 8.24725 7.52397 6.50796 6.78045L5.71798 6.44189H5.72462ZM11.998 5.78468C12.7023 5.78468 13.3777 5.50491 13.8757 5.00693C14.3736 4.50895 14.6534 3.83353 14.6534 3.12928C14.6534 2.42502 14.3736 1.74961 13.8757 1.25163C13.3777 0.753642 12.7023 0.473877 11.998 0.473877C11.2937 0.473877 10.6183 0.753642 10.1203 1.25163C9.62237 1.74961 9.3426 2.42502 9.3426 3.12928C9.3426 3.83353 9.62237 4.50895 10.1203 5.00693C10.6183 5.50491 11.2937 5.78468 11.998 5.78468Z"></path>
+  </svg>
+</div>
 
+<div id="accessibility-panel" hidden>
+  <div class="panel-header">
+    <h3>Accessibility Assistant</h3>
+    <button id="close-accessibility" aria-label="Close">×</button>
+  </div>
+  <ul>
+    <li data-mode="lowvision">👓 Low Vision</li>
+    <li data-mode="colorblind">🌈 Color Blindness</li>
+    <li data-mode="dyslexia">🔤 Dyslexia-Friendly</li>
+    <li data-mode="seizure">⚡ Seizure Safe</li>
+    <li data-mode="distraction">🧘 Reduce Distractions</li>
+    <li data-mode="motor">🖱️ Motor Assistance</li>
+    <li data-mode="cognitive">🧩 Cognitive Learning</li>
+    <li data-mode="keyboard">⌨️ Keyboard Navigation</li>
+  </ul>
+  <button id="reset-accessibility">♻️ Reset Accessibility</button>
+</div>
+
+<style>
+  #accessibility-btn {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 10000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+  #accessibility-btn:hover { background: #0056d2; transform: scale(1.1); }
+
+  #accessibility-panel {
+    position: fixed;
+    bottom: 100px;
+    left: 25px;
+    width: 260px;
+    background: #f8faff;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    padding: 15px;
+    font-family: system-ui, sans-serif;
+    color: #111;
+    z-index: 10001;
+  }
+  .panel-header {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .panel-header h3 { margin: 0; font-size: 1rem; color: #004aad; }
+  .panel-header button {
+    background: transparent; border: none; font-size: 1.3rem;
+    cursor: pointer; color: #004aad;
+  }
+  #accessibility-panel ul { list-style: none; margin: 10px 0; padding: 0; }
+  #accessibility-panel li {
+    padding: 6px 8px; border-radius: 8px;
+    cursor: pointer; transition: background 0.2s;
+  }
+  #accessibility-panel li:hover { background: rgba(0,123,255,0.1); }
+  #reset-accessibility {
+    width: 100%; background: #22d3ee; border: none;
+    color: #000; font-weight: 600; border-radius: 8px;
+    padding: 8px; cursor: pointer; margin-top: 6px;
+  }
+  #reset-accessibility:hover { background: #0ea5e9; color: white; }
+</style>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById('accessibility-btn');
+  const panel = document.getElementById('accessibility-panel');
+  const closeBtn = document.getElementById('close-accessibility');
+  const resetBtn = document.getElementById('reset-accessibility');
+
+  let panelOpen = false;
+
+  // Toggle panel open/close (always responsive)
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    panelOpen = !panelOpen;
+    panel.hidden = !panelOpen;
+  });
+
+  // Close button
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    panelOpen = false;
+    panel.hidden = true;
+  });
+
+  // Click outside closes only if it's open
+  document.addEventListener('click', (e) => {
+    if (panelOpen && !panel.contains(e.target) && e.target !== btn) {
+      panelOpen = false;
+      panel.hidden = true;
+    }
+  });
+
+  // Prevent panel clicks from closing it
+  panel.addEventListener('click', (e) => e.stopPropagation());
+
+  // Mode toggles
+  document.querySelectorAll('#accessibility-panel li').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const mode = opt.dataset.mode;
+      document.body.classList.toggle(mode);
+    });
+  });
+
+  // Reset button
+  resetBtn.addEventListener('click', () => {
+    const modes = [
+      "lowvision","colorblind","dyslexia",
+      "seizure","distraction","motor","cognitive","keyboard"
+    ];
+    modes.forEach(mode => document.body.classList.remove(mode));
+  });
+});
+</script>
+<!--SCRIPT FOR LOGIC ACCESIBLY-->
 </body>
 </html>
