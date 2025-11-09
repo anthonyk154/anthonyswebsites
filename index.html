@@ -791,7 +791,7 @@ const ownerModalHtml = `
         <input id="ownerEmail" type="email" autocomplete="username" spellcheck="false" />
         <label for="ownerPassword">Password</label>
         <input id="ownerPassword" type="password" autocomplete="current-password" spellcheck="false" />
-        <div class="hint">Your password is hidden locally. Sign-in is handled securely by Firebase.</div>
+        <div class="hint" style="text-align: center;">Anthony</div>
         <div class="row">
           <button id="ownerCancel" class="btn-ghost" type="button">Cancel</button>
           <button id="ownerSubmit" class="btn-primary" type="button">Sign in</button>
@@ -828,7 +828,7 @@ function closeOwnerModal() {
 }
 
 // double F8 detection (two presses quickly)
-let lastF8 = 0;
+let lastF8 = 0  ;
 window.addEventListener('keydown', (e) => {
   if (e.key === 'F8') {
     const now = Date.now();
