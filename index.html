@@ -1194,11 +1194,12 @@ const commands = [
           return;
         }
         const pass = prompt("Enter admin code:");
-if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem" || pass === "alex11235" || pass === "ariel11235") {
+if (pass === "anthony11235" || pass === "mark11235" || pass === "alicekrem" || pass === "alex11235" || pass === "ariel11235" || pass === "leoevan") {
   if (pass === "mark11235") currentAdmin = "mark";
   else if (pass === "alicekrem") currentAdmin = "alice";
   else if (pass === "alex11235") currentAdmin = "alexbigy";
   else if (pass === "ariel11235") currentAdmin = "arielfattie";
+  else if (pass === "leoevan") currentAdmin = "leoeminembiggy";
   else currentAdmin = "anthony";
           adminMode = true;
           sessionStorage.setItem("adminUnlocked", currentAdmin);
@@ -1317,6 +1318,7 @@ if (admin === "mark") { face = "https://files.catbox.moe/pe8mn7.png"; name = "Ma
 if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "AliceAdmin"; }
 if (admin === "alexbigy") { face = "https://files.catbox.moe/m9o0n1.png"; name = "AlexBigy"; }
 if (admin === "arielfattie") { face = "https://files.catbox.moe/sfanfl.PNG"; name = "arielfattie"; }
+if (admin === "leoeminembiggy") { face = "https://files.catbox.moe/ep6k4a.PNG"; name = "leoeminembiggy"; }
 
     const msg = document.createElement("div");
     msg.className = "announce-box";
