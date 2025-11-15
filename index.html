@@ -1844,34 +1844,6 @@ if (t.includes("zijun")) {
     flashbang();
   }, 13000);
 
-  // === Animated Text Intro (Left + Right) ===
-  const leftText = document.createElement("div");
-  leftText.textContent = "⚫ YIN AND YING ⚪";
-  leftText.style.position = "fixed";
-  leftText.style.top = "50%";
-  leftText.style.left = "40%";
-  leftText.style.transform = "translateY(-50%)";
-  leftText.style.fontSize = "3rem";
-  leftText.style.fontWeight = "900";
-  leftText.style.color = "white";
-  leftText.style.textShadow = "0 0 20px rgba(0,0,0,0.6)";
-  leftText.style.zIndex = "10000";
-  leftText.style.animation = "slideInLeft 2s ease forwards, fadeOut 1s ease 5s forwards";
-  document.body.appendChild(leftText);
-
-  const rightText = document.createElement("div");
-  rightText.textContent = "⚪ YIN AND YING ⚫";
-  rightText.style.position = "fixed";
-  rightText.style.top = "50%";
-  rightText.style.right = "-40%";
-  rightText.style.transform = "translateY(-50%)";
-  rightText.style.fontSize = "3rem";
-  rightText.style.fontWeight = "900";
-  rightText.style.color = "black";
-  rightText.style.textShadow = "0 0 20px rgba(255,255,255,0.6)";
-  rightText.style.zIndex = "10000";
-  rightText.style.animation = "slideInRight 2s ease forwards, fadeOut 1s ease 5s forwards";
-  document.body.appendChild(rightText);
 
   // Add animations to document
   const style = document.createElement("style");
