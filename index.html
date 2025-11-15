@@ -851,7 +851,6 @@ import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from
 
 // make sure `app` exists (from your firebase initializeApp)
 const auth = getAuth(app);
-
 // create modal html + styles (accessible + toggleable)
 const ownerModalHtml = `
   <style id="ownerModalStyles">
@@ -1138,14 +1137,14 @@ ownerModal.addEventListener('keydown', (ev) => {
       .announce-face {
         width: 65px;
         height: 65px;
-        border-radius: 50%;
+        border-radius: 30%;
         object-fit: cover;
         flex-shrink: 0;
       }
       .announce-text {
         display: flex;
         flex-direction: column;
-        text-align: left;
+        text-align: center;
       }
       .admin-name {
         font-size: 1rem;
@@ -1402,7 +1401,7 @@ document.addEventListener("keydown", e => {
       document.body.appendChild(container);
     }
 
-let face = "https://files.catbox.moe/kfyiag.png";
+let face = "https://files.catbox.moe/hk49zp.png";
 let name = "AnthonyOwner";
 if (admin === "mark") { face = "https://files.catbox.moe/pe8mn7.png"; name = "MarkTheDev"; }
 if (admin === "alice") { face = "https://files.catbox.moe/5qlb84.png"; name = "AliceAdmin"; }
@@ -1424,7 +1423,7 @@ if (admin === "alexbigy") { face = "https://files.catbox.moe/m9o0n1.png"; name =
 
     msg.innerHTML = `
       <img src="${face}" alt="${name}" class="announce-face" 
-        style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
+        style="width:60px;height:70px;border-radius: 30%;">
       <div class="announce-text">
         <span class="admin-name" style="font-size:1rem;color:#a5f3fc;">— ${name} —</span>
         <span class="message-line" style="font-size:2.1rem;font-weight:900;color:#fff;line-height:1.1;">${text}</span>
@@ -2262,14 +2261,14 @@ onValue(refreshRef, (snapshot) => {
   function spawnImage(input) {
     if (!input) return;
     let url = input.trim();
-  if (url.toLowerCase() === "anthony" && currentAdmin !== "anthony") {
+  if (url.toLowerCase() === "" && currentAdmin ) {
     return;
   }
     const library = {
       "67": "https://tr.rbxcdn.com/180DAY-9fedf0a03e302a2f1f51c77596cc1219/420/420/BackAccessory/Webp/noFilter",
       "lavaca": "https://tr.rbxcdn.com/180DAY-adf942eeceae731527c6821d251eb7fb/420/420/ShirtAccessory/Webp/noFilter",
       "mark": "https://files.catbox.moe/pe8mn7.png",
-      "anthony" : "https://files.catbox.moe/kfyiag.png",
+      "anthony" : "https://files.catbox.moe/hk49zp.png",
       "alice" : "https://files.catbox.moe/5qlb84.png",
       "leo" : "https://files.catbox.moe/ep6k4a.PNG",
       "zijun" : "https://files.catbox.moe/r8dlcy.PNG",
@@ -2495,6 +2494,7 @@ document.addEventListener("mousemove", e => {
   menu.style.left = e.clientX - offsetX + "px";
   menu.style.top = e.clientY - offsetY + "px";
 });
+
 </script>
 <!-- ♿ Accessibility Assistant (left side) -->
 <div id="accessibility-btn" aria-label="Accessibility options" title="Accessibility Assistant">
@@ -2576,6 +2576,7 @@ document.addEventListener("mousemove", e => {
   }
   #reset-accessibility:hover { background: #0ea5e9; color: white; }
 </style>
+
 <script>
 window.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById('accessibility-btn');
