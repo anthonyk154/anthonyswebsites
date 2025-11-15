@@ -1515,6 +1515,7 @@ function clearAll() {
     else if (t.includes("nextepisode")) src = "nextepisode.mp3";
     else if (t.includes("mustafa")) src = "mustafa.mp3";
     else if (t.includes("zijun")) src = "zijun.mp3";
+    else if (t.includes("21savage")) src = "21savage.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -1834,6 +1835,25 @@ if (t.includes("stilldre")) {
       strawberry.style.bottom = Math.random() * 50 + "vh";
       document.body.appendChild(strawberry);
       setTimeout(() => strawberry.remove(), 4000);
+    }, 200);
+}
+          if (t.includes("anthony")) {
+            playMusic("21savage");
+            flashbang();
+              setTimeout(() => {
+    flashbang();
+  }, 3000);
+    eventInterval = setInterval(() => {
+      document.body.style.backgroundColor = "#2a140f";
+      const anthony = document.createElement("img");
+      anthony.src = "https://files.catbox.moe/hk49zp.png";
+      anthony.className = "anthony";
+      anthony.style.position = "fixed";
+      anthony.style.width = (80 + Math.random() * 40) + "px";
+      anthony.style.left = Math.random() * 100 + "vw";
+      anthony.style.bottom = Math.random() * 50 + "vh";
+      document.body.appendChild(anthony);
+      setTimeout(() => anthony.remove(), 4000);
     }, 200);
 }
 if (t.includes("zijun")) {
@@ -2420,7 +2440,7 @@ document.body.appendChild(menu);
 
 
 const adminCmds = ["announce", "refreshall", "warning", "flashbang", "volup", "voldown", "colorbackstart","colorbackstop", "clearall", "clearchat", "jumpscare", "spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "mustafa", "aurafarm", "stilldre", "nextepisode", "tung", "hammali", "halloween", "christmas", "zijun"];
+const eventCmds = ["anthony", "theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "mustafa", "aurafarm", "stilldre", "nextepisode", "tung", "hammali", "halloween", "christmas", "zijun"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "leo", "zijun", "dragon", "spookylcky", "adminlcky", "tacolcky", "secretlcky", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "lostraliotes", "ketupat", "duldul", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro", "skibidi"];
 
 function fillList(listId, arr, prefix="") {
