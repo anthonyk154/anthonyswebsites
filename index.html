@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"  />
   <title>AnthonysWebsites — Custom Sites by Anthony Kremyanskiy</title>
   <meta name="description" content="I build modern, fast, mobile-friendly websites for small businesses and creators. Message me to start your site today." />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
@@ -27,7 +28,13 @@
     }
 
     *{
-      box-sizing:border-box
+      box-sizing:border-box;
+    }
+    .container{
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 20px;
     }
     html,body{margin:0;padding:0;background:radial-gradient(1200px 600px at 90% -10%, rgba(79,70,229,.25), transparent 60%), radial-gradient(900px 500px at -10% 20%, rgba(34,211,238,.2), transparent 60%), var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; scroll-behavior:smooth}
     a{color:inherit;text-decoration:none}
@@ -137,6 +144,7 @@
       .grid, .pricing, .shots{grid-template-columns:1fr}
       .stats{grid-template-columns:1fr 1fr}
       .brand .name{font-size:16px}
+            .webgallery{width: 50px;}
     }
     .skills-grid {
   display: grid;
@@ -293,17 +301,26 @@
 }
 
 /* Position the image container (needed to position the left and right arrows) */
-.container {
+.container1{
   position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
-
 /* Hide the images by default */
 .mySlides {
   display: none;
-  width: 1000px;
+  width: 100%;
   border-radius: 20px;
+  text-align: center;
 }
 
+/* img slides config */
+.myslides img{
+  width: 100%;
+  height: auto;
+}
 
 .cursor {
   cursor: pointer;
@@ -313,7 +330,7 @@
 .prev{
   cursor: pointer;
   position: absolute;
-  top: 40%;
+  top: 50%;
   width: auto;
   padding: 16px;
   margin-top: -50px;
@@ -328,7 +345,7 @@
 .next {
   cursor: pointer;
   position: absolute;
-  top: 40%;
+  top: 50%;
   right: 0px;
   width: auto;
   padding: 16px;
@@ -382,13 +399,80 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding: 20px 0;
 }
+#social-bar {
+  background: linear-gradient(90deg, #384871, #02183c);
+  color: white;
+  text-align: center;
+  padding: 14px 10px;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.social-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.social-text {
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.social-icons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-icons a {
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.social-icons a img {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.4));
+}
+
+.social-icons a:hover {
+  transform: scale(1.15);
+  filter: brightness(1.2);
+}
+
+@media (max-width: 600px) {
+  .social-text { font-size: 0.9rem; }
+  .social-icons a img { width: 28px; height: 28px; }
+}
+
   </style>
 </head>
 
 <body id="top">
 
   <header>
+<section id="social-bar">
+  <div class="social-wrapper">
+    <p class="social-text">Follow & Contact Me:</p>
+    <div class="social-icons">
+      <a href="https://www.tiktok.com/@anthonys.websites" target="_blank" aria-label="TikTok">
+        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046122.png" alt="TikTok">
+      </a>
+      <a href="https://www.instagram.com/anthonyswebsites" target="_blank" aria-label="Instagram">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram">
+      </a>
+      <a href="https://www.facebook.com/anthonyswebsites" target="_blank" aria-label="Facebook">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
+      </a>
+    </div>
+  </div>
+</section>
   <nav class="nav">
     <a href="#top" class="brand">
       <div class="logo" aria-hidden="true">🌐</div>
@@ -397,10 +481,12 @@
         <div class="badge">by Anthony Kremyanskiy</div>
       </div>
     </a>
-
+    <div>
+      <a href="logupd.html"><h4 style="text-decoration: underline; cursor: pointer; text-align: center; font-weight: 500;">Log updates</h4></a>
+    </div>
     <div class="links" style="transition: color 0.3s ease;">
       <a href="#services">Services</a>
-     <!-- <a href="#webgallery">Work</a> --> <!--WORK SECTION BUT I NEED TO FIX IT FOR MOBILE DEBUG-->
+      <a href="#webgallery">Work</a> <!--work section for slideshwo menu bar-->
       <a href="#skillsmenu">Skills</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact" class="cta">Contact Me</a>
@@ -475,28 +561,27 @@
       </div>
     </div>
   </section>
-  <!--FIX THIS FOR MOBILE DEBUG-->
-<!--  
+  <!--FIX THIS FOR MOBILE DEBUG-->  
   <section id="webgallery">
-<div class="container">
+<div class="container1">
   <br>
   <br>
   <div class="portclass"><h2 style=" text-align: center; opacity:1; transform:none">Work</h2></div>
 <div class="container">
   <div class="mySlides">
-    <a href="https://www.fortuneflowers.net/"><img src="https://files.catbox.moe/s80w4y.png" style="width:1000px"></a>
+    <a href="https://www.fortuneflowers.net/"><img src="https://files.catbox.moe/s80w4y.png" alt="fortuneflowersipcture" ></a>
   </div>
 
   <div class="mySlides">
-      <a href="https://anthonykrem154.github.io/Pack-smart/"><img src="https://files.catbox.moe/90rkw7.png" style="width: 1000px"></a>
+      <a href="https://anthonykrem154.github.io/Pack-smart/"><img src="https://files.catbox.moe/90rkw7.png" alt="packsmartpicture"></a>
   </div>
 
   <div class="mySlides">
-      <a href="https://anthonykrem154.github.io/job-compar/"><img src="https://files.catbox.moe/1sb9pn.png" style="width:1000px; height: 480px;"></a>
+      <a href="https://anthonykrem154.github.io/job-compar/"><img src="https://files.catbox.moe/1sb9pn.png" ></a>
   </div>
 
   <div class="mySlides">
-      <a href="https://anthonykrem154.github.io/hvac-job/"><img src="https://files.catbox.moe/g2jd6e.png" style="width: 1000px; height: 480px;"></a>
+      <a href="https://anthonykrem154.github.io/hvac-job/"><img src="https://files.catbox.moe/g2jd6e.png" ></a>
   </div>
 
   <div class="mySlides">
@@ -517,7 +602,6 @@
   </div>
   </div>
 </div>
--->
     </section>
 
 <section id="skillsmenu" class="section" style="text-align:center;">
@@ -1163,7 +1247,7 @@ const commands = [
   "colorbackstart","colorbackstop","spawn","clearchat",
   "startrainbow","stoprainbow","scrollupstart","scrollupstop",
   "matrixstart","matrixstop","warning", "flashbang", "volup","voldown",
-   "jumpscare","clearall", "revokeadmin","giveadmin",
+   "jumpscare","clearall", "revokeadmin","giveadmin","refreshall"
 
 ];
 
@@ -1282,7 +1366,6 @@ document.addEventListener("keydown", e => {
     setTimeout(() => remove(ref(db, "commands/" + key)), 3000);
   });
   function flashbang() {
-    if (currentAdmin !== "anthony"); 
   const flash = document.createElement("div");
   flash.style.position = "fixed";
   flash.style.top = "0";
@@ -1374,7 +1457,7 @@ if (admin === "alexbigy") { face = "https://files.catbox.moe/m9o0n1.png"; name =
   // === JUMPSCARE ===
 function startJumpscare() {
   const img = document.createElement("img");
-  img.src = "https://i.pinimg.com/236x/05/81/c2/0581c2e4a446bdcd66cbdb8b35153872.jpg"; // use your own scary image
+  img.src = "https://i.pinimg.com/236x/05/81/c2/0581c2e4a446bdcd66cbdb8b35153872.jpg"; // scaryy picc
   img.style.position = "fixed";
   img.style.top = "0";
   img.style.left = "0";
@@ -1432,6 +1515,7 @@ function clearAll() {
     else if (t.includes("theme")) src = "theme.mp3";
     else if (t.includes("nextepisode")) src = "nextepisode.mp3";
     else if (t.includes("mustafa")) src = "mustafa.mp3";
+    else if (t.includes("zijun")) src = "zijun.mp3";
     audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.8;
@@ -1505,7 +1589,6 @@ if (t.includes("stilldre")) {
   flashbang(); 
   playMusic("nextepisode");
    startGreenRainbow(); // 🟢 trigger green lasers
-  document.body.style.backgroundColor = "black";
   eventInterval = setInterval(() => {
     const dre = document.createElement("img");
     dre.src = "https://files.catbox.moe/ue2xqt.jpg";
@@ -1569,7 +1652,7 @@ if (t.includes("stilldre")) {
 
   if (t.includes("brazil")) {
     playMusic("brazil");
-    document.body.style.backgroundColor = "green";
+    flashbang();
     eventInterval = setInterval(() => {
       const brazil = document.createElement("img");
       brazil.src = "https://upload.wikimedia.org/wikipedia/en/0/05/Flag_of_Brazil.svg";
@@ -1585,6 +1668,7 @@ if (t.includes("stilldre")) {
 
   if (t.includes("drill")) {
     playMusic("drill");
+    flashbang();
     eventInterval = setInterval(() => {
       const drill = document.createElement("img");
       drill.src = "https://www.pngmart.com/files/24/Brr-Brr-Patapim-PNG-Image.png";
@@ -1600,6 +1684,7 @@ if (t.includes("stilldre")) {
 
   if (t.includes("dstop")) {
     playMusic("dstop");
+    flashbang();
     eventInterval = setInterval(() => {
       const dstop = document.createElement("img");
       dstop.src = "https://files.catbox.moe/h7t66k.png";
@@ -1614,7 +1699,7 @@ if (t.includes("stilldre")) {
   }
     if (t.includes("russain")) {
     playMusic("russain");
-    document.body.style.backgroundColor = "white";
+    flashbang();
     eventInterval = setInterval(() => {
       const russain = document.createElement("img");
       russain.src = "https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg";
@@ -1629,6 +1714,7 @@ if (t.includes("stilldre")) {
   }
       if (t.includes("la")) {
     playMusic("la");
+    flashbang();
     eventInterval = setInterval(() => {
       const la = document.createElement("img");
       la.src = "https://files.catbox.moe/qrg039.png";
@@ -1643,6 +1729,7 @@ if (t.includes("stilldre")) {
   }
         if (t.includes("aurafarm")) {
     playMusic("aurafarm");
+    flashbang();
     eventInterval = setInterval(() => {
       const aurafarm = document.createElement("img");
       aurafarm.src = "https://files.catbox.moe/20myif.png";
@@ -1657,7 +1744,7 @@ if (t.includes("stilldre")) {
   }
           if (t.includes("tung")) {
     playMusic("tung");
-    document.body.style.backgroundColor = "#ac6a2f";
+    flashbang();
     eventInterval = setInterval(() => {
       const tung = document.createElement("img");
       tung.src = "https://www.imagenspng.com.br/wp-content/uploads/2025/05/Tung-Tung-Tung-Sahur-Brainrot-PNG-01.png";
@@ -1673,6 +1760,7 @@ if (t.includes("stilldre")) {
 }
           if (t.includes("hammali")) {
     playMusic("hammali");
+    flashbang();
     eventInterval = setInterval(() => {
       const hammali = document.createElement("img");
       hammali.src = "https://files.catbox.moe/fercyk.png";
@@ -1687,8 +1775,9 @@ if (t.includes("stilldre")) {
     
 }
           if (t.includes("christmas")) {
+            flashbang();
     playMusic("christmas");
-    document.body.style.backgroundColor = "red";
+    flashbang();
     eventInterval = setInterval(() => {
       const christmas = document.createElement("img");
       christmas.src = "https://png.pngtree.com/png-vector/20230803/ourmid/pngtree-christmas-jingle-bells-vector-png-image_6884130.png";
@@ -1705,7 +1794,7 @@ if (t.includes("stilldre")) {
 
           if (t.includes("halloween")) {
     playMusic("halloween");
-    document.body.style.backgroundColor = "orange";
+    flashbang();
     eventInterval = setInterval(() => {
       const halloween = document.createElement("img");
       halloween.src = "https://www.freepnglogos.com/uploads/pumpkin-png/vector-graphic-pumpkin-cartoon-orange-stem-39.png";
@@ -1736,7 +1825,6 @@ if (t.includes("stilldre")) {
 }
           if (t.includes("strawberry")) {
             flashbang();
-    document.body.style.backgroundColor = "#b70321";
     eventInterval = setInterval(() => {
       const strawberry = document.createElement("img");
       strawberry.src = "https://files.catbox.moe/xcc5b3.png";
@@ -1749,6 +1837,80 @@ if (t.includes("stilldre")) {
       setTimeout(() => strawberry.remove(), 4000);
     }, 200);
 }
+if (t.includes("zijun")) {
+  playMusic("zijun");
+  flashbang();
+  
+  setTimeout(() => {
+    flashbang();
+  }, 13000);
+
+  // === Animated Text Intro (Left + Right) ===
+  const leftText = document.createElement("div");
+  leftText.textContent = "⚫ YIN AND YING ⚪";
+  leftText.style.position = "fixed";
+  leftText.style.top = "50%";
+  leftText.style.left = "40%";
+  leftText.style.transform = "translateY(-50%)";
+  leftText.style.fontSize = "3rem";
+  leftText.style.fontWeight = "900";
+  leftText.style.color = "white";
+  leftText.style.textShadow = "0 0 20px rgba(0,0,0,0.6)";
+  leftText.style.zIndex = "10000";
+  leftText.style.animation = "slideInLeft 2s ease forwards, fadeOut 1s ease 5s forwards";
+  document.body.appendChild(leftText);
+
+  const rightText = document.createElement("div");
+  rightText.textContent = "⚪ YIN AND YING ⚫";
+  rightText.style.position = "fixed";
+  rightText.style.top = "50%";
+  rightText.style.right = "-40%";
+  rightText.style.transform = "translateY(-50%)";
+  rightText.style.fontSize = "3rem";
+  rightText.style.fontWeight = "900";
+  rightText.style.color = "black";
+  rightText.style.textShadow = "0 0 20px rgba(255,255,255,0.6)";
+  rightText.style.zIndex = "10000";
+  rightText.style.animation = "slideInRight 2s ease forwards, fadeOut 1s ease 5s forwards";
+  document.body.appendChild(rightText);
+
+  // Add animations to document
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes slideInLeft {
+      0% { left: -40%; opacity: 0; }
+      60% { left: 20%; opacity: 1; }
+      100% { left: 79%; opacity: 1; }
+    }
+    @keyframes slideInRight {
+      0% { right: -40%; opacity: 0; }
+      60% { right: 20%; opacity: 1; }
+      100% { right: 79%; opacity: 1; }
+    }
+          @keyframes fadeOut {
+      to { opacity: 0; transform: translateY(-50%) scale(1.05); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  
+  // === Zijun Floating Images ===
+  eventInterval = setInterval(() => {
+    const zijun = document.createElement("img");
+    zijun.src = "https://files.catbox.moe/r8dlcy.PNG";
+    zijun.className = "zijun";
+    zijun.style.position = "fixed";
+    zijun.style.width = (100 + Math.random() * 40) + "px";
+    zijun.style.left = Math.random() * 100 + "vw";
+    zijun.style.bottom = Math.random() * 50 + "vh";
+    zijun.style.zIndex = "9998";
+    document.body.appendChild(zijun);
+    setTimeout(() => zijun.remove(), 4000);
+  }, 200);
+}
+
+
+
 if (t.includes("snap")) {
   playMusic("snap");
 
@@ -1862,9 +2024,8 @@ if (t.includes("snap")) {
   function stopEvent() {
     clearInterval(eventInterval); 
     stopMusic();
-    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas, .theme, .strawberry, .stilldre, .nextepisode").forEach(e => e.remove());
+    document.querySelectorAll(".taco, .crab, .brazil, .drill, .dstop, .russain, .la, .aurafarm, .tung, .hammali, .halloween, .christmas, .theme, .strawberry, .stilldre, .nextepisode, .zijun").forEach(e => e.remove());
   }
-let laserInterval = null;
 
 function startRainbow() {
   stopRainbow();
@@ -1945,7 +2106,6 @@ function starttacoRainbow() {
     setTimeout(() => beam.remove(), 2500);
   }, 100);
 }
-
 function stoptacoRainbow() {
   clearInterval(greenLaserInterval);
   greenLaserInterval = null;
@@ -2289,7 +2449,7 @@ document.body.appendChild(menu);
 
 
 const adminCmds = ["announce", "refreshall", "warning", "flashbang", "volup", "voldown", "colorbackstart","colorbackstop", "clearall", "clearchat", "jumpscare", "spawn","startevent","stopevent", "matrixstart", "matrixstop", "scrollupstart", "scrollupstop", "startrainbow", "stoprainbow","playmusic","stopmusic"];
-const eventCmds = ["theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "mustafa", "aurafarm", "stilldre", "nextepisode", "tung", "hammali", "halloween", "christmas"];
+const eventCmds = ["theme", "crab","taco","brazil", "snap", "strawberry", "drill","dstop","russain","la", "mustafa", "aurafarm", "stilldre", "nextepisode", "tung", "hammali", "halloween", "christmas", "zijun"];
 const spawnCmds = ["67","lavaca", "mark", "anthony", "alice", "leo", "zijun", "dragon", "spookylcky", "adminlcky", "tacolcky", "secretlcky", "elephant", "tungtung", "kark", "garama", "lasupreme", "lagrande", "lostraliotes", "ketupat", "duldul", "spaghetti", "meowl", "matteo", "jandel", "jobjob", "graipuss", "chiclitera", "burguro", "skibidi"];
 
 function fillList(listId, arr, prefix="") {
