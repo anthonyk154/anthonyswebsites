@@ -1844,7 +1844,12 @@ if (t.includes("stilldre")) {
     flashbang();
   }, 3000);
     eventInterval = setInterval(() => {
-      document.body.style.backgroundColor = "#2a140f";
+        document.body.style.backgroundImage =
+    'url("https://i.ytimg.com/vi/IShUzOqBqOk/maxresdefault.jpg")';
+      document.body.style.backgroundSize = "cover";
+  document.body.style.backgroundRepeat = "no-repeat";
+  document.body.style.backgroundPosition = "center center";
+  document.body.style.backgroundAttachment = "fixed";
       const anthony = document.createElement("img");
       anthony.src = "https://files.catbox.moe/hk49zp.png";
       anthony.className = "anthony";
