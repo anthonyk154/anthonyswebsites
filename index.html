@@ -483,7 +483,7 @@
       </div>
     </a>
     <div>
-      <a href="logupd.html"><h4 style="text-decoration: underline; cursor: pointer; text-align: center; font-weight: 500;">Log updates</h4></a>
+       <!--<a href="logupd.html"><h4 style="text-decoration: underline; cursor: pointer; text-align: center; font-weight: 500;">Log updates</h4></a>-->
     </div>
     <div class="links" style="transition: color 0.3s ease;">
       <a href="#services">Services</a>
@@ -2313,73 +2313,7 @@ onValue(refreshRef, (snapshot) => {
     }, 4000);
   }
 
-  const chatDiv = document.createElement("div");
-  chatDiv.id = "liveChat";
-  chatDiv.innerHTML = `
-    <style>
-           #liveChat {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 300px;
-        background: rgba(0,0,0,0.85);
-        color: white;
-        border-radius: 10px;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-        z-index: 99999;
-      }
-      #chatMessages {
-        max-height: 260px;
-        overflow-y: auto;
-        padding: 8px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-      .msg {background: rgba(255,255,255,0.1); padding:6px 8px; border-radius:8px;}
-      .msg .who {font-weight:bold; color:#22d3ee;}
-      #chatInputBar {display:flex; border-top:1px solid rgba(255,255,255,0.2);}
-      #chatInputBar input {flex:1; padding:6px; border:none; background:transparent; color:white;}
-      #chatInputBar button {background:#22d3ee; border:none; color:#000; padding:6px 10px; cursor:pointer;}
-    </style>
-    <div id="chatMessages"></div>
-    <div id="chatInputBar"><input id="chatInput" placeholder="Type..." /><button id="chatSend">Send</button></div>
-  `;
-  document.body.appendChild(chatDiv);
 
-  const chatRef = ref(db, "chat");
-  const chatMessages = document.getElementById("chatMessages");
-  const chatInput = document.getElementById("chatInput");
-  const chatSend = document.getElementById("chatSend");
-
-  onChildAdded(chatRef, (snap) => {
-    const val = snap.val();
-    if (!val) return;
-    const el = document.createElement("div");
-    el.className = "msg";
-    el.innerHTML = `<div class="who">${val.name}</div><div>${val.text}</div>`;
-    chatMessages.appendChild(el);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  });
-
-  function sendChat() {
-    const txt = chatInput.value.trim();
-    if (!txt) return;
-    const name = sessionStorage.getItem("chatName") || prompt("Enter your name:") || "Guest";
-    sessionStorage.setItem("chatName", name);
-    push(chatRef, { name, text: txt, time: Date.now() });
-    chatInput.value = "";
-  }
-  chatSend.onclick = sendChat;
-  chatInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") sendChat();
-  });
-
-  function clearChat() {
-    remove(chatRef);
-    chatMessages.innerHTML = "";
-  }
 const menu = document.createElement("div");
 menu.id = "commandMenu";
 menu.innerHTML = `
