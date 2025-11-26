@@ -450,7 +450,29 @@
   .social-text { font-size: 0.9rem; }
   .social-icons a img { width: 28px; height: 28px; }
 }
-
+.call-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgb(7, 93, 159);
+  color: white;
+  font-size: 30px;
+  padding: 15px;
+  border-radius: 50%;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+  z-index: 999;
+  animation: pulse 2s infinite;
+}
+@media (max-width: 350px) {
+  .call-button {display: none;}
+}
+@keyframes pulse {
+  0% {transform: scale(1); box-shadow: 0 0 0 0 rgba(62, 51, 51, 0.4);}
+  70% {transform: scale(1.1); box-shadow: 0 0 0 15px rgba(116, 108, 108, 0);}
+  100% {transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 34, 34, 0);}
+}
   </style>
 </head>
 
@@ -523,7 +545,6 @@
         <div class="stat"><b>Easy to Edit</b><br><span class="badge">You own your site</span></div>
       </div>
     </div>
-
     <div class="hero-card pop" style="position:relative; overflow:hidden">
       <div class="glow"></div>
       <h3 style="margin-top:0">What you get</h3>
@@ -536,7 +557,8 @@
       </ul>
     </div>
   </section>
-
+<!-- button for calling me HEREE -->
+  <a href="tel:+19294603635" class="call-button" title="Call Us">➡️ Call Us</a>
 
   <section id="services" class="section">
     <h2 class="reveal show">Services</h2>
@@ -570,23 +592,23 @@
   <div class="portclass"><h2 style=" text-align: center; opacity:1; transform:none">Work</h2></div>
 <div class="container">
   <div class="mySlides">
-    <a href="https://www.fortuneflowers.net/"><img src="https://files.catbox.moe/onlb1h.png" alt="fortuneflowersipcture" ></a>
+    <a href="https://www.fortuneflowers.net/" target="_blank"><img src="https://files.catbox.moe/onlb1h.png" alt="fortuneflowersipcture" ></a>
   </div>
 
   <div class="mySlides">
-      <a href="https://anthonykrem154.github.io/Pack-smart/"><img src="https://files.catbox.moe/tfmxe2.png" alt="packsmartpicture"></a>
+      <a href="https://anthonykrem154.github.io/Pack-smart/" target="_blank"><img src="https://files.catbox.moe/tfmxe2.png" alt="packsmartpicture"></a>
   </div>
 
   <div class="mySlides">
-      <a href="https://anthonykrem154.github.io/job-compar/"><img src="https://files.catbox.moe/1sb9pn.png" ></a>
+      <a href="https://anthonykrem154.github.io/job-compar/" target="_blank"><img src="https://files.catbox.moe/1sb9pn.png" ></a>
   </div>
 
   <div class="mySlides">
-      <a href="https://anthonykrem154.github.io/hvac-job/"><img src="https://files.catbox.moe/32j4b5.png" ></a>
+      <a href="https://anthonykrem154.github.io/hvac-job/" target="_blank"><img src="https://files.catbox.moe/32j4b5.png" ></a>
   </div>
 
   <div class="mySlides">
-      <img src="img_nature_wide.jpg" style="width:100%">
+      <a href="https://anthonykrem154.github.io/hvac-job/" target="_blank"><img src="https://i.ibb.co/sJHp5WkM/Screenshot-2025-11-25-203054.png" ></a>
   </div>
 
   <div class="mySlides">
